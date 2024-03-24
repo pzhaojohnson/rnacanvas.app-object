@@ -1,5 +1,15 @@
 import { Drawing } from '@rnacanvas/draw';
 
+import { Nucleobase } from '@rnacanvas/draw';
+
+import { StraightBond } from '@rnacanvas/draw';
+
+import { parseDotBracket } from '@rnacanvas/base-pairs';
+
+import { radialize } from '@rnacanvas/bases-layout';
+
+import { Centroid } from '@rnacanvas/bases-layout';
+
 /**
  * An RNAcanvas app object that can be included as a component of a web page / app.
  */
@@ -42,5 +52,44 @@ export class RNAcanvas {
 
     this.drawing = new Drawing();
     this.drawing.appendTo(this.boundingBox);
+  }
+
+  /**
+   * Draws the structure given in dot-bracket notation.
+   *
+   * Will create a nucleobase for each character in the sequence string of the structure.
+   *
+   * Will create a secondary bond for each base-pair in the structure.
+   *
+   * Will throw if the dot-bracket notation is invalid
+   * (i.e., contains unmatched upstream and/or downstream partner(s)).
+   *
+   * Currently, only simple dot-bracket notation is supported
+   * (i.e., containing only the characters ".", "(" and ")").
+   *
+   * Dot-bracket notation is allowed to be shorter than the sequence length.
+   *
+   * @param seq The sequence of the structure.
+   * @param dotBracket Dot-bracket notation of the base-pairs in the structure.
+   */
+  drawDotBracket(seq: string, dotBracket: string): void | never {
+    let bases = [...seq].map(c => Nucleobase.create(c));
+    bases.forEach(b => this.drawing.appendBase(b));
+
+    let basePairs = [...parseDotBracket(bases, dotBracket)];
+    basePairs.forEach(bp => this.drawing.appendSecondaryBond(StraightBond.between(...bp)));
+
+    this.drawing.allSecondaryBonds.forEach(sb => {
+      sb.setAttribute('stroke-width', '2');
+      sb.basePadding1 = 5;
+      sb.basePadding2 = 5;
+    });
+
+    radialize(bases, basePairs, { spacing: 20, basePairSpacing: 20, hairpinLoopSpacing: 10 });
+    (new Centroid(bases)).set({ x: 800, y: 800 });
+
+    this.drawing.domNode.setAttribute('viewBox', '0 0 1600 1600');
+    this.drawing.domNode.setAttribute('width', '1600px');
+    this.drawing.domNode.setAttribute('height', '1600px');
   }
 }
