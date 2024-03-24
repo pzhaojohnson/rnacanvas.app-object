@@ -32,6 +32,17 @@ describe('RNAcanvas class', () => {
     expect(container.childNodes[4]).toBe(rnaCanvas.domNode);
   });
 
+  test('remove method', () => {
+    let rnaCanvas = new RNAcanvas();
+
+    let container = document.createElement('div');
+    rnaCanvas.appendTo(container);
+
+    expect(container.contains(rnaCanvas.domNode)).toBeTruthy();
+    rnaCanvas.remove();
+    expect(container.contains(rnaCanvas.domNode)).toBeFalsy();
+  });
+
   describe('drawDotBracket method', () => {
     let rnaCanvas = new RNAcanvas();
 

@@ -62,6 +62,15 @@ export class RNAcanvas {
   }
 
   /**
+   * Removes the DOM node of the app object from its parent container node.
+   *
+   * (Has no effect if the DOM node of the app object had no parent container node to begin with.)
+   */
+  remove(): void {
+    this.domNode.remove();
+  }
+
+  /**
    * Draws the structure given in dot-bracket notation.
    *
    * Will create a nucleobase for each character in the sequence string of the structure.
