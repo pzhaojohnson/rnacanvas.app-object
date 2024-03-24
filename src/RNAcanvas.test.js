@@ -17,17 +17,19 @@ if (!SVGElement.prototype.getPointAtLength) {
 }
 
 describe('RNAcanvas class', () => {
-  it('can be instantiated', () => {
-    expect(() => new RNAcanvas()).not.toThrow();
-  });
-
-  it('can be appended to a container element', () => {
+  test('appendTo method', () => {
     let rnaCanvas = new RNAcanvas();
     let container = document.createElement('div');
 
+    // add some elements to append after
+    container.appendChild(document.createElement('div'));
+    container.appendChild(document.createElement('div'));
+    container.appendChild(document.createElement('div'));
+    container.appendChild(document.createElement('div'));
+
     expect(container.contains(rnaCanvas.domNode)).toBeFalsy();
-    container.appendChild(rnaCanvas.domNode);
-    expect(container.childNodes[0]).toBe(rnaCanvas.domNode);
+    rnaCanvas.appendTo(container);
+    expect(container.childNodes[4]).toBe(rnaCanvas.domNode);
   });
 
   describe('drawDotBracket method', () => {

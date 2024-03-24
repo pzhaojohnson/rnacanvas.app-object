@@ -55,6 +55,13 @@ export class RNAcanvas {
   }
 
   /**
+   * Appends the DOM node of the app object to the given container node.
+   */
+  appendTo(container: Node): void {
+    container.appendChild(this.domNode);
+  }
+
+  /**
    * Draws the structure given in dot-bracket notation.
    *
    * Will create a nucleobase for each character in the sequence string of the structure.
