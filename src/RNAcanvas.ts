@@ -1,5 +1,7 @@
 import { Drawing } from '@rnacanvas/draw';
 
+import { Scrollbars } from '@rnacanvas/scrollbars';
+
 import { Nucleobase } from '@rnacanvas/draw';
 
 import { StraightBond } from '@rnacanvas/draw';
@@ -35,6 +37,11 @@ export class RNAcanvas {
    */
   readonly drawing: Drawing;
 
+  /**
+   * The scrollbars controlling the user's view of the drawing.
+   */
+  readonly drawingScrollbars: Scrollbars;
+
   constructor() {
     this.domNode = document.createElement('div');
 
@@ -52,6 +59,8 @@ export class RNAcanvas {
 
     this.drawing = new Drawing();
     this.drawing.appendTo(this.boundingBox);
+
+    this.drawingScrollbars = new Scrollbars(this.boundingBox);
   }
 
   /**
