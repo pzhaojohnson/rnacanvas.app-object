@@ -51,4 +51,11 @@ describe('RNAcanvas class', () => {
     rnaCanvas.remove();
     expect(container.contains(rnaCanvas.domNode)).toBeFalsy();
   });
+
+  test('style getter', () => {
+    let rnaCanvas = new RNAcanvas();
+
+    expect(rnaCanvas.style).toBe(rnaCanvas.domNode.style);
+    expect(rnaCanvas.domNode.style).toBeTruthy();
+  });
 });

@@ -68,4 +68,11 @@ export class RNAcanvas {
   remove(): void {
     this.domNode.remove();
   }
+
+  /**
+   * The CSS style declaration for the actual DOM node of the app object.
+   */
+  get style() {
+    return this.domNode.style;
+  }
 }
