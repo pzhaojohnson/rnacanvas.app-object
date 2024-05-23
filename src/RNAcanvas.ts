@@ -6,6 +6,8 @@ import { Scrollbars } from '@rnacanvas/scrollbars';
 
 import { DrawingView } from './DrawingView';
 
+import { DotBracketDrawer } from '@rnacanvas/draw';
+
 /**
  * An RNAcanvas app object that can be included as a component of a web page / app.
  */
@@ -51,6 +53,8 @@ export class RNAcanvas {
    */
   readonly drawingView: DrawingView;
 
+  private dotBracketDrawer: DotBracketDrawer;
+
   constructor() {
     this.domNode = document.createElement('div');
 
@@ -75,6 +79,8 @@ export class RNAcanvas {
     this.drawingScrollbars = new Scrollbars(this.boundingBox);
 
     this.drawingView = new DrawingView(this.drawing, this.horizontalDrawingScrollbar, this.verticalDrawingScrollbar);
+
+    this.dotBracketDrawer = new DotBracketDrawer(this.drawing);
   }
 
   /**
@@ -91,6 +97,28 @@ export class RNAcanvas {
    */
   remove(): void {
     this.domNode.remove();
+  }
+
+  /**
+   * Draws the specified structure (expressed in dot-bracket notation) on the drawing of the app.
+   *
+   * A nucleobase will be added to the drawing for each character in the sequence of the structure.
+   *
+   * A secondary bond will be added to the drawing for each base-pair expressed in the dot-bracket notation
+   * for the structure.
+   *
+   * Currently, this method is only able to handle simple dot-bracket notation
+   * (i.e., that only contains the characters ".", "(" and ")").
+   *
+   * A primary bond will also be added between each consecutive pair of bases in the sequence of bases.
+   *
+   * This method will also radialize the layout of the drawn bases.
+   *
+   * @param seq The sequence of the structure to draw.
+   * @param dotBracket Dot-bracket notation expressing the base-pairs in the structure to draw.
+   */
+  drawDotBracket(seq: string, dotBracket: string): void {
+    this.dotBracketDrawer.draw(seq, dotBracket);
   }
 
   /**
