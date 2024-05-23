@@ -73,8 +73,8 @@ describe('DrawingView class', () => {
       expect(targetDrawing.verticalScaling).toBeCloseTo(0.9 * 2566 / 3442);
 
       // must account for the new scaling of the target drawing
-      expect(horizontalScrollbar.thumb.centerX).toBeCloseTo((0.9 * 2566 / 3442) * ((((-82) + 3442) / 2) - (-52)));
-      expect(verticalScrollbar.thumb.centerY).toBeCloseTo((0.9 * 2566 / 3442) * (((288 + 2000) / 2) - 104));
+      expect(horizontalScrollbar.thumb.centerX).toBeCloseTo((0.9 * 2566 / 3442) * (((-82) + (3442 / 2)) - (-52)));
+      expect(verticalScrollbar.thumb.centerY).toBeCloseTo((0.9 * 2566 / 3442) * ((288 + (2000 / 2)) - 104));
     });
 
     test('when the content height determines how the target drawing should be scaled', () => {
@@ -91,8 +91,8 @@ describe('DrawingView class', () => {
       expect(targetDrawing.verticalScaling).toBeCloseTo(0.9 * 1973 / 2210);
 
       // must account for the new scaling of the target drawing
-      expect(horizontalScrollbar.thumb.centerX).toBeCloseTo((0.9 * 1973 / 2210) * (((82 + 3180) / 2) - 88.2));
-      expect(verticalScrollbar.thumb.centerY).toBeCloseTo((0.9 * 1973 / 2210) * (((124 + 2210) / 2) - 62.9));
+      expect(horizontalScrollbar.thumb.centerX).toBeCloseTo((0.9 * 1973 / 2210) * ((82 + (3180 / 2)) - 88.2));
+      expect(verticalScrollbar.thumb.centerY).toBeCloseTo((0.9 * 1973 / 2210) * ((124 + (2210 / 2)) - 62.9));
     });
   });
 });

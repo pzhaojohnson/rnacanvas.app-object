@@ -69,8 +69,8 @@ export class DrawingView {
     );
 
     this.centerPoint = {
-      x: (contentBBox.x + contentBBox.width) / 2,
-      y: (contentBBox.y + contentBBox.height) / 2,
+      x: contentBBox.x + (contentBBox.width / 2),
+      y: contentBBox.y + (contentBBox.height / 2),
     };
   }
 }
