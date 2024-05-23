@@ -43,14 +43,14 @@ export class DrawingView {
    */
   get centerPoint(): Point {
     return {
-      x: this.horizontalScrollbar.thumb.centerX / this.targetDrawing.horizontalScaling,
-      y: this.verticalScrollbar.thumb.centerY / this.targetDrawing.verticalScaling,
+      x: (this.horizontalScrollbar.thumb.centerX / this.targetDrawing.horizontalScaling) + this.targetDrawing.minX,
+      y: (this.verticalScrollbar.thumb.centerY / this.targetDrawing.verticalScaling) + this.targetDrawing.minY,
     };
   }
 
   set centerPoint(centerPoint) {
-    this.horizontalScrollbar.thumb.centerX = this.targetDrawing.horizontalScaling * centerPoint.x;
-    this.verticalScrollbar.thumb.centerY = this.targetDrawing.verticalScaling * centerPoint.y;
+    this.horizontalScrollbar.thumb.centerX = this.targetDrawing.horizontalScaling * (centerPoint.x - this.targetDrawing.minX);
+    this.verticalScrollbar.thumb.centerY = this.targetDrawing.verticalScaling * (centerPoint.y - this.targetDrawing.minY);
   }
 
   /**
