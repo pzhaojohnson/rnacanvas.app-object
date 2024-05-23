@@ -1,6 +1,10 @@
 import { Drawing } from '@rnacanvas/draw';
 
+import { HorizontalScrollbar, VerticalScrollbar } from '@rnacanvas/scrollbars';
+
 import { Scrollbars } from '@rnacanvas/scrollbars';
+
+import { DrawingView } from './DrawingView';
 
 /**
  * An RNAcanvas app object that can be included as a component of a web page / app.
@@ -28,9 +32,24 @@ export class RNAcanvas {
   readonly drawing: Drawing;
 
   /**
+   * The horizontal scrollbar for the drawing.
+   */
+  readonly horizontalDrawingScrollbar: HorizontalScrollbar;
+
+  /**
+   * The vertical scrollbar for the drawing.
+   */
+  readonly verticalDrawingScrollbar: VerticalScrollbar;
+
+  /**
    * The scrollbars controlling the user's view of the drawing.
    */
   readonly drawingScrollbars: Scrollbars;
+
+  /**
+   * The user's view of the drawing.
+   */
+  readonly drawingView: DrawingView;
 
   constructor() {
     this.domNode = document.createElement('div');
@@ -50,7 +69,12 @@ export class RNAcanvas {
     this.drawing = new Drawing();
     this.drawing.appendTo(this.boundingBox);
 
+    this.horizontalDrawingScrollbar = new HorizontalScrollbar(this.boundingBox);
+    this.verticalDrawingScrollbar = new VerticalScrollbar(this.boundingBox);
+
     this.drawingScrollbars = new Scrollbars(this.boundingBox);
+
+    this.drawingView = new DrawingView(this.drawing, this.horizontalDrawingScrollbar, this.verticalDrawingScrollbar);
   }
 
   /**
