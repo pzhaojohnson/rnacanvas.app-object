@@ -98,6 +98,8 @@ export class RNAcanvas {
     this.drawing = new Drawing();
     this.drawing.appendTo(this.boundingBox);
 
+    this.drawing.domNode.style.userSelect = 'none';
+
     this.horizontalDrawingScrollbar = new HorizontalScrollbar(this.boundingBox);
     this.verticalDrawingScrollbar = new VerticalScrollbar(this.boundingBox);
 
