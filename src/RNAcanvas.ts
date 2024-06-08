@@ -8,6 +8,12 @@ import { DrawingView } from './DrawingView';
 
 import { DotBracketDrawer } from '@rnacanvas/draw';
 
+import { EventfulSet } from '@rnacanvas/utilities';
+
+import { LiveSVGElementHighlightings } from '@rnacanvas/draw.svg.highlight';
+
+import { ClickSelectTool } from '@rnacanvas/draw.svg.interact';
+
 /**
  * An RNAcanvas app object that can be included as a component of a web page / app.
  */
@@ -55,6 +61,25 @@ export class RNAcanvas {
 
   private dotBracketDrawer: DotBracketDrawer;
 
+  /**
+   * The set of SVG elements in the drawing of the app that are currently selected.
+   */
+  readonly selectedSVGElements: EventfulSet<SVGGraphicsElement> = new EventfulSet();
+
+  /**
+   * A drawing overlaid and sized to match the main drawing of the app.
+   *
+   * Can be used for highlightings of SVG elements (such as the currently selected SVG elements).
+   */
+  private readonly overlaidDrawing: Drawing;
+
+  /**
+   * Highlightings of the currently selected SVG elements in the drawing of the app.
+   */
+  private readonly selectedSVGElementHighlightings: LiveSVGElementHighlightings;
+
+  private readonly clickSelectTool: ClickSelectTool;
+
   constructor() {
     this.domNode = document.createElement('div');
 
@@ -81,6 +106,26 @@ export class RNAcanvas {
     this.drawingView = new DrawingView(this.drawing, this.horizontalDrawingScrollbar, this.verticalDrawingScrollbar);
 
     this.dotBracketDrawer = new DotBracketDrawer(this.drawing);
+
+    this.overlaidDrawing = new Drawing();
+
+    this.overlaidDrawing.domNode.style.position = 'absolute';
+    this.overlaidDrawing.appendTo(this.boundingBox);
+
+    // updates the boundaries and scalings of the overlaid drawing to match the main drawing of the app
+    let overlaidDrawingResizer = new MutationObserver(() => {
+      this.overlaidDrawing.setBoundaries(this.drawing);
+
+      this.overlaidDrawing.horizontalScaling = this.drawing.horizontalScaling;
+      this.overlaidDrawing.verticalScaling = this.drawing.verticalScaling;
+    });
+
+    overlaidDrawingResizer.observe(this.drawing.domNode, { attributes: true });
+
+    this.selectedSVGElementHighlightings = new LiveSVGElementHighlightings(this.selectedSVGElements, this.drawing.domNode);
+    this.selectedSVGElementHighlightings.appendTo(this.overlaidDrawing.domNode);
+
+    this.clickSelectTool = new ClickSelectTool(this.drawing.domNode, this.selectedSVGElements);
   }
 
   /**
