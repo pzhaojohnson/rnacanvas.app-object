@@ -110,6 +110,9 @@ export class RNAcanvas {
     this.overlaidDrawing = new Drawing();
 
     this.overlaidDrawing.domNode.style.position = 'absolute';
+    this.overlaidDrawing.domNode.style.top = '0px';
+    this.overlaidDrawing.domNode.style.left = '0px';
+    this.overlaidDrawing.domNode.style.pointerEvents = 'none';
     this.overlaidDrawing.appendTo(this.boundingBox);
 
     // updates the boundaries and scalings of the overlaid drawing to match the main drawing of the app
