@@ -1,5 +1,7 @@
 import { Drawing } from '@rnacanvas/draw';
 
+import type { Nucleobase } from '@rnacanvas/draw';
+
 import { HorizontalScrollbar, VerticalScrollbar } from '@rnacanvas/scrollbars';
 
 import { Scrollbars } from '@rnacanvas/scrollbars';
@@ -13,6 +15,10 @@ import { EventfulSet } from '@rnacanvas/utilities';
 import { LiveSVGElementHighlightings } from '@rnacanvas/draw.svg.highlight';
 
 import { ClickSelectTool } from '@rnacanvas/draw.svg.interact';
+
+import { SelectedBases } from '@rnacanvas/draw.interact';
+
+import { ConsecutiveBasesSelectingTool } from '@rnacanvas/draw.interact';
 
 /**
  * An RNAcanvas app object that can be included as a component of a web page / app.
@@ -80,6 +86,10 @@ export class RNAcanvas {
 
   private readonly clickSelectTool: ClickSelectTool;
 
+  readonly selectedBases: SelectedBases<Nucleobase>;
+
+  private readonly consecutiveBasesSelectingTool: ConsecutiveBasesSelectingTool<Nucleobase>;
+
   constructor() {
     this.domNode = document.createElement('div');
 
@@ -131,6 +141,10 @@ export class RNAcanvas {
     this.selectedSVGElementHighlightings.appendTo(this.overlaidDrawing.domNode);
 
     this.clickSelectTool = new ClickSelectTool(this.drawing.domNode, this.selectedSVGElements);
+
+    this.selectedBases = new SelectedBases(this.drawing, this.selectedSVGElements);
+
+    this.consecutiveBasesSelectingTool = new ConsecutiveBasesSelectingTool(this.drawing, this.selectedBases);
   }
 
   /**
