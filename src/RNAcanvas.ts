@@ -20,6 +20,13 @@ import { SelectedBases } from '@rnacanvas/draw.interact';
 
 import { ConsecutiveBasesSelectingTool } from '@rnacanvas/draw.interact';
 
+interface Form {
+  /**
+   * Appends the form to the provided container node.
+   */
+  appendTo(container: Node): void;
+}
+
 /**
  * An RNAcanvas app object that can be included as a component of a web page / app.
  */
@@ -90,6 +97,11 @@ export class RNAcanvas {
 
   private readonly consecutiveBasesSelectingTool: ConsecutiveBasesSelectingTool<Nucleobase>;
 
+  /**
+   * Forms are to go in here.
+   */
+  private readonly formsContainer: HTMLDivElement;
+
   constructor() {
     this.domNode = document.createElement('div');
 
@@ -145,6 +157,9 @@ export class RNAcanvas {
     this.selectedBases = new SelectedBases(this.drawing, this.selectedSVGElements);
 
     this.consecutiveBasesSelectingTool = new ConsecutiveBasesSelectingTool(this.drawing, this.selectedBases);
+
+    this.formsContainer = document.createElement('div');
+    this.boundingBox.appendChild(this.formsContainer);
   }
 
   /**
@@ -183,6 +198,26 @@ export class RNAcanvas {
    */
   drawDotBracket(seq: string, dotBracket: string): void {
     this.dotBracketDrawer.draw(seq, dotBracket);
+  }
+
+  /**
+   * Opens the provided form simply by adding it within the DOM structure of the RNAcanvas app.
+   *
+   * Forms are to be closed simply by removing them from the DOM structure of the RNAcanvas app
+   * (e.g., by calling the `remove` method of the DOM node corresponding to the form).
+   *
+   * Forms input to this method should have absolute positioning
+   * (i.e., have a `position` CSS property of `absolute`).
+   *
+   * Forms will be added in such a way that (with absolute positioning)
+   * they will be positioned relative to the bounding box of the RNAcanvas app.
+   */
+  openForm(form: Node | Form): void {
+    if (form instanceof Node) {
+      this.formsContainer.appendChild(form);
+    } else {
+      form.appendTo(this.formsContainer);
+    }
   }
 
   /**
