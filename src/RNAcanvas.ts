@@ -2,9 +2,7 @@ import { Drawing } from '@rnacanvas/draw';
 
 import type { Nucleobase } from '@rnacanvas/draw';
 
-import { HorizontalScrollbar, VerticalScrollbar } from '@rnacanvas/scrollbars';
-
-import { Scrollbars } from '@rnacanvas/scrollbars';
+import { CenteringScrollContainer } from './CenteringScrollContainer';
 
 import { DrawingView } from './DrawingView';
 
@@ -52,20 +50,9 @@ export class RNAcanvas {
    */
   readonly drawing: Drawing;
 
-  /**
-   * The horizontal scrollbar for the drawing.
-   */
-  readonly horizontalDrawingScrollbar: HorizontalScrollbar;
+  private readonly drawingScrollContainer: CenteringScrollContainer;
 
-  /**
-   * The vertical scrollbar for the drawing.
-   */
-  readonly verticalDrawingScrollbar: VerticalScrollbar;
-
-  /**
-   * The scrollbars controlling the user's view of the drawing.
-   */
-  readonly drawingScrollbars: Scrollbars;
+  private readonly stackedDrawingsContainer: HTMLDivElement;
 
   /**
    * The user's view of the drawing.
@@ -117,19 +104,20 @@ export class RNAcanvas {
     // position all other elements of the app object relative to the bounding box
     this.boundingBox.style.position = 'relative';
 
+    this.drawingScrollContainer = new CenteringScrollContainer();
+
+    this.drawingScrollContainer.style.width = '100%';
+    this.drawingScrollContainer.style.height = '100%';
+    this.drawingScrollContainer.appendTo(this.boundingBox);
+
+    this.stackedDrawingsContainer = document.createElement('div');
+    this.stackedDrawingsContainer.style.position = 'relative';
+    this.drawingScrollContainer.append(this.stackedDrawingsContainer);
+
     this.drawing = new Drawing();
-    this.drawing.appendTo(this.boundingBox);
 
+    // prevent highlighting of text when dragging drawing elements
     this.drawing.domNode.style.userSelect = 'none';
-
-    this.horizontalDrawingScrollbar = new HorizontalScrollbar(this.boundingBox);
-    this.verticalDrawingScrollbar = new VerticalScrollbar(this.boundingBox);
-
-    this.drawingScrollbars = new Scrollbars(this.boundingBox);
-
-    this.drawingView = new DrawingView(this.drawing, this.horizontalDrawingScrollbar, this.verticalDrawingScrollbar);
-
-    this.dotBracketDrawer = new DotBracketDrawer(this.drawing);
 
     this.overlaidDrawing = new Drawing();
 
@@ -137,7 +125,6 @@ export class RNAcanvas {
     this.overlaidDrawing.domNode.style.top = '0px';
     this.overlaidDrawing.domNode.style.left = '0px';
     this.overlaidDrawing.domNode.style.pointerEvents = 'none';
-    this.overlaidDrawing.appendTo(this.boundingBox);
 
     // updates the boundaries and scalings of the overlaid drawing to match the main drawing of the app
     let overlaidDrawingResizer = new MutationObserver(() => {
@@ -148,6 +135,10 @@ export class RNAcanvas {
     });
 
     overlaidDrawingResizer.observe(this.drawing.domNode, { attributes: true });
+
+    this.stackedDrawingsContainer.append(this.drawing.domNode, this.overlaidDrawing.domNode);
+
+    this.drawingView = new DrawingView(this.drawing, this.horizontalDrawingScrollbar, this.verticalDrawingScrollbar);
 
     this.selectedSVGElementHighlightings = new LiveSVGElementHighlightings(this.selectedSVGElements, this.drawing.domNode);
     this.selectedSVGElementHighlightings.appendTo(this.overlaidDrawing.domNode);
@@ -160,6 +151,8 @@ export class RNAcanvas {
 
     this.formsContainer = document.createElement('div');
     this.boundingBox.appendChild(this.formsContainer);
+
+    this.dotBracketDrawer = new DotBracketDrawer(this.drawing);
   }
 
   /**
@@ -176,6 +169,27 @@ export class RNAcanvas {
    */
   remove(): void {
     this.domNode.remove();
+  }
+
+  /**
+   * The horizontal scrollbar for the drawing of the app.
+   */
+  get horizontalDrawingScrollbar() {
+    return this.drawingScrollContainer.horizontalScrollbar;
+  }
+
+  /**
+   * The vertical scrollbar for the drawing of the app.
+   */
+  get verticalDrawingScrollbar() {
+    return this.drawingScrollContainer.verticalScrollbar;
+  }
+
+  /**
+   * The scrollbars for the drawing of the app.
+   */
+  get drawingScrollbars() {
+    return this.drawingScrollContainer.scrollbars;
   }
 
   /**
