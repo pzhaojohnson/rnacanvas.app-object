@@ -92,6 +92,9 @@ export class RNAcanvas {
   constructor() {
     this.domNode = document.createElement('div');
 
+    // give the app a gray and white checkerboard background
+    this.domNode.style.background = 'repeating-conic-gradient(#eee 0% 25%, white 0% 50%) 50% / 20px 20px';
+
     this.boundingBox = document.createElement('div');
     this.domNode.appendChild(this.boundingBox);
 
@@ -115,6 +118,7 @@ export class RNAcanvas {
     this.drawingScrollContainer.append(this.stackedDrawingsContainer);
 
     this.drawing = new Drawing();
+    this.drawing.domNode.style.backgroundColor = 'white';
 
     // prevent highlighting of text when dragging drawing elements
     this.drawing.domNode.style.userSelect = 'none';
