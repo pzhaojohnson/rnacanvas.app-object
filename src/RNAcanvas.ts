@@ -16,6 +16,8 @@ import { LiveSVGElementHighlightings } from '@rnacanvas/draw.svg.highlight';
 
 import { ClickSelectTool } from '@rnacanvas/draw.svg.interact';
 
+import { SelectingRect } from '@rnacanvas/draw.svg.interact';
+
 import { SelectedBases } from '@rnacanvas/draw.interact';
 
 import { ConsecutiveBasesSelectingTool } from '@rnacanvas/draw.interact';
@@ -87,6 +89,8 @@ export class RNAcanvas {
 
   private readonly clickSelectTool: ClickSelectTool;
 
+  private readonly selectingRect: SelectingRect;
+
   readonly selectedBases: SelectedBases<Nucleobase>;
 
   private readonly consecutiveBasesSelectingTool: ConsecutiveBasesSelectingTool<Nucleobase>;
@@ -157,6 +161,9 @@ export class RNAcanvas {
     this.selectedSVGElementHighlightings.appendTo(this.overlaidDrawing.domNode);
 
     this.clickSelectTool = new ClickSelectTool(this.drawing.domNode, this.selectedSVGElements);
+
+    this.selectingRect = new SelectingRect(this.drawing.domNode, this.selectedSVGElements);
+    this.selectingRect.appendTo(this.overlaidDrawing.domNode);
 
     this.selectedBases = new SelectedBases(this.drawing, this.selectedSVGElements);
 
