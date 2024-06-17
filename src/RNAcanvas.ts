@@ -6,6 +6,8 @@ import { CenteringScrollContainer } from './CenteringScrollContainer';
 
 import { DrawingView } from './DrawingView';
 
+import { PinchToScaleFeature } from '@rnacanvas/draw.svg.interact';
+
 import { DotBracketDrawer } from '@rnacanvas/draw';
 
 import { EventfulSet } from '@rnacanvas/utilities';
@@ -58,6 +60,11 @@ export class RNAcanvas {
    * The user's view of the drawing.
    */
   readonly drawingView: DrawingView;
+
+  /**
+   * A pinch-to-scale feature for the drawing of the app.
+   */
+  private readonly pinchToScaleFeature: PinchToScaleFeature;
 
   private dotBracketDrawer: DotBracketDrawer;
 
@@ -143,6 +150,8 @@ export class RNAcanvas {
     this.stackedDrawingsContainer.append(this.drawing.domNode, this.overlaidDrawing.domNode);
 
     this.drawingView = new DrawingView(this.drawing, this.horizontalDrawingScrollbar, this.verticalDrawingScrollbar);
+
+    this.pinchToScaleFeature = new PinchToScaleFeature(this.drawing.domNode, this.horizontalDrawingScrollbar, this.verticalDrawingScrollbar);
 
     this.selectedSVGElementHighlightings = new LiveSVGElementHighlightings(this.selectedSVGElements, this.drawing.domNode);
     this.selectedSVGElementHighlightings.appendTo(this.overlaidDrawing.domNode);
