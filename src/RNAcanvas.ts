@@ -22,6 +22,8 @@ import { SelectedBases } from '@rnacanvas/draw.interact';
 
 import { ConsecutiveBasesSelectingTool } from '@rnacanvas/draw.interact';
 
+import { DraggingTool } from '@rnacanvas/draw.interact';
+
 interface Form {
   /**
    * Appends the form to the provided container node.
@@ -94,6 +96,8 @@ export class RNAcanvas {
   readonly selectedBases: SelectedBases<Nucleobase>;
 
   private readonly consecutiveBasesSelectingTool: ConsecutiveBasesSelectingTool<Nucleobase>;
+
+  private readonly draggingTool: DraggingTool;
 
   /**
    * Forms are to go in here.
@@ -168,6 +172,11 @@ export class RNAcanvas {
     this.selectedBases = new SelectedBases(this.drawing, this.selectedSVGElements);
 
     this.consecutiveBasesSelectingTool = new ConsecutiveBasesSelectingTool(this.drawing, this.selectedBases);
+
+    this.draggingTool = new DraggingTool(this.drawing, {
+      svgElements: this.selectedSVGElements,
+      bases: this.selectedBases,
+    });
 
     this.formsContainer = document.createElement('div');
     this.boundingBox.appendChild(this.formsContainer);
