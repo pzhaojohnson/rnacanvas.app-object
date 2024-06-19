@@ -173,10 +173,17 @@ export class RNAcanvas {
 
     this.consecutiveBasesSelectingTool = new ConsecutiveBasesSelectingTool(this.drawing, this.selectedBases);
 
-    this.draggingTool = new DraggingTool(this.drawing, {
-      svgElements: this.selectedSVGElements,
-      bases: this.selectedBases,
-    });
+    this.draggingTool = new DraggingTool(
+      this.drawing,
+      {
+        svgElements: this.selectedSVGElements,
+        bases: this.selectedBases,
+      },
+      {
+        beforeDragging: () => this.hideOverlaidDrawing(),
+        afterDragging: () => this.unhideOverlaidDrawing(),
+      },
+    );
 
     this.formsContainer = document.createElement('div');
     this.boundingBox.appendChild(this.formsContainer);
@@ -219,6 +226,22 @@ export class RNAcanvas {
    */
   get drawingScrollbars() {
     return this.drawingScrollContainer.scrollbars;
+  }
+
+  /**
+   * Hides the overlaid drawing by setting its `visibility` CSS property to `hidden`.
+   *
+   * Can be used to hide element highlightings (e.g., when dragging elements).
+   */
+  private hideOverlaidDrawing(): void {
+    this.overlaidDrawing.domNode.style.visibility = 'hidden';
+  }
+
+  /**
+   * Undoes the action(s) of the `hideOverlaidDrawing` method.
+   */
+  private unhideOverlaidDrawing(): void {
+    this.overlaidDrawing.domNode.style.visibility = 'visible';
   }
 
   /**
