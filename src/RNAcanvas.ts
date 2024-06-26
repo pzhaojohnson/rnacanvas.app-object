@@ -33,6 +33,10 @@ interface Form {
   appendTo(container: Node): void;
 }
 
+function isSVGGraphicsElement(value: unknown): value is SVGGraphicsElement {
+  return value instanceof SVGGraphicsElement;
+}
+
 /**
  * An RNAcanvas app object that can be included as a component of a web page / app.
  */
@@ -276,6 +280,13 @@ export class RNAcanvas {
    */
   drawDotBracket(seq: string, dotBracket: string): void {
     this.dotBracketDrawer.draw(seq, dotBracket);
+  }
+
+  /**
+   * Selects all SVG (graphics) elements in the drawing of the app.
+   */
+  selectAll(): void {
+    this.selectedSVGElements.addAll([...this.drawing.domNode.children].filter(isSVGGraphicsElement));
   }
 
   /**
