@@ -141,6 +141,7 @@ export class RNAcanvas {
 
     // prevent highlighting of text when dragging drawing elements
     this.drawing.domNode.style.userSelect = 'none';
+    this.drawing.domNode.style.webkitUserSelect = 'none';
 
     this.overlaidDrawing = new Drawing();
 
