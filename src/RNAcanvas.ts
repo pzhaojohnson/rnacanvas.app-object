@@ -143,6 +143,8 @@ export class RNAcanvas {
     this.drawing.domNode.style.userSelect = 'none';
     this.drawing.domNode.style.webkitUserSelect = 'none';
 
+    this.drawing.domNode.style.cursor = 'default';
+
     this.overlaidDrawing = new Drawing();
 
     this.overlaidDrawing.domNode.style.position = 'absolute';
