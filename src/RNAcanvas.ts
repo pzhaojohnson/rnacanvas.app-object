@@ -18,6 +18,8 @@ import { ClickSelectTool } from '@rnacanvas/draw.svg.interact';
 
 import { SelectingRect } from '@rnacanvas/draw.svg.interact';
 
+import { CtrlASelector } from './CtrlASelector';
+
 import { SelectedBases } from '@rnacanvas/draw.interact';
 
 import { ConsecutiveBasesSelectingTool } from '@rnacanvas/draw.interact';
@@ -98,6 +100,11 @@ export class RNAcanvas {
   private readonly clickSelectTool: ClickSelectTool;
 
   private readonly selectingRect: SelectingRect;
+
+  private readonly ctrlASelector = new CtrlASelector({
+    hasFocus: () => this.hasFocus(),
+    selectAll: () => this.selectAll(),
+  });
 
   readonly selectedBases: SelectedBases<Nucleobase>;
 
