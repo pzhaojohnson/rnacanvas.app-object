@@ -289,6 +289,12 @@ export class RNAcanvas {
     this.selectedSVGElements.addAll([...this.drawing.domNode.children].filter(isSVGGraphicsElement));
   }
 
+  hasFocus(): boolean {
+    if (!document.activeElement) { return false; }
+
+    return this.domNode === document.activeElement || this.domNode.contains(document.activeElement);
+  }
+
   /**
    * Opens the provided form simply by adding it within the DOM structure of the RNAcanvas app.
    *
