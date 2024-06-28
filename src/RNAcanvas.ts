@@ -28,7 +28,7 @@ import { DraggingTool } from '@rnacanvas/draw.interact';
 
 import { BasesLayoutForm } from '@rnacanvas/forms.bases-layout';
 
-import { Toolbar } from '@rnacanvas/toolbar';
+import { Toolbar, ToolbarRepositioner } from '@rnacanvas/toolbar';
 
 interface Form {
   /**
@@ -227,6 +227,13 @@ export class RNAcanvas {
 
     this.toolbar.appendTo(this.toolbarContainer);
     this.boundingBox.append(this.toolbarContainer);
+
+    let toolbarRepositioner = ToolbarRepositioner();
+    toolbarRepositioner.addEventListener('click', () => this.toolbar.reposition());
+
+    let toolbarRepositionerContainer = document.createElement('div');
+    toolbarRepositionerContainer.append(toolbarRepositioner);
+    this.boundingBox.append(toolbarRepositionerContainer);
   }
 
   /**
