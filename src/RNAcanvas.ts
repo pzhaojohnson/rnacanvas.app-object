@@ -230,6 +230,7 @@ export class RNAcanvas {
 
     let toolbarRepositioner = ToolbarRepositioner();
     toolbarRepositioner.addEventListener('click', () => this.toolbar.reposition());
+    toolbarRepositioner.title = 'Reposition the toolbar.';
 
     let toolbarRepositionerContainer = document.createElement('div');
     toolbarRepositionerContainer.append(toolbarRepositioner);
