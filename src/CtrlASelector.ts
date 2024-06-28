@@ -36,6 +36,6 @@ export class CtrlASelector {
 
       event.preventDefault();
       targetApp.selectAll();
-    });
+    }, { passive: false });
   }
 }
