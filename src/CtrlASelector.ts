@@ -12,7 +12,7 @@ interface App {
  */
 export class CtrlASelector {
   constructor(private targetApp: App) {
-    window.addEventListener('keyup', event => {
+    window.addEventListener('keydown', event => {
       if (!(event.ctrlKey || event.metaKey)) { return; }
       if (event.key.toUpperCase() !== 'A') { return; }
       if (userIsTyping()) { return; }
