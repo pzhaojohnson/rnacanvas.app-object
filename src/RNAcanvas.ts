@@ -101,10 +101,7 @@ export class RNAcanvas {
 
   private readonly selectingRect: SelectingRect;
 
-  private readonly ctrlASelector = new CtrlASelector({
-    hasFocus: () => this.hasFocus(),
-    selectAll: () => this.selectAll(),
-  });
+  private readonly ctrlASelector: CtrlASelector;
 
   readonly selectedBases: SelectedBases<Nucleobase>;
 
@@ -186,6 +183,11 @@ export class RNAcanvas {
 
     this.selectingRect = new SelectingRect(this.drawing.domNode, this.selectedSVGElements);
     this.selectingRect.appendTo(this.overlaidDrawing.domNode);
+
+    this.ctrlASelector = new CtrlASelector({
+      domNode: this.domNode,
+      selectAll: () => this.selectAll(),
+    });
 
     this.selectedBases = new SelectedBases(this.drawing, this.selectedSVGElements);
 
@@ -294,12 +296,6 @@ export class RNAcanvas {
    */
   selectAll(): void {
     this.selectedSVGElements.addAll([...this.drawing.domNode.children].filter(isSVGGraphicsElement));
-  }
-
-  hasFocus(): boolean {
-    if (!document.activeElement) { return false; }
-
-    return this.domNode === document.activeElement || this.domNode.contains(document.activeElement);
   }
 
   /**
