@@ -28,6 +28,8 @@ import { DraggingTool } from '@rnacanvas/draw.interact';
 
 import { BasesLayoutForm } from '@rnacanvas/forms.bases-layout';
 
+import { Toolbar } from '@rnacanvas/toolbar';
+
 interface Form {
   /**
    * Appends the form to the provided container node.
@@ -115,6 +117,10 @@ export class RNAcanvas {
   private readonly formsContainer: HTMLDivElement;
 
   readonly basesLayoutForm: BasesLayoutForm;
+
+  private readonly toolbar: Toolbar;
+
+  private readonly toolbarContainer = document.createElement('div');
 
   constructor() {
     this.domNode = document.createElement('div');
@@ -214,6 +220,13 @@ export class RNAcanvas {
     });
 
     this.dotBracketDrawer = new DotBracketDrawer(this.drawing);
+
+    this.toolbar = new Toolbar({
+      editLayout: () => this.openForm(this.basesLayoutForm),
+    });
+
+    this.toolbar.appendTo(this.toolbarContainer);
+    this.boundingBox.append(this.toolbarContainer);
   }
 
   /**
