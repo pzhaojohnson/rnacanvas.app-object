@@ -2,6 +2,8 @@ import { Drawing } from '@rnacanvas/draw';
 
 import type { Nucleobase } from '@rnacanvas/draw';
 
+import { InvertedStraightBondsHider } from '@rnacanvas/draw.bonds';
+
 import { CenteringScrollContainer } from './CenteringScrollContainer';
 
 import { DrawingView } from './DrawingView';
@@ -65,6 +67,8 @@ export class RNAcanvas {
    * The 2D nucleic acid structure drawing of the app object.
    */
   readonly drawing: Drawing;
+
+  private readonly invertedPrimaryBondsHider: InvertedStraightBondsHider;
 
   private readonly drawingScrollContainer: CenteringScrollContainer;
 
@@ -158,6 +162,11 @@ export class RNAcanvas {
     this.drawing.domNode.style.webkitUserSelect = 'none';
 
     this.drawing.domNode.style.cursor = 'default';
+
+    this.invertedPrimaryBondsHider = new InvertedStraightBondsHider(
+      { [Symbol.iterator]: () => [...this.drawing.primaryBonds].values() },
+      this.drawing.domNode,
+    );
 
     this.overlaidDrawing = new Drawing();
 
