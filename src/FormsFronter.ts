@@ -1,6 +1,6 @@
 /**
  * Automatically brings to the front (i.e., reappends to the forms container)
- * forms that are moused down on.
+ * forms that are moused down on or contain a node that receives focus.
  */
 export class FormsFronter {
   /**
@@ -8,6 +8,11 @@ export class FormsFronter {
    */
   constructor(private formsContainer: Node) {
     this.formsContainer.addEventListener('mousedown', event => {
+      let targetForm = this.#targetForm(event);
+      targetForm ? this.#bringToFront(targetForm) : {};
+    });
+
+    this.formsContainer.addEventListener('focusin', event => {
       let targetForm = this.#targetForm(event);
       targetForm ? this.#bringToFront(targetForm) : {};
     });
