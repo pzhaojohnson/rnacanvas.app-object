@@ -28,6 +28,8 @@ import { ConsecutiveBasesSelectingTool } from '@rnacanvas/draw.interact';
 
 import { DraggingTool } from '@rnacanvas/draw.interact';
 
+import { FormsFronter } from './FormsFronter';
+
 import { BasesLayoutForm } from '@rnacanvas/forms.bases-layout';
 
 import { ExportForm } from '@rnacanvas/forms.export';
@@ -121,6 +123,8 @@ export class RNAcanvas {
    * Forms are to go in here.
    */
   private readonly formsContainer: HTMLDivElement;
+
+  #formsFronter: FormsFronter;
 
   readonly basesLayoutForm: BasesLayoutForm;
 
@@ -226,6 +230,8 @@ export class RNAcanvas {
 
     this.formsContainer = document.createElement('div');
     this.boundingBox.appendChild(this.formsContainer);
+
+    this.#formsFronter = new FormsFronter(this.formsContainer);
 
     this.basesLayoutForm = new BasesLayoutForm(this.drawing, this.selectedBases, {
       beforeMovingBases: () => this.hideOverlaidDrawing(),
