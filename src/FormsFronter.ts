@@ -32,6 +32,9 @@ export class FormsFronter {
   }
 
   #bringToFront(form: Node): void {
+    // form is already at the front
+    if (form === this.formsContainer.lastChild) { return; }
+
     this.formsContainer.appendChild(form);
   }
 }
