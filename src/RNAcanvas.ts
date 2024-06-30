@@ -30,6 +30,8 @@ import { DraggingTool } from '@rnacanvas/draw.interact';
 
 import { BasesLayoutForm } from '@rnacanvas/forms.bases-layout';
 
+import { ExportForm } from '@rnacanvas/forms.export';
+
 import { Toolbar, ToolbarRepositioner } from '@rnacanvas/toolbar';
 
 interface Form {
@@ -121,6 +123,8 @@ export class RNAcanvas {
   private readonly formsContainer: HTMLDivElement;
 
   readonly basesLayoutForm: BasesLayoutForm;
+
+  readonly exportForm: ExportForm;
 
   private readonly toolbar: Toolbar;
 
@@ -228,10 +232,13 @@ export class RNAcanvas {
       afterMovingBases: () => this.unhideOverlaidDrawing(),
     });
 
+    this.exportForm = new ExportForm({ drawing: this.drawing });
+
     this.dotBracketDrawer = new DotBracketDrawer(this.drawing);
 
     this.toolbar = new Toolbar({
-      editLayout: () => this.openForm(this.basesLayoutForm),
+      layoutButton: { onClick: () => this.openForm(this.basesLayoutForm) },
+      exportButton: { onClick: () => this.openForm(this.exportForm) },
     });
 
     this.toolbar.appendTo(this.toolbarContainer);
