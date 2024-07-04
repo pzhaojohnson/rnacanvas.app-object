@@ -156,6 +156,6 @@ interface Form {
 ```
 
 Forms are closed by simply removing them
-(i.e., by calling the `remove` method of their corresponding DOM node).
+(i.e., by calling the `remove` method of their corresponding DOM nodes).
 
 Forms can be made draggable by applying the `DragTranslater` class of the `@rnacanvas/forms` package to them.
