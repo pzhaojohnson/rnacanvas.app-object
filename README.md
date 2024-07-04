@@ -25,14 +25,14 @@ var rnaCanvas = new RNAcanvas();
 
 ### Adding an RNAcanvas app object to the document
 
-It is important for the RNAcanvas app object to be added to the document body
+It is important that an RNAcanvas app object be added to the document of a webpage
 since much of the underlying functionality related to SVG drawing
-only works for elements that have been added to the document body.
+only works for elements that have been added to the document.
 
 ```javascript
+// can also be added to any container node
 rnaCanvas.appendTo(document.body);
 
 // remove the RNAcanvas app object from its parent container node
-// (has no effect if the RNAcanvas app object did not have a parent container node to begin with)
 rnaCanvas.remove();
 ```
