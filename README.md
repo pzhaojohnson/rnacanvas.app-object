@@ -133,7 +133,6 @@ could potentially be opened as a custom form in an RNAcanvas app instance.
 
 ```javascript
 var customForm = document.createElement('div');
-
 customForm.textContent = 'A custom form.';
 
 customForm.style.position = 'absolute';
