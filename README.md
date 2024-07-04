@@ -128,11 +128,24 @@ app.openForm(app.exportForm);
 ```
 
 In general, any element with absolute positioning
-(i.e., a `position` CSS style of `absolute`)
-could potentially be opened as a form in an RNAcanvas app instance.
+(i.e., having a `position` CSS style of `absolute`)
+could potentially be opened as a custom form in an RNAcanvas app instance.
 
-The `openForm` method accepts both DOM nodes of forms
-and wrapping objects that fulfill the below `Form` interface.
+```javascript
+var customForm = document.createElement('div');
+
+customForm.textContent = 'A custom form.';
+
+customForm.style.position = 'absolute';
+customForm.style.left = '50px';
+customForm.style.top = '50px';
+
+app.openForm(customForm);
+```
+
+Alternatively, a wrapping object can be opened as a form
+(i.e., input to the `openForm` method)
+so long as it fulfills the `Form` interface below.
 
 ```typescript
 interface Form {
@@ -143,4 +156,7 @@ interface Form {
 }
 ```
 
-Forms are closed by simply removing them from the document of the webpage.
+Forms are closed by simply removing them
+(i.e., by calling the `remove` method of their corresponding DOM node).
+
+Forms can be made draggable by applying the `DragTranslater` class of the `@rnacanvas/forms` package to them.
