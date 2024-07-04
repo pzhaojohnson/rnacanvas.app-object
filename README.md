@@ -37,7 +37,7 @@ rnaCanvas.appendTo(document.body);
 rnaCanvas.remove();
 ```
 
-### The DOM node of an RNAcanvas app instance
+### The DOM node reference
 
 The DOM node corresponding to an RNAcanvas app instance
 contains all of the elements comprising an RNAcanvas app instance
