@@ -114,3 +114,33 @@ app.drawingView.centerPoint; // { x: 557, y: 1825 }
 // (to fit the content of the drawing all on screen)
 app.drawingView.fitToContent();
 ```
+
+### Opening forms
+
+Forms can be opened using the `openForm` method.
+
+```javascript
+// for controlling the layout of bases in the drawing of the app
+app.openForm(app.basesLayoutForm);
+
+// for exporting the drawing (e.g., as an SVG image)
+app.openForm(app.exportForm);
+```
+
+In general, any element with absolute positioning
+(i.e., a `position` CSS style of `absolute`)
+could potentially be opened as a form in an RNAcanvas app instance.
+
+The `openForm` method accepts both DOM nodes of forms
+and wrapping objects that fulfill the below `Form` interface.
+
+```typescript
+interface Form {
+  /**
+   * Appends the form to the provided container node.
+   */
+  appendTo(container: Node): void;
+}
+```
+
+Forms are closed by simply removing them from the document of the webpage.
