@@ -47,7 +47,7 @@ The DOM node reference can be used to set certain styles of an RNAcanvas app ins
 (e.g., `width` and `height`).
 
 However, the internal contents and styling
-of the DOM node of an RNAcanvas app instance
+of the DOM node corresponding to an RNAcanvas app instance
 are not meant to be directly edited by outside code.
 
 ```javascript
@@ -59,7 +59,7 @@ rnaCanvas.domNode.style.height = '400px';
 
 ### The `style` property
 
-For convenience, a `style` property is also present
+For convenience, a `style` property is also provided
 that simply forwards to the `style` property of the DOM node
 corresponding to an RNAcanvas app instance.
 
