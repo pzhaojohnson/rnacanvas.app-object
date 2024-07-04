@@ -56,3 +56,14 @@ rnaCanvas.domNode;
 rnaCanvas.domNode.style.width = '600px';
 rnaCanvas.domNode.style.height = '400px';
 ```
+
+### The `style` property
+
+For convenience, a `style` property is also present
+that simply forwards to the `style` property of the DOM node
+corresponding to an RNAcanvas app instance.
+
+```javascript
+rnaCanvas.style.width = '600px';
+rnaCanvas.style.height = '750px';
+```
