@@ -160,6 +160,12 @@ app.selectedBases.include([...app.drawing.bases][25]); // true
 app.selectedBases.include([...app.drawing.bases][24]); // false
 ```
 
+The `selectAll` method can also be used to select all elements in the drawing of the app.
+
+```javascript
+app.selectAll();
+```
+
 ### Opening forms
 
 Forms can be opened using the `openForm` method.
