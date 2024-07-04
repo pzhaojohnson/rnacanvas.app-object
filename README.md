@@ -76,3 +76,18 @@ represents an SVG document that is a two-dimensional nucleic acid structure draw
 ```javascript
 app.drawing;
 ```
+
+### The user's view of the drawing
+
+The user's view of the drawing of the app is represented by the `drawingView` interface.
+
+```javascript
+app.drawingView;
+
+// the center point of the user's view of the drawing (in drawing coordinates)
+app.drawingView.centerPoint = { x: 557, y: 1825 };
+app.drawingView.centerPoint; // { x: 557, y: 1825 }
+
+// adjusts the scaling of the drawing and scrollbar positions
+app.drawingView.fitToContent();
+```
