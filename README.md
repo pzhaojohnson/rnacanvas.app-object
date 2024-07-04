@@ -67,3 +67,12 @@ corresponding to an RNAcanvas app instance.
 rnaCanvas.style.width = '600px';
 rnaCanvas.style.height = '750px';
 ```
+
+### The drawing of an app
+
+The drawing of an RNAcanvas app instance
+represents an SVG document that is a two-dimensional nucleic acid structure drawing.
+
+```javascript
+rnaCanvas.drawing;
+```
