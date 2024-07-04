@@ -88,6 +88,7 @@ app.drawingView;
 app.drawingView.centerPoint = { x: 557, y: 1825 };
 app.drawingView.centerPoint; // { x: 557, y: 1825 }
 
-// adjusts the scaling of the drawing and scrollbar positions to fit the content of the drawing
+// adjusts the scaling of the drawing and scrollbar positions
+// (to fit the content of the drawing all on screen)
 app.drawingView.fitToContent();
 ```
