@@ -23,7 +23,7 @@ import { RNAcanvas } from '@rnacanvas/app-object';
 var app = new RNAcanvas();
 ```
 
-### Adding an RNAcanvas app object to the document
+### Adding an RNAcanvas app instance to the document
 
 It is important that an RNAcanvas app object be added to the document of a webpage
 since much of the underlying functionality related to SVG drawing
@@ -68,13 +68,30 @@ app.style.width = '600px';
 app.style.height = '750px';
 ```
 
-### The drawing of an app
+### The drawing of the app
 
 The drawing of an RNAcanvas app instance
 represents an SVG document that is a two-dimensional nucleic acid structure drawing.
 
 ```javascript
 app.drawing;
+```
+
+### Drawing dot-bracket notation
+
+For convenience, structures expressed in dot-bracket notation
+can be drawn using the `drawDotBracket` method,
+which will append the specified structure to the drawing of the app.
+
+Note that this method will not adjust the padding of the drawing
+or the user's view of the drawing
+after drawing a structure expressed in dot-bracket notation.
+
+```javascript
+var seq = 'AGAGUAGCAUUCUGCUUUAGACUGUUAACUUUAUGAACCACGCGUGUCACGUGGGGAGAGUUAACAGCGCCC';
+var dotBracket = '(((((((....)))))))...(((((((((((.....(((((.......)))))..))))))))))).....';
+
+app.drawDotBracket(seq, dotBracket);
 ```
 
 ### The user's view of the drawing
