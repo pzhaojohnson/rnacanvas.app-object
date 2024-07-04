@@ -115,6 +115,29 @@ app.drawingView.centerPoint; // { x: 557, y: 1825 }
 app.drawingView.fitToContent();
 ```
 
+### The currently selected elements
+
+The `selectedSVGElements` property represents the set of currently selected SVG elements
+in the drawing of the app.
+
+```javascript
+app.selectedSVGElements.addAll([...app.drawing.secondaryBonds].slice(10, 20).map(sb => sb.domNode));
+
+[...app.selectedSVGElements].forEach(ele => {
+  ele.setAttribute('stroke', 'blue');
+  ele.setAttribute('stroke-width', '3');
+  ele.setAttribute('stroke-linecap', 'round');
+});
+
+app.selectedSVGElements.include([...app.drawing.secondaryBonds][10].domNode); // true
+
+app.selectedSVGElements.removeAll([...app.drawing.secondaryBonds].slice(5, 12).map(sb => sb.domNode));
+app.selectedSVGElements.include([...app.drawing.secondaryBonds][10].domNode); // false
+
+app.selectedSVGElements.clear();
+[...app.drawing.secondaryBonds].every(sb => !app.selectedSVGElements.include(sb.domNode)); // true
+```
+
 ### Opening forms
 
 Forms can be opened using the `openForm` method.
