@@ -13,5 +13,12 @@ npm install @rnacanvas/app-object
 Importing:
 
 ```javascript
+// the RNAcanvas app object constructor
 import { RNAcanvas } from '@rnacanvas/app-object';
+```
+
+Creating a new RNAcanvas app object:
+
+```javascript
+var app = new RNAcanvas();
 ```
