@@ -40,13 +40,14 @@ rnaCanvas.remove();
 ### The DOM node reference
 
 The DOM node corresponding to an RNAcanvas app instance
-contains all of the elements comprising an RNAcanvas app instance
+contains all of the elements that comprise an RNAcanvas app instance
 and can be accessed using the `domNode` property.
 
 The DOM node reference can be used to set certain styles of an RNAcanvas app instance
 (e.g., `width` and `height`).
 
-However, the internal contents of the DOM node of an RNAcanvas app instance
+However, the internal contents and styling
+of the DOM node of an RNAcanvas app instance
 are not meant to be directly edited by outside code.
 
 ```javascript
