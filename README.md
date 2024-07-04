@@ -128,7 +128,7 @@ app.openForm(app.exportForm);
 ```
 
 In general, any element with absolute positioning
-(i.e., having a `position` CSS style of `absolute`)
+(i.e., with a `position` CSS style of `absolute`)
 could potentially be opened as a custom form in an RNAcanvas app instance.
 
 ```javascript
@@ -155,7 +155,9 @@ interface Form {
 }
 ```
 
+Forms are positioned relative to the bounding box of the RNAcanvas app instance.
+
 Forms are closed by simply removing them
-(i.e., by calling the `remove` method of their corresponding DOM nodes).
+(i.e., by calling the `remove` method on their corresponding DOM nodes).
 
 Forms can be made draggable by applying the `DragTranslater` class of the `@rnacanvas/forms` package to them.
