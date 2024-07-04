@@ -138,6 +138,28 @@ app.selectedSVGElements.clear();
 [...app.drawing.secondaryBonds].every(sb => !app.selectedSVGElements.include(sb.domNode)); // true
 ```
 
+The currently selected SVG elements can also be listened to for when they change.
+
+```javascript
+var numSelectedSVGElements = [...app.selectedSVGElements].length;
+
+app.selectedSVGElements.addEventListener('change', () => numSelectedSVGElements = [...app.selectedSVGElements].length);
+```
+
+Similarly, the `selectedBases` property represents the currently selected set of bases
+in the drawing of the app.
+
+```javascript
+let numSelectedBases = [...app.selectedBases].length;
+app.selectedBases.addEventListener('change', () => numSelectedBases = [...app.selectedBases].length);
+
+app.selectedBases.addAll([...app.drawing.bases].slice(25, 50));
+numSelectedBases; // 25
+
+app.selectedBases.include([...app.drawing.bases][25]); // true
+app.selectedBases.include([...app.drawing.bases][24]); // false
+```
+
 ### Opening forms
 
 Forms can be opened using the `openForm` method.
