@@ -77,21 +77,26 @@ represents an SVG document that is a two-dimensional nucleic acid structure draw
 app.drawing;
 ```
 
-### Drawing dot-bracket notation
+### Drawing structures
 
 For convenience, structures expressed in dot-bracket notation
 can be drawn using the `drawDotBracket` method,
 which will append the specified structure to the drawing of the app.
 
-Note that this method will not adjust the padding of the drawing
-or the user's view of the drawing
-after drawing a structure expressed in dot-bracket notation.
+Note that this method alone will not adjust the padding of the drawing
+or the user's view of the drawing after a structure has been drawn.
 
 ```javascript
 var seq = 'AGAGUAGCAUUCUGCUUUAGACUGUUAACUUUAUGAACCACGCGUGUCACGUGGGGAGAGUUAACAGCGCCC';
 var dotBracket = '(((((((....)))))))...(((((((((((.....(((((.......)))))..))))))))))).....';
 
 app.drawDotBracket(seq, dotBracket);
+
+// ensure that the drawn structure fits inside the drawing
+// (and add some extra space around the drawn structure)
+app.drawing.setPadding(200);
+
+app.drawingView.fitToContent();
 ```
 
 ### The user's view of the drawing
