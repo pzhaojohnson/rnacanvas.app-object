@@ -150,7 +150,7 @@ so long as it fulfills the `Form` interface below.
 ```typescript
 interface Form {
   /**
-   * Appends the form to the provided container node.
+   * Appends the DOM node corresponding to the form to the provided container node.
    */
   appendTo(container: Node): void;
 }
