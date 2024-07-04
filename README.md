@@ -93,7 +93,7 @@ var dotBracket = '(((((((....)))))))...(((((((((((.....(((((.......)))))..))))))
 app.drawDotBracket(seq, dotBracket);
 
 // ensure that the drawn structure fits inside the drawing
-// (and add some extra space around the drawn structure)
+// (and include some extra space around the drawn structure)
 app.drawing.setPadding(200);
 
 app.drawingView.fitToContent();
