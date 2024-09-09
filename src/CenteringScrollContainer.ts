@@ -9,8 +9,12 @@ import { Scrollbars } from '@rnacanvas/scrollbars';
 export class CenteringScrollContainer {
   /**
    * The actual DOM node corresponding to the container.
+   *
+   * Can be moved around within the DOM tree,
+   * though its internal contents are not meant
+   * to be directly edited by outside code.
    */
-  private readonly domNode: HTMLDivElement;
+  readonly domNode: HTMLDivElement;
 
   /**
    * Is to hold the actual content of the container.
