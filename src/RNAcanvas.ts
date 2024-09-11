@@ -12,6 +12,8 @@ import { PinchToScaleFeature } from '@rnacanvas/draw.svg.interact';
 
 import { DotBracketDrawer } from '@rnacanvas/draw';
 
+import { SchemaDrawer } from '@rnacanvas/draw';
+
 import { EventfulSet } from '@rnacanvas/utilities';
 
 import { LiveSVGElementHighlightings } from '@rnacanvas/draw.svg.highlight';
@@ -89,6 +91,8 @@ export class RNAcanvas {
   private readonly pinchToScaleFeature: PinchToScaleFeature;
 
   private dotBracketDrawer: DotBracketDrawer;
+
+  #schemaDrawer: SchemaDrawer;
 
   /**
    * The set of SVG elements in the drawing of the app that are currently selected.
@@ -245,6 +249,8 @@ export class RNAcanvas {
 
     this.dotBracketDrawer = new DotBracketDrawer(this.drawing);
 
+    this.#schemaDrawer = new SchemaDrawer(this.drawing);
+
     this.toolbar = new Toolbar({
       layoutButton: { onClick: () => this.openForm(this.basesLayoutForm) },
       exportButton: { onClick: () => this.openForm(this.exportForm) },
@@ -335,6 +341,19 @@ export class RNAcanvas {
    */
   drawDotBracket(seq: string, dotBracket: string): void {
     this.dotBracketDrawer.draw(seq, dotBracket);
+  }
+
+  /**
+   * Draws the provided schema (on top of whatever is currently already drawn).
+   *
+   * See the R2DT RNA 2D JSON schema format for more information on schemas.
+   *
+   * This method might throw for invalid schemas,
+   * in which case the drawing of the app might get left in a partially drawn state
+   * (e.g., with only part of the schema having been drawn).
+   */
+  drawSchema(schema: Parameters<SchemaDrawer['draw']>[0]): void | never {
+    this.#schemaDrawer.draw(schema);
   }
 
   /**
