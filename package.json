@@ -1,6 +1,6 @@
 {
   "name": "@rnacanvas/app-object",
-  "version": "4.10.2",
+  "version": "5.0.0",
   "description": "The RNAcanvas app object",
   "repository": {
     "type": "git",
@@ -29,7 +29,7 @@
   "dependencies": {
     "@rnacanvas/base-pairs": "^2.1.0",
     "@rnacanvas/bases-layout": "^3.0.0",
-    "@rnacanvas/draw": "^5.0.1",
+    "@rnacanvas/draw": "^7.1.0",
     "@rnacanvas/draw.bonds": "^10.0.0",
     "@rnacanvas/draw.interact": "^2.0.0",
     "@rnacanvas/draw.svg.highlight": "^2.1.0",
