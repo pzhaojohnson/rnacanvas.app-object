@@ -28,7 +28,9 @@ export class CenteringScrollContainer {
 
   constructor() {
     this.domNode = document.createElement('div');
+
     this.domNode.style.overflow = 'auto';
+    this.domNode.style.scrollbarGutter = 'stable';
 
     let topRow = document.createElement('div');
     let middleRow = document.createElement('div');
