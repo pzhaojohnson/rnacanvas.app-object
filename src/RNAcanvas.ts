@@ -151,7 +151,7 @@ export class RNAcanvas {
     this.boundingBox.style.width = '100%';
     this.boundingBox.style.height = '100%';
 
-    this.boundingBox.style.overflow = 'auto';
+    this.boundingBox.style.overflow = 'hidden';
 
     // position all other elements of the app object relative to the bounding box
     this.boundingBox.style.position = 'relative';
