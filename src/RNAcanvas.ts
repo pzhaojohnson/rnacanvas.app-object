@@ -36,7 +36,7 @@ import { BasesLayoutForm } from '@rnacanvas/forms.bases-layout';
 
 import { ExportForm } from '@rnacanvas/forms.export';
 
-import { Toolbar, ToolbarRepositioner } from '@rnacanvas/toolbar';
+import { Toolbar, ToolbarToggle } from '@rnacanvas/toolbar';
 
 interface Form {
   /**
@@ -259,13 +259,13 @@ export class RNAcanvas {
     this.toolbar.appendTo(this.toolbarContainer);
     this.boundingBox.append(this.toolbarContainer);
 
-    let toolbarRepositioner = ToolbarRepositioner();
-    toolbarRepositioner.addEventListener('click', () => this.toolbar.reposition());
-    toolbarRepositioner.title = 'Reposition the toolbar.';
+    let toolbarToggle = ToolbarToggle();
+    toolbarToggle.addEventListener('click', () => this.toolbar.reposition());
+    toolbarToggle.title = 'Reposition the toolbar.';
 
-    let toolbarRepositionerContainer = document.createElement('div');
-    toolbarRepositionerContainer.append(toolbarRepositioner);
-    this.boundingBox.append(toolbarRepositionerContainer);
+    let toolbarToggleContainer = document.createElement('div');
+    toolbarToggleContainer.append(toolbarToggle);
+    this.boundingBox.append(toolbarToggleContainer);
   }
 
   /**
