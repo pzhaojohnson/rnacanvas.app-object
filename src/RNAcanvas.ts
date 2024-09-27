@@ -259,12 +259,10 @@ export class RNAcanvas {
     this.toolbar.appendTo(this.toolbarContainer);
     this.boundingBox.append(this.toolbarContainer);
 
-    let toolbarToggle = ToolbarToggle();
-    toolbarToggle.addEventListener('click', () => this.toolbar.reposition());
-    toolbarToggle.title = 'Reposition the toolbar.';
+    let toolbarToggle = new ToolbarToggle({ toolbar: this.toolbar });
 
     let toolbarToggleContainer = document.createElement('div');
-    toolbarToggleContainer.append(toolbarToggle);
+    toolbarToggle.appendTo(toolbarToggleContainer);
     this.boundingBox.append(toolbarToggleContainer);
   }
 
