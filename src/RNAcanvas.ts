@@ -260,9 +260,12 @@ export class RNAcanvas {
     this.boundingBox.append(this.toolbarContainer);
 
     let toolbarToggle = new ToolbarToggle({ toolbar: this.toolbar });
+    toolbarToggle.domNode.style.position = 'absolute';
+    toolbarToggle.domNode.style.bottom = '22.5px';
+    toolbarToggle.domNode.style.left = '15px';
 
     let toolbarToggleContainer = document.createElement('div');
-    toolbarToggle.appendTo(toolbarToggleContainer);
+    toolbarToggleContainer.append(toolbarToggle.domNode);
     this.boundingBox.append(toolbarToggleContainer);
   }
 
