@@ -38,6 +38,8 @@ import { ExportForm } from '@rnacanvas/forms.export';
 
 import { Toolbar, ToolbarToggle } from '@rnacanvas/toolbar';
 
+import $ from 'jquery';
+
 interface Form {
   /**
    * Appends the form to the provided container node.
@@ -260,9 +262,7 @@ export class RNAcanvas {
     this.boundingBox.append(this.toolbarContainer);
 
     let toolbarToggle = new ToolbarToggle({ toolbar: this.toolbar });
-    toolbarToggle.domNode.style.position = 'absolute';
-    toolbarToggle.domNode.style.bottom = '22.5px';
-    toolbarToggle.domNode.style.left = '15px';
+    $(toolbarToggle.domNode).css({ position: 'absolute', bottom: '22.5px', left: '15px' });
 
     let toolbarToggleContainer = document.createElement('div');
     toolbarToggleContainer.append(toolbarToggle.domNode);
