@@ -8,6 +8,8 @@ import { CenteringScrollContainer } from './CenteringScrollContainer';
 
 import { DrawingView } from './DrawingView';
 
+import { isBeingInteractedWith } from '@rnacanvas/utilities';
+
 import { PinchToScaleFeature } from '@rnacanvas/draw.svg.interact';
 
 import { DotBracketDrawer } from '@rnacanvas/draw';
@@ -355,6 +357,14 @@ export class RNAcanvas {
    */
   drawSchema(schema: Parameters<SchemaDrawer['draw']>[0]): void | never {
     this.#schemaDrawer.draw(schema);
+  }
+
+  /**
+   * Returns true if the DOM node corresponding to the app object
+   * is currently being interacted with by the user.
+   */
+  isBeingInteractedWith(): boolean {
+    return isBeingInteractedWith(this.domNode);
   }
 
   /**
