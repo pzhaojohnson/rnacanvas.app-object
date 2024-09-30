@@ -10,6 +10,8 @@ import { DrawingView } from './DrawingView';
 
 import { isBeingInteractedWith } from '@rnacanvas/utilities';
 
+import { KeyBinding } from '@rnacanvas/utilities';
+
 import { PinchToScaleFeature } from '@rnacanvas/draw.svg.interact';
 
 import { DotBracketDrawer } from '@rnacanvas/draw';
@@ -265,6 +267,7 @@ export class RNAcanvas {
 
     let toolbarToggle = new ToolbarToggle({ toolbar: this.toolbar });
     $(toolbarToggle.domNode).css({ position: 'absolute', bottom: '22.5px', left: '15px' });
+    new KeyBinding('T', () => toolbarToggle.press());
 
     let toolbarToggleContainer = document.createElement('div');
     toolbarToggleContainer.append(toolbarToggle.domNode);
