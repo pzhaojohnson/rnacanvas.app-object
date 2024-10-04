@@ -373,6 +373,24 @@ export class RNAcanvas {
   }
 
   /**
+   * The currently selected SVG element.
+   *
+   * This getter will throw if no SVG elements or more than one SVG element
+   * are currently selected.
+   */
+  get selectedSVGElement(): SVGGraphicsElement | never {
+    let selectedSVGElements = [...this.selectedSVGElements];
+
+    if (selectedSVGElements.length == 1) {
+      return selectedSVGElements[0];
+    } else if (selectedSVGElements.length > 1) {
+      throw new Error('More than one SVG element is selected.');
+    } else {
+      throw new Error('No SVG elements are selected.');
+    }
+  }
+
+  /**
    * Selects all SVG (graphics) elements in the drawing of the app.
    */
   selectAll(): void {
@@ -380,9 +398,9 @@ export class RNAcanvas {
   }
 
   /**
-   * Returns the currently selected base.
+   * The currently selected base.
    *
-   * Throws if no bases or more than one base are currently selected.
+   * This getter will throw if no bases or more than one base are currently selected.
    */
   get selectedBase(): Nucleobase | never {
     let selectedBases = [...this.selectedBases];
