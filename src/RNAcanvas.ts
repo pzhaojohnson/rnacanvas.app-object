@@ -380,6 +380,23 @@ export class RNAcanvas {
   }
 
   /**
+   * Returns the currently selected base.
+   *
+   * Throws if no bases or more than one base are currently selected.
+   */
+  get selectedBase(): Nucleobase | never {
+    let selectedBases = [...this.selectedBases];
+
+    if (selectedBases.length == 1) {
+      return selectedBases[0];
+    } else if (selectedBases.length > 1) {
+      throw new Error('More than one base is selected.');
+    } else {
+      throw new Error('No bases are selected.');
+    }
+  }
+
+  /**
    * Opens the provided form simply by adding it within the DOM structure of the RNAcanvas app.
    *
    * Forms are to be closed simply by removing them from the DOM structure of the RNAcanvas app
