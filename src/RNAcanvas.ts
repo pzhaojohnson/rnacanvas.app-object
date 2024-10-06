@@ -140,7 +140,7 @@ export class RNAcanvas {
 
   readonly exportForm: ExportForm;
 
-  private readonly toolbar: Toolbar;
+  private readonly toolbar;
 
   private readonly toolbarContainer = document.createElement('div');
 
@@ -258,8 +258,13 @@ export class RNAcanvas {
     this.#schemaDrawer = new SchemaDrawer(this.drawing);
 
     this.toolbar = new Toolbar({
-      layoutButton: { onClick: () => this.openForm(this.layoutForm) },
-      exportButton: { onClick: () => this.openForm(this.exportForm) },
+      drawing: this.drawing,
+      selectedBases: this.selectedBases,
+      forms: {
+        'layout': this.layoutForm,
+        'export': this.exportForm,
+      },
+      openForm: (form: Form) => this.openForm(form),
     });
 
     this.toolbar.appendTo(this.toolbarContainer);
