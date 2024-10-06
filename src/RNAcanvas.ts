@@ -36,7 +36,7 @@ import { DraggingTool } from '@rnacanvas/draw.interact';
 
 import { FormsFronter } from './FormsFronter';
 
-import { BasesLayoutForm } from '@rnacanvas/forms.bases-layout';
+import { BasesLayoutForm as LayoutForm } from '@rnacanvas/forms.bases-layout';
 
 import { ExportForm } from '@rnacanvas/forms.export';
 
@@ -136,7 +136,7 @@ export class RNAcanvas {
 
   #formsFronter: FormsFronter;
 
-  readonly basesLayoutForm: BasesLayoutForm;
+  readonly layoutForm: LayoutForm;
 
   readonly exportForm: ExportForm;
 
@@ -246,7 +246,7 @@ export class RNAcanvas {
 
     this.#formsFronter = new FormsFronter(this.formsContainer);
 
-    this.basesLayoutForm = new BasesLayoutForm(this.drawing, this.selectedBases, {
+    this.layoutForm = new LayoutForm(this.drawing, this.selectedBases, {
       beforeMovingBases: () => this.hideOverlaidDrawing(),
       afterMovingBases: () => this.unhideOverlaidDrawing(),
     });
@@ -258,7 +258,7 @@ export class RNAcanvas {
     this.#schemaDrawer = new SchemaDrawer(this.drawing);
 
     this.toolbar = new Toolbar({
-      layoutButton: { onClick: () => this.openForm(this.basesLayoutForm) },
+      layoutButton: { onClick: () => this.openForm(this.layoutForm) },
       exportButton: { onClick: () => this.openForm(this.exportForm) },
     });
 
