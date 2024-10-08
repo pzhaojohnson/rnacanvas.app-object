@@ -1,6 +1,6 @@
 {
   "name": "@rnacanvas/app-object",
-  "version": "8.0.0",
+  "version": "9.0.0",
   "description": "The RNAcanvas app object",
   "repository": {
     "type": "git",
@@ -29,12 +29,12 @@
   "dependencies": {
     "@rnacanvas/base-pairs": "^2.1.0",
     "@rnacanvas/bases-layout": "^3.0.0",
-    "@rnacanvas/draw": "^9.0.1",
+    "@rnacanvas/draw": "^10.0.0",
     "@rnacanvas/draw.bonds": "^10.0.0",
     "@rnacanvas/draw.interact": "^2.0.0",
     "@rnacanvas/draw.svg.highlight": "^2.1.0",
     "@rnacanvas/draw.svg.interact": "^2.0.0",
-    "@rnacanvas/forms.bases-layout": "^3.1.0",
+    "@rnacanvas/forms.bases-layout": "^4.0.0",
     "@rnacanvas/forms.export": "^1.1.0",
     "@rnacanvas/scrollbars": "^1.1.0",
     "@rnacanvas/toolbar": "^10.0.1",
