@@ -260,6 +260,8 @@ export class RNAcanvas {
     this.toolbar = new Toolbar({
       drawing: this.drawing,
       selectedBases: this.selectedBases,
+      beforeDragging: () => this.hideOverlaidDrawing(),
+      afterDragging: () => this.unhideOverlaidDrawing(),
       forms: {
         'layout': this.layoutForm,
         'export': this.exportForm,
