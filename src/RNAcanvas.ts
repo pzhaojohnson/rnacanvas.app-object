@@ -211,6 +211,8 @@ export class RNAcanvas {
     this.pinchToScaleFeature.horizontalScrollbar = this.horizontalDrawingScrollbar;
     this.pinchToScaleFeature.verticalScrollbar = this.verticalDrawingScrollbar;
     this.pinchToScaleFeature.interactionScope = this.domNode;
+    this.pinchToScaleFeature.beforeScaling = () => this.hideOverlaidDrawing();
+    this.pinchToScaleFeature.afterScaling = () => this.unhideOverlaidDrawing();
 
     this.selectedSVGElementHighlightings = new LiveSVGElementHighlightings(this.selectedSVGElements, this.drawing.domNode);
     this.selectedSVGElementHighlightings.appendTo(this.overlaidDrawing.domNode);
