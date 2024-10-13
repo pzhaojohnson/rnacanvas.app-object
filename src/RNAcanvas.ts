@@ -279,6 +279,7 @@ export class RNAcanvas {
 
     let toolbarToggleKeyBinding = new KeyBinding('T', () => toolbarToggle.press());
     toolbarToggleKeyBinding.scope = this.domNode;
+    toolbarToggle.boundKey = toolbarToggleKeyBinding.key;
 
     let toolbarToggleContainer = document.createElement('div');
     toolbarToggleContainer.append(toolbarToggle.domNode);
