@@ -275,6 +275,14 @@ export class RNAcanvas {
     selectInterveningKeyBinding.scope = this.domNode;
     this.toolbar.buttons['select-intervening'].boundKey = selectInterveningKeyBinding.key;
 
+    let editLayoutKeyBinding = new KeyBinding('L', () => this.toolbar.buttons['layout'].press());
+    editLayoutKeyBinding.scope = this.domNode;
+    this.toolbar.buttons['layout'].boundKey = editLayoutKeyBinding.key;
+
+    let exportKeyBinding = new KeyBinding('E', () => this.toolbar.buttons['export'].press());
+    exportKeyBinding.scope = this.domNode;
+    this.toolbar.buttons['export'].boundKey = exportKeyBinding.key;
+
     this.toolbar.appendTo(this.toolbarContainer);
     this.boundingBox.append(this.toolbarContainer);
 
