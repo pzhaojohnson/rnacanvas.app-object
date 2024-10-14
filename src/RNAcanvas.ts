@@ -271,6 +271,10 @@ export class RNAcanvas {
       openForm: (form: Form) => this.openForm(form),
     });
 
+    let selectInterveningKeyBinding = new KeyBinding('I', () => this.toolbar.buttons['select-intervening'].press());
+    selectInterveningKeyBinding.scope = this.domNode;
+    this.toolbar.buttons['select-intervening'].boundKey = selectInterveningKeyBinding.key;
+
     this.toolbar.appendTo(this.toolbarContainer);
     this.boundingBox.append(this.toolbarContainer);
 
