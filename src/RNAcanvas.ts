@@ -173,13 +173,6 @@ export class RNAcanvas {
     this.drawingScrollContainer.append(this.stackedDrawingsContainer);
 
     this.drawing = new Drawing();
-    this.drawing.domNode.style.backgroundColor = 'white';
-
-    // prevent highlighting of text when dragging drawing elements
-    this.drawing.domNode.style.userSelect = 'none';
-    this.drawing.domNode.style.webkitUserSelect = 'none';
-
-    this.drawing.domNode.style.cursor = 'default';
 
     this.invertedPrimaryBondsHider = new InvertedStraightBondsHider(
       { [Symbol.iterator]: () => [...this.drawing.primaryBonds].values() },
