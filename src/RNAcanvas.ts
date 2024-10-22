@@ -455,4 +455,16 @@ export class RNAcanvas {
   get style() {
     return this.domNode.style;
   }
+
+  /**
+   * Returns the serialized form of an app instance
+   * (e.g., which can be saved in a file).
+   *
+   * Throws if unable to properly serialize the app instance.
+   */
+  serialized() {
+    return {
+      drawing: this.drawing.serialized(),
+    };
+  }
 }
