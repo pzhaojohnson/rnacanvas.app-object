@@ -44,6 +44,8 @@ import { Toolbar, ToolbarToggle } from '@rnacanvas/toolbar';
 
 import $ from 'jquery';
 
+import { isNonNullObject } from '@rnacanvas/value-check';
+
 interface Form {
   /**
    * Appends the form to the provided container node.
@@ -466,5 +468,25 @@ export class RNAcanvas {
     return {
       drawing: this.drawing.serialized(),
     };
+  }
+
+  /**
+   * Restores a previous state of the app.
+   *
+   * Throws if unable to do so.
+   *
+   * This method is atomic in that
+   * if it is unable to restore a previous app state
+   * then the current state of the app will be left unchanged.
+   *
+   * @param previousState The serialized form of an app instance.
+   */
+  restore(previousState: unknown): void | never {
+    if (!isNonNullObject(previousState)) { throw new Error('Previous app state must be an object.'); }
+
+    if (!previousState.drawing) { throw new Error('Previous app state is missing a drawing.'); }
+
+    // can throw (in an atomic way)
+    this.drawing.restore(previousState.drawing);
   }
 }

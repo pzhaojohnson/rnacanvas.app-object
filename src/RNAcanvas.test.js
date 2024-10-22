@@ -37,6 +37,15 @@ if (!SVGElement.prototype.getPointAtLength) {
   }
 });
 
+expect(globalThis.SVGTextElement).toBeFalsy();
+globalThis.SVGTextElement = SVGElement;
+
+expect(globalThis.SVGCircleElement).toBeFalsy();
+globalThis.SVGCircleElement = SVGElement;
+
+expect(globalThis.SVGLineElement).toBeFalsy();
+globalThis.SVGLineElement = SVGElement;
+
 describe('RNAcanvas class', () => {
   test('appendTo method', () => {
     let rnaCanvas = new RNAcanvas();
@@ -84,5 +93,32 @@ describe('RNAcanvas class', () => {
     expect(serializedDrawing).not.toStrictEqual({});
 
     expect(app.serialized()).toStrictEqual({ drawing: serializedDrawing });
+  });
+
+  test('`restore()`', () => {
+    let app = new RNAcanvas();
+
+    // add some contents to the drawing
+    for (let i = 0; i < 10; i++) { app.drawing.addBase(`${i}`); }
+
+    let previousState = app.serialized();
+
+    // change the drawing
+    [...app.drawing.bases][3].remove();
+
+    expect(app.serialized()).not.toStrictEqual(previousState);
+
+    app.restore(previousState);
+    expect(app.serialized()).toStrictEqual(previousState);
+
+    // make invalid
+    let invalidState = app.serialized();
+    invalidState.drawing.bases[2].id = '';
+
+    expect(() => app.restore(invalidState)).toThrow();
+
+    // app state was not changed
+    expect(app.serialized()).toStrictEqual(previousState);
+    expect(app.serialized()).not.toStrictEqual(invalidState);
   });
 });
