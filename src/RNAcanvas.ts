@@ -44,6 +44,8 @@ import { Toolbar, ToolbarToggle } from '@rnacanvas/toolbar';
 
 import $ from 'jquery';
 
+import { FiniteStack } from '@rnacanvas/utilities';
+
 import { isNonNullObject } from '@rnacanvas/value-check';
 
 interface Form {
@@ -145,6 +147,10 @@ export class RNAcanvas {
   private readonly toolbar;
 
   private readonly toolbarContainer = document.createElement('div');
+
+  #undoStack: FiniteStack<ReturnType<InstanceType<typeof RNAcanvas>['serialized']>> = new FiniteStack(50);
+
+  #redoStack: FiniteStack<ReturnType<InstanceType<typeof RNAcanvas>['serialized']>> = new FiniteStack(50);
 
   constructor() {
     this.domNode = document.createElement('div');
@@ -488,5 +494,57 @@ export class RNAcanvas {
 
     // can throw (in an atomic way)
     this.drawing.restore(previousState.drawing);
+  }
+
+  /**
+   * Pushes the current state of the app onto the top of the undo stack.
+   *
+   * Throws if unable to do so
+   * (e.g., the app instance is unable to be properly serialized).
+   */
+  pushUndoStack(): void | never {
+    this.#undoStack.push(this.serialized());
+  }
+
+  canUndo(): boolean {
+    return this.#undoStack.size > 0;
+  }
+
+  /**
+   * Throws if the undo stack is empty,
+   * if the current state of the app cannot be properly serialized
+   * (so that it can be pushed onto the redo stack),
+   * or if the app state at the top of the undo stack cannot be restored.
+   *
+   * This method is atomic in that when it throws
+   * the current state of the app will be left unchanged.
+   */
+  undo(): void | never {
+    let currentState = this.serialized();
+
+    this.restore(this.#undoStack.pop());
+
+    this.#redoStack.push(currentState);
+  }
+
+  canRedo(): boolean {
+    return this.#redoStack.size > 0;
+  }
+
+  /**
+   * Throws if the redo stack is empty,
+   * if the current state of the app cannot be properly serialized
+   * (so that it can be pushed onto the undo stack),
+   * or if the app state at the top of the redo stack cannot be restored.
+   *
+   * This method is atomic in that when it throws
+   * the current state of the app will be left unchanged.
+   */
+  redo(): void | never {
+    let currentState = this.serialized();
+
+    this.restore(this.#redoStack.pop());
+
+    this.#undoStack.push(currentState);
   }
 }

@@ -121,4 +121,106 @@ describe('RNAcanvas class', () => {
     expect(app.serialized()).toStrictEqual(previousState);
     expect(app.serialized()).not.toStrictEqual(invalidState);
   });
+
+  test('`pushUndoStack()`', () => {
+    let app = new RNAcanvas();
+    expect(app.canUndo()).toBeFalsy();
+
+    app.pushUndoStack();
+    expect(app.canUndo()).toBeTruthy();
+
+    app.undo();
+    expect(app.canUndo()).toBeFalsy();
+
+    // make the drawing unserializable
+    for (let i = 0; i < 3; i++) { app.drawing.addBase('A'); }
+    [...app.drawing.bases][1].domNode.id = '';
+
+    expect(() => app.pushUndoStack()).toThrow();
+
+    // nothing got pushed onto the undo stack
+    expect(app.canUndo()).toBeFalsy();
+  });
+
+  test('`canUndo()`', () => {
+    let app = new RNAcanvas();
+    expect(app.canUndo()).toBe(false);
+
+    app.pushUndoStack();
+    expect(app.canUndo()).toBe(true);
+
+    app.undo();
+    expect(app.canUndo()).toBe(false);
+  });
+
+  test('`undo()`', () => {
+    let app = new RNAcanvas();
+
+    // make the drawing unique
+    [...'auchuagfieufiw'].forEach(c => app.drawing.addBase(c));
+
+    let state1 = app.serialized();
+    app.pushUndoStack();
+
+    // edit the drawing again
+    [...'71263871'].forEach(c => app.drawing.addBase(c));
+
+    let state2 = app.serialized();
+    expect(state2).not.toEqual(state1);
+
+    app.undo();
+    expect(app.serialized()).toStrictEqual(state1);
+
+    // undoing should push the redo stack
+    app.redo();
+    expect(app.serialized()).toStrictEqual(state2);
+
+    // empty the undo stack
+    app.undo();
+    expect(() => app.undo()).toThrow();
+  });
+
+  test('`canRedo()`', () => {
+    let app = new RNAcanvas();
+    expect(app.canRedo()).toBe(false);
+
+    app.pushUndoStack();
+    expect(app.canRedo()).toBe(false);
+
+    app.undo();
+    expect(app.canRedo()).toBe(true);
+
+    app.redo();
+    expect(app.canRedo()).toBe(false);
+  });
+
+  test('`redo()`', () => {
+    let app = new RNAcanvas();
+
+    // make the drawing unique
+    [...'acguahaisuhdfiuhwef'].forEach(c => app.drawing.addBase(c));
+
+    let state1 = app.serialized();
+    app.pushUndoStack();
+
+    // edit the drawing again
+    [...'AGCUGAUCC'].forEach(c => app.drawing.addBase(c));
+
+    let state2 = app.serialized();
+    expect(state2).not.toEqual(state1);
+
+    app.undo();
+    expect(app.serialized()).toStrictEqual(state1);
+
+    app.redo();
+    expect(app.serialized()).toStrictEqual(state2);
+
+    // redoing should push the undo stack
+    app.undo();
+    expect(app.serialized()).toStrictEqual(state1);
+
+    // empty the redo stack
+    app.redo();
+    expect(() => app.redo()).toThrow();
+  });
 });
