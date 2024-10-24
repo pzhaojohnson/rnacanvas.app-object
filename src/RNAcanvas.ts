@@ -265,6 +265,10 @@ export class RNAcanvas {
       selectedBases: this.selectedBases,
       beforeDragging: () => this.hideOverlaidDrawing(),
       afterDragging: () => this.unhideOverlaidDrawing(),
+      undo: () => this.undo(),
+      redo: () => this.redo(),
+      canUndo: () => this.canUndo(),
+      canRedo: () => this.canRedo(),
       forms: {
         'layout': this.layoutForm,
         'export': this.exportForm,
