@@ -182,6 +182,10 @@ export class RNAcanvas {
 
     this.drawing = new Drawing();
 
+    $(this.drawing.domNode).css({ backgroundColor: 'white' });
+    $(this.drawing.domNode).css({ userSelect: 'none', webkitUserSelect: 'none' });
+    $(this.drawing.domNode).css({ cursor: 'default' });
+
     this.invertedPrimaryBondsHider = new InvertedStraightBondsHider(
       { [Symbol.iterator]: () => [...this.drawing.primaryBonds].values() },
       this.drawing.domNode,
