@@ -535,6 +535,17 @@ export class RNAcanvas {
     this.#redoStack.push(currentState);
   }
 
+  /**
+   * The undo stack interface.
+   */
+  get undoStack() {
+    return {
+      isEmpty: () => this.#undoStack.isEmpty(),
+      addEventListener: (name: 'change', listener: () => void) => this.#undoStack.addEventListener(name, listener),
+      removeEventListener: (name: 'change', listener: () => void) => this.#undoStack.removeEventListener(name, listener),
+    };
+  }
+
   canRedo(): boolean {
     return this.#redoStack.size > 0;
   }
@@ -554,5 +565,16 @@ export class RNAcanvas {
     this.restore(this.#redoStack.pop());
 
     this.#undoStack.push(currentState);
+  }
+
+  /**
+   * The redo stack interface.
+   */
+  get redoStack() {
+    return {
+      isEmpty: () => this.#redoStack.isEmpty(),
+      addEventListener: (name: 'change', listener: () => void) => this.#redoStack.addEventListener(name, listener),
+      removeEventListener: (name: 'change', listener: () => void) => this.#redoStack.removeEventListener(name, listener),
+    };
   }
 }

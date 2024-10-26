@@ -180,6 +180,40 @@ describe('RNAcanvas class', () => {
     expect(() => app.undo()).toThrow();
   });
 
+  test('`get undoStack()`', () => {
+    let app = new RNAcanvas();
+    expect(app.undoStack.isEmpty()).toBe(true);
+
+    let listeners = [1, 2, 3].map(() => jest.fn());
+    listeners.forEach(li => app.undoStack.addEventListener('change', li));
+
+    app.pushUndoStack();
+
+    expect(app.undoStack.isEmpty()).toBe(false);
+    listeners.forEach(li => expect(li).toHaveBeenCalledTimes(1));
+
+    // edit the drawing
+    [...'agcuagcuagc'].forEach(c => app.drawing.addBase(c));
+
+    app.undo();
+
+    expect(app.undoStack.isEmpty()).toBe(true);
+    listeners.forEach(li => expect(li).toHaveBeenCalledTimes(2));
+
+    app.redo();
+
+    expect(app.undoStack.isEmpty()).toBe(false);
+    listeners.forEach(li => expect(li).toHaveBeenCalledTimes(3));
+
+    // should not call listeners anymore
+    listeners.forEach(li => app.undoStack.removeEventListener('change', li));
+
+    app.undo();
+
+    expect(app.undoStack.isEmpty()).toBe(true);
+    listeners.forEach(li => expect(li).toHaveBeenCalledTimes(3));
+  });
+
   test('`canRedo()`', () => {
     let app = new RNAcanvas();
     expect(app.canRedo()).toBe(false);
@@ -222,5 +256,39 @@ describe('RNAcanvas class', () => {
     // empty the redo stack
     app.redo();
     expect(() => app.redo()).toThrow();
+  });
+
+  test('`get redoStack()`', () => {
+    let app = new RNAcanvas();
+    expect(app.redoStack.isEmpty()).toBe(true);
+
+    let listeners = [1, 2, 3].map(() => jest.fn());
+    listeners.forEach(li => app.redoStack.addEventListener('change', li));
+
+    app.pushUndoStack();
+
+    expect(app.redoStack.isEmpty()).toBe(true);
+    listeners.forEach(li => expect(li).toHaveBeenCalledTimes(0));
+
+    // edit the drawing
+    [...'agcuagcuagc'].forEach(c => app.drawing.addBase(c));
+
+    app.undo();
+
+    expect(app.redoStack.isEmpty()).toBe(false);
+    listeners.forEach(li => expect(li).toHaveBeenCalledTimes(1));
+
+    app.redo();
+
+    expect(app.redoStack.isEmpty()).toBe(true);
+    listeners.forEach(li => expect(li).toHaveBeenCalledTimes(2));
+
+    // should not call listeners anymore
+    listeners.forEach(li => app.redoStack.removeEventListener('change', li));
+
+    app.undo();
+
+    expect(app.redoStack.isEmpty()).toBe(false);
+    listeners.forEach(li => expect(li).toHaveBeenCalledTimes(2));
   });
 });
