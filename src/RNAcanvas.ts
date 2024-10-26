@@ -243,8 +243,8 @@ export class RNAcanvas {
         bases: this.selectedBases,
       },
       {
-        beforeDragging: () => this.hideOverlaidDrawing(),
-        afterDragging: () => this.unhideOverlaidDrawing(),
+        beforeDragging: () => this.beforeDragging(),
+        afterDragging: () => this.afterDragging(),
       },
     );
 
@@ -254,8 +254,8 @@ export class RNAcanvas {
     this.#formsFronter = new FormsFronter(this.formsContainer);
 
     this.layoutForm = new LayoutForm(this.drawing, this.selectedBases, {
-      beforeMovingBases: () => this.hideOverlaidDrawing(),
-      afterMovingBases: () => this.unhideOverlaidDrawing(),
+      beforeMovingBases: () => this.beforeDragging(),
+      afterMovingBases: () => this.afterDragging(),
     });
 
     this.exportForm = new ExportForm({ drawing: this.drawing });
@@ -267,8 +267,8 @@ export class RNAcanvas {
     this.toolbar = new Toolbar({
       drawing: this.drawing,
       selectedBases: this.selectedBases,
-      beforeDragging: () => this.hideOverlaidDrawing(),
-      afterDragging: () => this.unhideOverlaidDrawing(),
+      beforeDragging: () => this.beforeDragging(),
+      afterDragging: () => this.afterDragging(),
       undo: () => this.undo(),
       redo: () => this.redo(),
       undoStack: this.undoStack,
@@ -576,5 +576,26 @@ export class RNAcanvas {
       addEventListener: (name: 'change', listener: () => void) => this.#redoStack.addEventListener(name, listener),
       removeEventListener: (name: 'change', listener: () => void) => this.#redoStack.removeEventListener(name, listener),
     };
+  }
+
+  beforeEdit() {
+    // don't let this disrupt editing (even if it throws)
+    try {
+      this.pushUndoStack();
+    } catch (error: unknown) {
+      console.warn(error);
+    }
+  }
+
+  afterEdit() {}
+
+  beforeDragging() {
+    this.beforeEdit();
+
+    this.hideOverlaidDrawing();
+  }
+
+  afterDragging() {
+    this.unhideOverlaidDrawing();
   }
 }
