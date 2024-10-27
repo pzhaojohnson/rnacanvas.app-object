@@ -481,6 +481,7 @@ export class RNAcanvas {
   serialized() {
     return {
       drawing: this.drawing.serialized(),
+      drawingView: this.drawingView.serialized(),
     };
   }
 
@@ -502,6 +503,10 @@ export class RNAcanvas {
 
     // can throw (in an atomic way)
     this.drawing.restore(previousState.drawing);
+
+    if (previousState.drawingView) {
+      try { this.drawingView.restore(previousState.drawingView); } catch (error) { console.warn(error); }
+    }
   }
 
   /**

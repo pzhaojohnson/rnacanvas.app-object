@@ -95,4 +95,40 @@ describe('DrawingView class', () => {
       expect(verticalScrollbar.thumb.centerY).toBeCloseTo((0.9 * 1973 / 2210) * ((124 + (2210 / 2)) - 62.9));
     });
   });
+
+  test('`serialized()`', () => {
+    let targetDrawing = { minX: -55, minY: 502, horizontalScaling: 2.8, verticalScaling: 1.5 };
+
+    let horizontalScrollbar = { thumb: { centerX: 0 } };
+    let verticalScrollbar = { thumb: { centerY: 0 } };
+
+    let drawingView = new DrawingView(targetDrawing, horizontalScrollbar, verticalScrollbar);
+
+    drawingView.centerPoint = { x: 47, y: 105 };
+
+    expect(drawingView.serialized().centerPoint.x).toBeCloseTo(47);
+    expect(drawingView.serialized().centerPoint.y).toBeCloseTo(105);
+  });
+
+  test('`restore()`', () => {
+    let targetDrawing = { minX: -55, minY: 502, horizontalScaling: 2.8, verticalScaling: 1.5 };
+
+    let horizontalScrollbar = { thumb: { centerX: 0 } };
+    let verticalScrollbar = { thumb: { centerY: 0 } };
+
+    let drawingView = new DrawingView(targetDrawing, horizontalScrollbar, verticalScrollbar);
+
+    drawingView.centerPoint = { x: 0, y: 0 };
+
+    drawingView.restore({ centerPoint: { x: 128, y: 73 } });
+
+    expect(drawingView.centerPoint.x).toBeCloseTo(128);
+    expect(drawingView.centerPoint.y).toBeCloseTo(73);
+
+    drawingView.restore({ centerPoint: { x: 10, y: NaN } });
+
+    // nonfinite center points are ignored
+    expect(drawingView.centerPoint.x).toBeCloseTo(128);
+    expect(drawingView.centerPoint.y).toBeCloseTo(73);
+  });
 });

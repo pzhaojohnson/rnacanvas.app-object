@@ -2,10 +2,9 @@ import type { Drawing } from '@rnacanvas/draw';
 
 import type { HorizontalScrollbar, VerticalScrollbar } from '@rnacanvas/scrollbars';
 
-type Point = {
-  x: number;
-  y: number;
-};
+import { Point, isFinitePoint } from '@rnacanvas/points';
+
+import { isNonNullObject } from '@rnacanvas/value-check';
 
 /**
  * Represents the user's view of a target drawing.
@@ -72,5 +71,25 @@ export class DrawingView {
       x: contentBBox.x + (contentBBox.width / 2),
       y: contentBBox.y + (contentBBox.height / 2),
     };
+  }
+
+  /**
+   * Returns the serialized form of the drawing view.
+   */
+  serialized() {
+    return {
+      centerPoint: this.centerPoint,
+    };
+  }
+
+  /**
+   * Restores a previous state of the drawing view.
+   */
+  restore(previousState: unknown): void | never {
+    if (!isNonNullObject(previousState)) { throw new Error('Previous state must be an object.'); }
+
+    if (isFinitePoint(previousState.centerPoint)) {
+      this.centerPoint = previousState.centerPoint;
+    }
   }
 }

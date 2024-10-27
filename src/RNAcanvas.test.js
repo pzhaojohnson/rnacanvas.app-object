@@ -88,11 +88,14 @@ describe('RNAcanvas class', () => {
     app.drawing.addBase('A');
     app.drawing.addBase('C');
 
-    let serializedDrawing = app.drawing.serialized();
-    expect(serializedDrawing).toBeTruthy();
-    expect(serializedDrawing).not.toStrictEqual({});
+    expect(app.drawing.serialized()).toBeTruthy();
+    expect(app.drawing.serialized()).not.toEqual({});
 
-    expect(app.serialized()).toStrictEqual({ drawing: serializedDrawing });
+    expect(app.drawingView.serialized()).toBeTruthy();
+    expect(app.drawingView.serialized()).not.toEqual({});
+
+    expect(app.serialized().drawing).toStrictEqual(app.drawing.serialized());
+    expect(app.serialized().drawingView).toStrictEqual(app.drawingView.serialized());
   });
 
   test('`restore()`', () => {
