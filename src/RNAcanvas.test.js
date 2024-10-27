@@ -84,18 +84,23 @@ describe('RNAcanvas class', () => {
     let app = new RNAcanvas();
 
     // add some contents to the drawing
-    app.drawing.addBase('G');
-    app.drawing.addBase('A');
-    app.drawing.addBase('C');
+    [...'GAUCGAUCGAUGCUCGUAGUCG'].forEach(c => app.drawing.addBase(c));
 
+    [1, 5, 2, 8].forEach(i => {
+      let b = [...app.drawing.bases][i];
+      b.domNode.id = `id-${i}`;
+      app.selectedSVGElements.addAll([b]);
+    });
+
+    expect(app.serialized().drawing).toStrictEqual(app.drawing.serialized());
     expect(app.drawing.serialized()).toBeTruthy();
     expect(app.drawing.serialized()).not.toEqual({});
 
+    expect(app.serialized().selectedSVGElementIDs).toStrictEqual(['id-1', 'id-5', 'id-2', 'id-8']);
+
+    expect(app.serialized().drawingView).toStrictEqual(app.drawingView.serialized());
     expect(app.drawingView.serialized()).toBeTruthy();
     expect(app.drawingView.serialized()).not.toEqual({});
-
-    expect(app.serialized().drawing).toStrictEqual(app.drawing.serialized());
-    expect(app.serialized().drawingView).toStrictEqual(app.drawingView.serialized());
   });
 
   test('`restore()`', () => {

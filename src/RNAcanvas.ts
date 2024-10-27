@@ -48,6 +48,10 @@ import { FiniteStack } from '@rnacanvas/utilities';
 
 import { isNonNullObject } from '@rnacanvas/value-check';
 
+import { isStringsArray } from '@rnacanvas/value-check';
+
+import { isSVGGraphicsElementsArray } from '@rnacanvas/draw.svg';
+
 interface Form {
   /**
    * Appends the form to the provided container node.
@@ -481,6 +485,7 @@ export class RNAcanvas {
   serialized() {
     return {
       drawing: this.drawing.serialized(),
+      selectedSVGElementIDs: [...this.selectedSVGElements].map(ele => ele.id),
       drawingView: this.drawingView.serialized(),
     };
   }
@@ -503,6 +508,14 @@ export class RNAcanvas {
 
     // can throw (in an atomic way)
     this.drawing.restore(previousState.drawing);
+
+    let selectedSVGElementIDs: string[] = isStringsArray(previousState.selectedSVGElementIDs) ? previousState.selectedSVGElementIDs : [];
+    let selectedSVGElements = selectedSVGElementIDs.map(id => this.drawing.domNode.querySelector('#' + id));
+
+    this.selectedSVGElements.clear();
+
+    // only restore if all previously selected SVG elements were successfully retrieved
+    isSVGGraphicsElementsArray(selectedSVGElements) ? this.selectedSVGElements.addAll(selectedSVGElements) : {};
 
     if (previousState.drawingView) {
       try { this.drawingView.restore(previousState.drawingView); } catch (error) { console.warn(error); }
