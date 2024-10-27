@@ -510,12 +510,16 @@ export class RNAcanvas {
   }
 
   /**
-   * Pushes the current state of the app onto the top of the undo stack.
+   * Pushes the current state of the app onto the top of the undo stack
+   * and clears the redo stack.
    *
    * Throws if unable to do so
    * (e.g., the app instance is unable to be properly serialized).
    */
   pushUndoStack(): void | never {
+    // want to clear the redo stack even if app serialization fails
+    this.#redoStack.empty();
+
     this.#undoStack.push(this.serialized());
   }
 

@@ -134,15 +134,27 @@ describe('RNAcanvas class', () => {
 
     app.undo();
     expect(app.canUndo()).toBeFalsy();
+    expect(app.canRedo()).toBeTruthy();
+
+    // clears the redo stack
+    app.pushUndoStack();
+    expect(app.canRedo()).toBeFalsy();
+
+    app.undo();
 
     // make the drawing unserializable
     for (let i = 0; i < 3; i++) { app.drawing.addBase('A'); }
     [...app.drawing.bases][1].domNode.id = '';
 
+    expect(app.canRedo()).toBeTruthy();
+
     expect(() => app.pushUndoStack()).toThrow();
 
     // nothing got pushed onto the undo stack
     expect(app.canUndo()).toBeFalsy();
+
+    // still cleared the redo stack (even though app serialization failed)
+    expect(app.canRedo()).toBeFalsy();
   });
 
   test('`canUndo()`', () => {
