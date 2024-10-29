@@ -284,20 +284,10 @@ export class RNAcanvas {
       openForm: (form: Form) => this.openForm(form),
     });
 
-    let selectInterveningKeyBinding = new KeyBinding('I', () => this.toolbar.buttons['select-intervening'].press());
-    selectInterveningKeyBinding.scope = this.domNode;
-    this.toolbar.buttons['select-intervening'].boundKey = selectInterveningKeyBinding.key;
-
-    let editLayoutKeyBinding = new KeyBinding('L', () => this.toolbar.buttons['layout'].press());
-    editLayoutKeyBinding.scope = this.domNode;
-    this.toolbar.buttons['layout'].boundKey = editLayoutKeyBinding.key;
-
-    let exportKeyBinding = new KeyBinding('E', () => this.toolbar.buttons['export'].press());
-    exportKeyBinding.scope = this.domNode;
-    this.toolbar.buttons['export'].boundKey = exportKeyBinding.key;
-
     this.toolbar.appendTo(this.toolbarContainer);
     this.boundingBox.append(this.toolbarContainer);
+
+    [...this.toolbar.keyBindings].forEach(kb => kb.scope = this.domNode);
 
     let toolbarToggle = new ToolbarToggle({ toolbar: this.toolbar });
     $(toolbarToggle.domNode).css({ position: 'absolute', bottom: '22.5px', left: '15px' });
