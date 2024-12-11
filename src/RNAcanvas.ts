@@ -439,6 +439,12 @@ export class RNAcanvas {
     }
   }
 
+  get selectedBaseNumberings(): Iterable<BaseNumbering> {
+    let selectedSVGElements = new Set(this.selectedSVGElements);
+
+    return [...this.drawing.baseNumberings].filter(bn => selectedSVGElements.has(bn.domNode));
+  }
+
   /**
    * Opens the provided form simply by adding it within the DOM structure of the RNAcanvas app.
    *
@@ -611,3 +617,5 @@ export class RNAcanvas {
     this.unhideOverlaidDrawing();
   }
 }
+
+type BaseNumbering = ReturnType<InstanceType<typeof RNAcanvas>['drawing']['number']>[0];
