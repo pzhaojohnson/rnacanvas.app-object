@@ -245,6 +245,7 @@ export class RNAcanvas {
       {
         svgElements: this.selectedSVGElements,
         bases: this.selectedBases,
+        baseNumberings: this.selectedBaseNumberings,
       },
       {
         beforeDragging: () => this.beforeDragging(),
@@ -440,9 +441,15 @@ export class RNAcanvas {
   }
 
   get selectedBaseNumberings(): Iterable<BaseNumbering> {
-    let selectedSVGElements = new Set(this.selectedSVGElements);
+    let getSelectedBaseNumberings = () => {
+      let selectedSVGElements = new Set(this.selectedSVGElements);
 
-    return [...this.drawing.baseNumberings].filter(bn => selectedSVGElements.has(bn.domNode));
+      return [...this.drawing.baseNumberings].filter(bn => selectedSVGElements.has(bn.domNode));
+    };
+
+    return {
+      [Symbol.iterator]() { return getSelectedBaseNumberings().values(); },
+    };
   }
 
   /**
