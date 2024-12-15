@@ -40,6 +40,8 @@ import { BasesLayoutForm as LayoutForm } from '@rnacanvas/forms.bases-layout';
 
 import { ExportForm } from '@rnacanvas/forms.export';
 
+import { AboutForm, AboutButton } from '@rnacanvas/forms.about';
+
 import { Toolbar, ToolbarToggle } from '@rnacanvas/toolbar';
 
 import $ from 'jquery';
@@ -147,6 +149,11 @@ export class RNAcanvas {
   readonly layoutForm: LayoutForm;
 
   readonly exportForm: ExportForm;
+
+  #aboutForm;
+
+  #aboutButton;
+  #aboutButtonContainer = document.createElement('div');
 
   private readonly toolbar;
 
@@ -264,6 +271,13 @@ export class RNAcanvas {
     });
 
     this.exportForm = new ExportForm({ drawing: this.drawing });
+
+    this.#aboutForm = new AboutForm();
+
+    this.#aboutButton = new AboutButton();
+    this.#aboutButton.domNode.addEventListener('click', () => this.openForm(this.#aboutForm));
+    this.#aboutButtonContainer.append(this.#aboutButton.domNode);
+    this.boundingBox.append(this.#aboutButtonContainer);
 
     this.dotBracketDrawer = new DotBracketDrawer(this.drawing);
 
