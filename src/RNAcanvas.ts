@@ -44,6 +44,8 @@ import { AboutForm, AboutButton } from '@rnacanvas/forms.about';
 
 import { Toolbar, ToolbarToggle } from '@rnacanvas/toolbar';
 
+import { SilvecPlug } from './SilvecPlug';
+
 import $ from 'jquery';
 
 import { FiniteStack } from '@rnacanvas/utilities';
@@ -158,6 +160,8 @@ export class RNAcanvas {
   private readonly toolbar;
 
   private readonly toolbarContainer = document.createElement('div');
+
+  #silvecPlug;
 
   #undoStack: FiniteStack<ReturnType<InstanceType<typeof RNAcanvas>['serialized']>> = new FiniteStack(50);
 
@@ -314,6 +318,9 @@ export class RNAcanvas {
     let toolbarToggleContainer = document.createElement('div');
     toolbarToggleContainer.append(toolbarToggle.domNode);
     this.boundingBox.append(toolbarToggleContainer);
+
+    this.#silvecPlug = SilvecPlug();
+    this.boundingBox.append(this.#silvecPlug);
   }
 
   /**
