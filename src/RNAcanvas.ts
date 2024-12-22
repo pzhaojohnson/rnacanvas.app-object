@@ -276,7 +276,7 @@ export class RNAcanvas {
 
     this.#saveButton = SaveButton();
     this.#saveButton.addEventListener('click', () => this.save());
-    $(this.#saveButton).css({ position: 'absolute', top: '12px', left: '28px' });
+    $(this.#saveButton).css({ position: 'absolute', top: '10px', left: '28px' });
     this.boundingBox.append(this.#saveButton);
 
     this.formsContainer = document.createElement('div');
