@@ -48,6 +48,8 @@ import { SilvecPlug } from './SilvecPlug';
 
 import { DropHandler } from '@rnacanvas/drop-interface';
 
+import { DownloadableFile } from '@rnacanvas/utilities';
+
 import $ from 'jquery';
 
 import { FiniteStack } from '@rnacanvas/utilities';
@@ -525,6 +527,17 @@ export class RNAcanvas {
       selectedSVGElementIDs: [...this.selectedSVGElements].map(ele => ele.id),
       drawingView: this.drawingView.serialized(),
     };
+  }
+
+  /**
+   * Offers for download an RNAcanvas file of the current state of the app.
+   */
+  save(): void {
+    let f = new DownloadableFile(JSON.stringify(this.serialized()));
+
+    let name = document.title ? document.title : 'RNAcanvas Code';
+
+    f.downloadAs(name + '.rnacanvas', { type: 'text/plain' });
   }
 
   /**
