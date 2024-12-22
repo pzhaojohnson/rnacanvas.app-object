@@ -34,6 +34,8 @@ import { ConsecutiveBasesSelectingTool } from '@rnacanvas/draw.interact';
 
 import { DraggingTool } from '@rnacanvas/draw.interact';
 
+import { SaveButton } from './SaveButton';
+
 import { FormsFronter } from './FormsFronter';
 
 import { BasesLayoutForm as LayoutForm } from '@rnacanvas/forms.bases-layout';
@@ -144,6 +146,8 @@ export class RNAcanvas {
   private readonly consecutiveBasesSelectingTool: ConsecutiveBasesSelectingTool<Nucleobase>;
 
   private readonly draggingTool: DraggingTool;
+
+  #saveButton;
 
   /**
    * Forms are to go in here.
@@ -269,6 +273,11 @@ export class RNAcanvas {
         afterDragging: () => this.afterDragging(),
       },
     );
+
+    this.#saveButton = SaveButton();
+    this.#saveButton.addEventListener('click', () => this.save());
+    $(this.#saveButton).css({ position: 'absolute', top: '12px', left: '28px' });
+    this.boundingBox.append(this.#saveButton);
 
     this.formsContainer = document.createElement('div');
     this.boundingBox.appendChild(this.formsContainer);
