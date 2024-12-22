@@ -46,6 +46,8 @@ import { Toolbar, ToolbarToggle } from '@rnacanvas/toolbar';
 
 import { SilvecPlug } from './SilvecPlug';
 
+import { DropHandler } from '@rnacanvas/drop-interface';
+
 import $ from 'jquery';
 
 import { FiniteStack } from '@rnacanvas/utilities';
@@ -166,6 +168,8 @@ export class RNAcanvas {
   #undoStack: FiniteStack<ReturnType<InstanceType<typeof RNAcanvas>['serialized']>> = new FiniteStack(50);
 
   #redoStack: FiniteStack<ReturnType<InstanceType<typeof RNAcanvas>['serialized']>> = new FiniteStack(50);
+
+  #dropHandler;
 
   constructor() {
     this.domNode = document.createElement('div');
@@ -321,6 +325,15 @@ export class RNAcanvas {
 
     this.#silvecPlug = SilvecPlug();
     this.boundingBox.append(this.#silvecPlug);
+
+    this.#dropHandler = new DropHandler({
+      undo: () => this.undo(),
+      pushUndoStack: () => this.pushUndoStack(),
+      restore: (previousState: unknown) => this.restore(previousState),
+    });
+
+    this.domNode.addEventListener('drop', event => this.#dropHandler.handle(event));
+    this.domNode.addEventListener('dragover', event => event.preventDefault());
   }
 
   /**
