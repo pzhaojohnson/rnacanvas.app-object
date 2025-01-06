@@ -185,6 +185,9 @@ export class RNAcanvas {
   constructor() {
     this.domNode = document.createElement('div');
 
+    // make focusable for key bindings to work
+    this.domNode.tabIndex = 0;
+
     // give the app a gray and white checkerboard background
     this.domNode.style.background = 'repeating-conic-gradient(#eee 0% 25%, white 0% 50%) 50% / 20px 20px';
 
