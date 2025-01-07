@@ -170,6 +170,8 @@ export class RNAcanvas {
 
   private readonly toolbarContainer = document.createElement('div');
 
+  #toolbarToggleKeyBinding;
+
   #silvecPlug;
 
   #undoStack: FiniteStack<ReturnType<InstanceType<typeof RNAcanvas>['serialized']>> = new FiniteStack(50);
@@ -329,14 +331,14 @@ export class RNAcanvas {
     this.toolbar.appendTo(this.toolbarContainer);
     this.boundingBox.append(this.toolbarContainer);
 
-    [...this.toolbar.keyBindings].forEach(kb => kb.scope = this.domNode);
+    [...this.toolbar.keyBindings].forEach(kb => kb.owner = this.domNode);
 
     let toolbarToggle = new ToolbarToggle({ toolbar: this.toolbar });
     $(toolbarToggle.domNode).css({ position: 'absolute', bottom: '22.5px', left: '15px' });
 
-    let toolbarToggleKeyBinding = new KeyBinding('T', () => toolbarToggle.press());
-    toolbarToggleKeyBinding.owner = this.domNode;
-    toolbarToggle.boundKey = toolbarToggleKeyBinding.key;
+    this.#toolbarToggleKeyBinding = new KeyBinding('T', () => toolbarToggle.press());
+    this.#toolbarToggleKeyBinding.owner = this.domNode;
+    toolbarToggle.boundKey = this.#toolbarToggleKeyBinding.key;
 
     let toolbarToggleContainer = document.createElement('div');
     toolbarToggleContainer.append(toolbarToggle.domNode);
@@ -678,6 +680,14 @@ export class RNAcanvas {
 
   afterDragging() {
     this.unhideOverlaidDrawing();
+  }
+
+  get keyBindings(): Iterable<{ owner: Element | undefined }> {
+    return [
+      ...this.toolbar.keyBindings,
+      this.#selectAllKeyBinding,
+      this.#toolbarToggleKeyBinding,
+    ];
   }
 }
 
