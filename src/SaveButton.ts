@@ -1,7 +1,7 @@
 import * as styles from './SaveButton.module.css';
 
 export function SaveButton() {
-  let domNode = document.createElement('button');
+  let domNode = document.createElement('p');
 
   domNode.classList.add(styles['save-button']);
 
