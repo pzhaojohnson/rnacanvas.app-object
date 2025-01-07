@@ -1,6 +1,6 @@
 {
   "name": "@rnacanvas/app-object",
-  "version": "9.31.5",
+  "version": "10.0.0",
   "description": "The RNAcanvas app object",
   "repository": {
     "type": "git",
@@ -44,7 +44,7 @@
     "@rnacanvas/forms.open": "^1.1.0",
     "@rnacanvas/scrollbars": "^1.1.0",
     "@rnacanvas/toolbar": "^16.0.0",
-    "@rnacanvas/utilities": "^4.1.0",
+    "@rnacanvas/utilities": "^5.0.0",
     "jquery": "^3.7.1"
   }
 }

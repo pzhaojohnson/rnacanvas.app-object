@@ -8,8 +8,6 @@ import { CenteringScrollContainer } from './CenteringScrollContainer';
 
 import { DrawingView } from './DrawingView';
 
-import { isBeingInteractedWith } from '@rnacanvas/utilities';
-
 import { KeyBinding } from '@rnacanvas/utilities';
 
 import { PinchToScaleFeature } from '@rnacanvas/draw.svg.interact';
@@ -25,8 +23,6 @@ import { LiveSVGElementHighlightings } from '@rnacanvas/draw.svg.highlight';
 import { ClickSelectTool } from '@rnacanvas/draw.svg.interact';
 
 import { SelectingRect } from '@rnacanvas/draw.svg.interact';
-
-import { CtrlASelector } from './CtrlASelector';
 
 import { SelectedBases } from '@rnacanvas/draw.interact';
 
@@ -142,7 +138,7 @@ export class RNAcanvas {
 
   private readonly selectingRect: SelectingRect;
 
-  private readonly ctrlASelector: CtrlASelector;
+  #selectAllKeyBinding;
 
   readonly selectedBases: SelectedBases<Nucleobase>;
 
@@ -260,10 +256,7 @@ export class RNAcanvas {
     this.selectingRect = new SelectingRect(this.drawing.domNode, this.selectedSVGElements);
     this.selectingRect.appendTo(this.overlaidDrawing.domNode);
 
-    this.ctrlASelector = new CtrlASelector({
-      domNode: this.domNode,
-      selectAll: () => this.selectAll(),
-    });
+    this.#selectAllKeyBinding = new KeyBinding('A', () => this.selectAll(), { ctrlKey: true });
 
     this.selectedBases = new SelectedBases(this.drawing, this.selectedSVGElements);
 
@@ -342,7 +335,7 @@ export class RNAcanvas {
     $(toolbarToggle.domNode).css({ position: 'absolute', bottom: '22.5px', left: '15px' });
 
     let toolbarToggleKeyBinding = new KeyBinding('T', () => toolbarToggle.press());
-    toolbarToggleKeyBinding.scope = this.domNode;
+    toolbarToggleKeyBinding.owner = this.domNode;
     toolbarToggle.boundKey = toolbarToggleKeyBinding.key;
 
     let toolbarToggleContainer = document.createElement('div');
@@ -448,14 +441,6 @@ export class RNAcanvas {
    */
   drawSchema(schema: Parameters<SchemaDrawer['draw']>[0]): void | never {
     this.#schemaDrawer.draw(schema);
-  }
-
-  /**
-   * Returns true if the DOM node corresponding to the app object
-   * is currently being interacted with by the user.
-   */
-  isBeingInteractedWith(): boolean {
-    return isBeingInteractedWith(this.domNode);
   }
 
   /**
