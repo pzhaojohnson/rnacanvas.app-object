@@ -150,6 +150,8 @@ export class RNAcanvas {
 
   #saveButton;
 
+  #saveKeyBindings;
+
   /**
    * Forms are to go in here.
    */
@@ -288,6 +290,13 @@ export class RNAcanvas {
     this.#saveButton.addEventListener('click', () => this.save());
     $(this.#saveButton).css({ position: 'absolute', top: '10px', left: '95px' });
     this.boundingBox.append(this.#saveButton);
+
+    this.#saveKeyBindings = [
+      new KeyBinding('S', () => this.save(), { ctrlKey: true }),
+      new KeyBinding('S', () => this.save(), { metaKey: true }),
+    ];
+
+    this.#saveKeyBindings.forEach(kb => kb.owner = this.domNode);
 
     this.formsContainer = document.createElement('div');
     this.boundingBox.appendChild(this.formsContainer);
@@ -686,6 +695,7 @@ export class RNAcanvas {
     return [
       ...this.toolbar.keyBindings,
       this.#selectAllKeyBinding,
+      ...this.#saveKeyBindings,
       this.#toolbarToggleKeyBinding,
     ];
   }
