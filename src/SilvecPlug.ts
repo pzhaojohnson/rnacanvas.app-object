@@ -1,3 +1,5 @@
+import * as styles from './SilvecPlug.module.css';
+
 import $ from 'jquery';
 
 /**
@@ -5,6 +7,8 @@ import $ from 'jquery';
  */
 export function SilvecPlug() {
   let domNode = document.createElement('p');
+
+  domNode.classList.add(styles['silvec-plug']);
 
   let SilvecBiologics = document.createElement('span');
 
