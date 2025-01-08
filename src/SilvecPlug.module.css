@@ -1,5 +1,7 @@
 .silvec-plug {
-  animation: fade-out 20s;
+  opacity: 0;
+
+  animation: fade-out 10s;
 }
 
 @keyframes fade-out {

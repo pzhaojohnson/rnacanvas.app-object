@@ -20,7 +20,7 @@ export function SilvecPlug() {
 
   $(domNode).css({
     position: 'absolute', bottom: '11px', right: '26px',
-    fontFamily: '"Open Sans", sans-serif', fontSize: '11px', fontWeight: '500', color: 'black', opacity: '0.75',
+    fontFamily: '"Open Sans", sans-serif', fontSize: '11px', fontWeight: '500', color: 'black',
     pointerEvents: 'none', userSelect: 'none', webkitUserSelect: 'none',
   });
 
