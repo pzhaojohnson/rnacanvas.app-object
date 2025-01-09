@@ -30,10 +30,10 @@ import { ConsecutiveBasesSelectingTool } from '@rnacanvas/draw.interact';
 
 import { DraggingTool } from '@rnacanvas/draw.interact';
 
-import { OpenButton } from '@rnacanvas/buttons.open';
+import { OpenButton } from '@rnacanvas/buttons';
 import { OpenForm } from '@rnacanvas/forms.open';
 
-import { SaveButton } from './SaveButton';
+import { SaveButton } from '@rnacanvas/buttons';
 
 import { FormsFronter } from './FormsFronter';
 
@@ -41,7 +41,8 @@ import { BasesLayoutForm as LayoutForm } from '@rnacanvas/forms.bases-layout';
 
 import { ExportForm } from '@rnacanvas/forms.export';
 
-import { AboutForm, AboutButton } from '@rnacanvas/forms.about';
+import { AboutButton } from '@rnacanvas/buttons';
+import { AboutForm } from '@rnacanvas/forms.about';
 
 import { Toolbar, ToolbarToggle } from '@rnacanvas/toolbar';
 
@@ -283,13 +284,13 @@ export class RNAcanvas {
 
     let openButton = new OpenButton();
     openButton.domNode.addEventListener('click', () => this.openForm(this.#openForm));
-    $(openButton.domNode).css({ position: 'absolute', top: '10px', left: '28px' });
+    $(openButton.domNode).css({ position: 'absolute', top: '11px', left: '28px' });
     this.boundingBox.append(openButton.domNode);
 
-    this.#saveButton = SaveButton();
-    this.#saveButton.addEventListener('click', () => this.save());
-    $(this.#saveButton).css({ position: 'absolute', top: '10px', left: '95px' });
-    this.boundingBox.append(this.#saveButton);
+    this.#saveButton = new SaveButton();
+    this.#saveButton.domNode.addEventListener('click', () => this.save());
+    $(this.#saveButton).css({ position: 'absolute', top: '11px', left: '95px' });
+    this.boundingBox.append(this.#saveButton.domNode);
 
     this.#saveKeyBindings = [
       new KeyBinding('S', () => this.save(), { ctrlKey: true }),

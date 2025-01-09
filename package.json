@@ -1,6 +1,6 @@
 {
   "name": "@rnacanvas/app-object",
-  "version": "10.4.1",
+  "version": "10.4.2",
   "description": "The RNAcanvas app object",
   "repository": {
     "type": "git",
@@ -31,7 +31,7 @@
   "dependencies": {
     "@rnacanvas/base-pairs": "^2.1.0",
     "@rnacanvas/bases-layout": "^4.0.1",
-    "@rnacanvas/buttons.open": "^1.0.0",
+    "@rnacanvas/buttons": "^1.1.0",
     "@rnacanvas/draw": "^12.3.0",
     "@rnacanvas/draw.bonds": "^10.0.0",
     "@rnacanvas/draw.interact": "^3.0.0",
