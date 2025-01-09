@@ -289,7 +289,7 @@ export class RNAcanvas {
 
     this.#saveButton = new SaveButton();
     this.#saveButton.domNode.addEventListener('click', () => this.save());
-    $(this.#saveButton).css({ position: 'absolute', top: '11px', left: '95px' });
+    $(this.#saveButton.domNode).css({ position: 'absolute', top: '11px', left: '95px' });
     this.boundingBox.append(this.#saveButton.domNode);
 
     this.#saveKeyBindings = [
