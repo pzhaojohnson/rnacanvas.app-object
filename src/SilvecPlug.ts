@@ -19,7 +19,7 @@ export function SilvecPlug() {
   domNode.append(SilvecBiologics, ' - an RNA company');
 
   $(domNode).css({
-    position: 'absolute', bottom: '11px', right: '26px',
+    position: 'absolute', top: '4px', right: '80px',
     fontFamily: '"Open Sans", sans-serif', fontSize: '11px', fontWeight: '500', color: 'black',
     pointerEvents: 'none', userSelect: 'none', webkitUserSelect: 'none',
   });
