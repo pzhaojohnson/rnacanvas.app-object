@@ -35,6 +35,8 @@ import { OpenForm } from '@rnacanvas/forms.open';
 
 import { SaveButton } from '@rnacanvas/buttons';
 
+import { ExportButton } from '@rnacanvas/buttons';
+
 import { FormsFronter } from './FormsFronter';
 
 import { BasesLayoutForm as LayoutForm } from '@rnacanvas/forms.bases-layout';
@@ -152,6 +154,9 @@ export class RNAcanvas {
   #saveButton;
 
   #saveKeyBindings;
+
+  #exportButton;
+  #exportButtonKeyBinding;
 
   /**
    * Forms are to go in here.
@@ -288,7 +293,7 @@ export class RNAcanvas {
 
     this.#saveButton = new SaveButton();
     this.#saveButton.domNode.addEventListener('click', () => this.save());
-    $(this.#saveButton.domNode).css({ position: 'absolute', top: '11px', left: '95px' });
+    $(this.#saveButton.domNode).css({ position: 'absolute', top: '11px', left: '96px' });
     this.boundingBox.append(this.#saveButton.domNode);
 
     this.#saveKeyBindings = [
@@ -309,6 +314,14 @@ export class RNAcanvas {
     });
 
     this.exportForm = new ExportForm({ drawing: this.drawing });
+
+    this.#exportButton = new ExportButton();
+    this.#exportButton.domNode.addEventListener('click', () => this.openForm(this.exportForm));
+    $(this.#exportButton.domNode).css({ position: 'absolute', top: '11px', left: '164px' });
+    this.boundingBox.append(this.#exportButton.domNode);
+
+    this.#exportButtonKeyBinding = new KeyBinding('E', () => this.#exportButton.domNode.click());
+    this.#exportButtonKeyBinding.owner = this.domNode;
 
     this.#aboutForm = new AboutForm();
 
