@@ -167,7 +167,6 @@ export class RNAcanvas {
   #aboutForm;
 
   #aboutButton;
-  #aboutButtonContainer = document.createElement('div');
 
   private readonly toolbar;
 
@@ -315,8 +314,8 @@ export class RNAcanvas {
 
     this.#aboutButton = new AboutButton();
     this.#aboutButton.domNode.addEventListener('click', () => this.openForm(this.#aboutForm));
-    this.#aboutButtonContainer.append(this.#aboutButton.domNode);
-    this.boundingBox.append(this.#aboutButtonContainer);
+    $(this.#aboutButton.domNode).css({ position: 'absolute', top: '9px', right: '28px' });
+    this.boundingBox.append(this.#aboutButton.domNode);
 
     this.dotBracketDrawer = new DotBracketDrawer(this.drawing);
 
