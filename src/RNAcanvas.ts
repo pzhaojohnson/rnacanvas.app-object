@@ -709,6 +709,7 @@ export class RNAcanvas {
       ...this.toolbar.keyBindings,
       this.#selectAllKeyBinding,
       ...this.#saveKeyBindings,
+      this.#exportButtonKeyBinding,
       this.#toolbarToggleKeyBinding,
     ];
   }
