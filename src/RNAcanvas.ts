@@ -288,23 +288,6 @@ export class RNAcanvas {
 
     this.#openForm = new OpenForm();
 
-    let openButton = new OpenButton();
-    openButton.domNode.addEventListener('click', () => this.openForm(this.#openForm));
-    $(openButton.domNode).css({ position: 'absolute', top: '11px', left: '28px' });
-    this.boundingBox.append(openButton.domNode);
-
-    this.#saveButton = new SaveButton();
-    this.#saveButton.domNode.addEventListener('click', () => this.save());
-    $(this.#saveButton.domNode).css({ position: 'absolute', top: '11px', left: '96px' });
-    this.boundingBox.append(this.#saveButton.domNode);
-
-    this.#saveKeyBindings = [
-      new KeyBinding('S', () => this.save(), { ctrlKey: true }),
-      new KeyBinding('S', () => this.save(), { metaKey: true }),
-    ];
-
-    this.#saveKeyBindings.forEach(kb => kb.owner = this.domNode);
-
     this.formsContainer = document.createElement('div');
     this.boundingBox.appendChild(this.formsContainer);
 
@@ -317,20 +300,7 @@ export class RNAcanvas {
 
     this.exportForm = new ExportForm({ drawing: this.drawing });
 
-    this.#exportButton = new ExportButton();
-    this.#exportButton.domNode.addEventListener('click', () => this.openForm(this.exportForm));
-    $(this.#exportButton.domNode).css({ position: 'absolute', top: '11px', left: '164px' });
-    this.boundingBox.append(this.#exportButton.domNode);
-
-    this.#exportButtonKeyBinding = new KeyBinding('E', () => this.#exportButton.domNode.click());
-    this.#exportButtonKeyBinding.owner = this.domNode;
-
     this.#aboutForm = new AboutForm();
-
-    this.#aboutButton = new AboutButton();
-    this.#aboutButton.domNode.addEventListener('click', () => this.openForm(this.#aboutForm));
-    $(this.#aboutButton.domNode).css({ position: 'absolute', top: '9px', right: '28px' });
-    this.boundingBox.append(this.#aboutButton.domNode);
 
     this.dotBracketDrawer = new DotBracketDrawer(this.drawing);
 
@@ -367,6 +337,36 @@ export class RNAcanvas {
     let toolbarToggleContainer = document.createElement('div');
     toolbarToggleContainer.append(toolbarToggle.domNode);
     this.boundingBox.append(toolbarToggleContainer);
+
+    let openButton = new OpenButton();
+    openButton.domNode.addEventListener('click', () => this.openForm(this.#openForm));
+    $(openButton.domNode).css({ position: 'absolute', top: '11px', left: '28px' });
+    this.boundingBox.append(openButton.domNode);
+
+    this.#saveButton = new SaveButton();
+    this.#saveButton.domNode.addEventListener('click', () => this.save());
+    $(this.#saveButton.domNode).css({ position: 'absolute', top: '11px', left: '96px' });
+    this.boundingBox.append(this.#saveButton.domNode);
+
+    this.#saveKeyBindings = [
+      new KeyBinding('S', () => this.save(), { ctrlKey: true }),
+      new KeyBinding('S', () => this.save(), { metaKey: true }),
+    ];
+
+    this.#saveKeyBindings.forEach(kb => kb.owner = this.domNode);
+
+    this.#exportButton = new ExportButton();
+    this.#exportButton.domNode.addEventListener('click', () => this.openForm(this.exportForm));
+    $(this.#exportButton.domNode).css({ position: 'absolute', top: '11px', left: '164px' });
+    this.boundingBox.append(this.#exportButton.domNode);
+
+    this.#exportButtonKeyBinding = new KeyBinding('E', () => this.#exportButton.domNode.click());
+    this.#exportButtonKeyBinding.owner = this.domNode;
+
+    this.#aboutButton = new AboutButton();
+    this.#aboutButton.domNode.addEventListener('click', () => this.openForm(this.#aboutForm));
+    $(this.#aboutButton.domNode).css({ position: 'absolute', top: '9px', right: '28px' });
+    this.boundingBox.append(this.#aboutButton.domNode);
 
     this.#silvecPlug = SilvecPlug();
     this.boundingBox.append(this.#silvecPlug);
