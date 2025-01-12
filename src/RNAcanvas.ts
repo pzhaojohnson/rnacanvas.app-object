@@ -300,6 +300,9 @@ export class RNAcanvas {
 
     this.exportForm = new ExportForm({ drawing: this.drawing });
 
+    this.exportForm.domNode.tabIndex = -1;
+    [...this.exportForm.keyBindings].forEach(kb => kb.owner = this.domNode);
+
     this.#aboutForm = new AboutForm();
 
     this.dotBracketDrawer = new DotBracketDrawer(this.drawing);
@@ -716,6 +719,7 @@ export class RNAcanvas {
 
   get keyBindings(): Iterable<{ owner: Element | undefined }> {
     return [
+      ...this.exportForm.keyBindings,
       ...this.toolbar.keyBindings,
       this.#selectAllKeyBinding,
       ...this.#saveKeyBindings,
