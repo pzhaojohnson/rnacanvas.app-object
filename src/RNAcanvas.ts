@@ -157,7 +157,6 @@ export class RNAcanvas {
   #saveKeyBindings;
 
   #exportButton;
-  #exportButtonKeyBinding;
 
   /**
    * Forms are to go in here.
@@ -362,9 +361,6 @@ export class RNAcanvas {
     this.#exportButton.domNode.addEventListener('click', () => this.openForm(this.exportForm));
     $(this.#exportButton.domNode).css({ position: 'absolute', top: '11px', left: '164px' });
     this.boundingBox.append(this.#exportButton.domNode);
-
-    this.#exportButtonKeyBinding = new KeyBinding('E', () => this.#exportButton.domNode.click());
-    this.#exportButtonKeyBinding.owner = this.domNode;
 
     this.#aboutButton = new AboutButton();
     this.#aboutButton.domNode.addEventListener('click', () => this.openForm(this.#aboutForm));
@@ -723,7 +719,6 @@ export class RNAcanvas {
       ...this.toolbar.keyBindings,
       this.#selectAllKeyBinding,
       ...this.#saveKeyBindings,
-      this.#exportButtonKeyBinding,
       this.#toolbarToggleKeyBinding,
     ];
   }
