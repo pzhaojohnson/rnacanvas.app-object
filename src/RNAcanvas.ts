@@ -299,8 +299,8 @@ export class RNAcanvas {
 
     this.exportForm = new ExportForm({ drawing: this.drawing });
 
-    this.exportForm.domNode.tabIndex = -1;
     [...this.exportForm.keyBindings].forEach(kb => kb.owner = this.domNode);
+    this.exportForm.domNode.removeAttribute('tabindex');
 
     this.#aboutForm = new AboutForm();
 
@@ -328,6 +328,7 @@ export class RNAcanvas {
     this.boundingBox.append(this.toolbarContainer);
 
     [...this.toolbar.keyBindings].forEach(kb => kb.owner = this.domNode);
+    this.toolbar.domNode.removeAttribute('tabindex');
 
     let toolbarToggle = new ToolbarToggle({ toolbar: this.toolbar });
     $(toolbarToggle.domNode).css({ position: 'absolute', bottom: '22.5px', left: '15px' });
