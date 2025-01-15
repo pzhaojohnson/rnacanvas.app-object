@@ -142,7 +142,7 @@ export class RNAcanvas {
 
   private readonly selectingRect: SelectingRect;
 
-  #selectAllKeyBinding;
+  #selectAllKeyBindings;
 
   readonly selectedBases: SelectedBases<Nucleobase>;
 
@@ -266,7 +266,12 @@ export class RNAcanvas {
     this.selectingRect = new SelectingRect(this.drawing.domNode, this.selectedSVGElements);
     this.selectingRect.appendTo(this.overlaidDrawing.domNode);
 
-    this.#selectAllKeyBinding = new KeyBinding('A', () => this.selectAll(), { ctrlKey: true });
+    this.#selectAllKeyBindings = [
+      new KeyBinding('A', () => this.selectAll(), { ctrlKey: true }),
+      new KeyBinding('A', () => this.selectAll(), { metaKey: true }),
+    ];
+
+    this.#selectAllKeyBindings.forEach(kb => kb.owner = this.domNode);
 
     this.selectedBases = new SelectedBases(this.drawing, this.selectedSVGElements);
 
@@ -718,7 +723,7 @@ export class RNAcanvas {
     return [
       ...this.exportForm.keyBindings,
       ...this.toolbar.keyBindings,
-      this.#selectAllKeyBinding,
+      ...this.#selectAllKeyBindings,
       ...this.#saveKeyBindings,
       this.#toolbarToggleKeyBinding,
     ];
