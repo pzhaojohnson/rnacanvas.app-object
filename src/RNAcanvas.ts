@@ -39,7 +39,7 @@ import { ExportButton } from '@rnacanvas/buttons';
 
 import { FormsFronter } from './FormsFronter';
 
-import { BasesLayoutForm as LayoutForm } from '@rnacanvas/forms.bases-layout';
+import { LayoutForm } from '@rnacanvas/forms.layout';
 
 import { ExportForm } from '@rnacanvas/forms.export';
 
