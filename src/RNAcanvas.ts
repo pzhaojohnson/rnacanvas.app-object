@@ -506,6 +506,13 @@ export class RNAcanvas {
   }
 
   /**
+   * Deselect all currently selected elements.
+   */
+  deselect(): void {
+    this.selectedSVGElements.clear();
+  }
+
+  /**
    * The currently selected base.
    *
    * This getter will throw if no bases or more than one base are currently selected.

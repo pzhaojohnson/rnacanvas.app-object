@@ -80,6 +80,22 @@ describe('RNAcanvas class', () => {
     expect(rnaCanvas.domNode.style).toBeTruthy();
   });
 
+  test('`deselect()`', () => {
+    let app = new RNAcanvas();
+
+    for (let i = 0; i < 10; i++) {
+      let ele = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      app.drawing.domNode.append(ele);
+      app.selectedSVGElements.addAll([ele]);
+    }
+
+    expect([...app.selectedSVGElements].length).toBe(10);
+
+    app.deselect();
+
+    expect([...app.selectedSVGElements].length).toBe(0);
+  });
+
   test('`serialized()`', () => {
     let app = new RNAcanvas();
 
