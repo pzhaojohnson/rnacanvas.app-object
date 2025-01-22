@@ -515,6 +515,18 @@ export class RNAcanvas {
   }
 
   /**
+   * Removes all selected elements from the drawing of the app.
+   */
+  removeSelected(): void {
+    let eles = [...this.selectedSVGElements];
+
+    // don't forget to deselect them
+    this.selectedSVGElements.clear();
+
+    eles.forEach(ele => ele.remove());
+  }
+
+  /**
    * The currently selected base.
    *
    * This getter will throw if no bases or more than one base are currently selected.
