@@ -271,8 +271,6 @@ export class RNAcanvas {
       new KeyBinding('A', () => this.selectAll(), { metaKey: true }),
     ];
 
-    this.#selectAllKeyBindings.forEach(kb => kb.owner = this.domNode);
-
     this.selectedBases = new SelectedBases(this.drawing, this.selectedSVGElements);
 
     this.consecutiveBasesSelectingTool = new ConsecutiveBasesSelectingTool(this.drawing, this.selectedBases);
@@ -304,7 +302,7 @@ export class RNAcanvas {
 
     this.exportForm = new ExportForm({ drawing: this.drawing });
 
-    [...this.exportForm.keyBindings].forEach(kb => kb.owner = this.domNode);
+    // make unfocusable (for key bindings to work)
     this.exportForm.domNode.removeAttribute('tabindex');
 
     this.#aboutForm = new AboutForm();
@@ -332,14 +330,13 @@ export class RNAcanvas {
     this.toolbar.appendTo(this.toolbarContainer);
     this.boundingBox.append(this.toolbarContainer);
 
-    [...this.toolbar.keyBindings].forEach(kb => kb.owner = this.domNode);
+    // make unfocusable (for key bindings to work)
     this.toolbar.domNode.removeAttribute('tabindex');
 
     let toolbarToggle = new ToolbarToggle({ toolbar: this.toolbar });
     $(toolbarToggle.domNode).css({ position: 'absolute', bottom: '22.5px', left: '15px' });
 
     this.#toolbarToggleKeyBinding = new KeyBinding('T', () => toolbarToggle.press());
-    this.#toolbarToggleKeyBinding.owner = this.domNode;
     toolbarToggle.boundKey = this.#toolbarToggleKeyBinding.key;
 
     let toolbarToggleContainer = document.createElement('div');
@@ -360,8 +357,6 @@ export class RNAcanvas {
       new KeyBinding('S', () => this.save(), { ctrlKey: true }),
       new KeyBinding('S', () => this.save(), { metaKey: true }),
     ];
-
-    this.#saveKeyBindings.forEach(kb => kb.owner = this.domNode);
 
     this.#exportButton = new ExportButton();
     this.#exportButton.domNode.addEventListener('click', () => this.openForm(this.exportForm));
@@ -392,6 +387,9 @@ export class RNAcanvas {
     });
 
     this.domNode.addEventListener('paste', event => this.#pasteHandler.handle(event));
+
+    // assign ownership for all key bindings at once
+    [...this.keyBindings].forEach(kb => kb.owner = this.domNode);
   }
 
   /**
