@@ -146,6 +146,11 @@ export class RNAcanvas {
 
   #deselectKeyBinding = new KeyBinding('Escape', () => this.deselect());
 
+  #removeSelectedKeyBindings = [
+    new KeyBinding('Delete', () => this.removeSelected()),
+    new KeyBinding('Backspace', () => this.removeSelected()),
+  ];
+
   readonly selectedBases: SelectedBases<Nucleobase>;
 
   private readonly consecutiveBasesSelectingTool: ConsecutiveBasesSelectingTool<Nucleobase>;
@@ -744,6 +749,7 @@ export class RNAcanvas {
       ...this.toolbar.keyBindings,
       ...this.#selectAllKeyBindings,
       this.#deselectKeyBinding,
+      ...this.#removeSelectedKeyBindings,
       ...this.#saveKeyBindings,
       this.#toolbarToggleKeyBinding,
     ];
