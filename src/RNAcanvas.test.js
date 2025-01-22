@@ -106,15 +106,21 @@ describe('RNAcanvas class', () => {
 
     expect(app.drawing.domNode.childNodes.length).toBe(10);
 
+    expect([...app.selectedSVGElements].length).toBe(0); // nothing to remove
+
+    app.removeSelected();
+
+    expect(app.drawing.domNode.childNodes.length).toBe(10); // nothing removed
+    expect(app.canUndo()).toBeFalsy(); // didn't push undo stack
+
     app.selectedSVGElements.addAll([...app.drawing.domNode.childNodes].slice(3, 7));
     expect([...app.selectedSVGElements].length).toBe(4);
 
     app.removeSelected();
 
     expect(app.drawing.domNode.childNodes.length).toBe(6);
-
-    // deselected the removed elements
-    expect([...app.selectedSVGElements].length).toBe(0);
+    expect(app.canUndo()).toBeTruthy(); // pushed undo stack
+    expect([...app.selectedSVGElements].length).toBe(0); // deselected the removed elements
   });
 
   test('`serialized()`', () => {

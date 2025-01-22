@@ -521,9 +521,16 @@ export class RNAcanvas {
 
   /**
    * Removes all selected elements from the drawing of the app.
+   *
+   * This method will push the undo stack prior to removing any elements.
    */
   removeSelected(): void {
     let eles = [...this.selectedSVGElements];
+
+    // nothing to remove
+    if (eles.length == 0) { return; }
+
+    this.pushUndoStack();
 
     // don't forget to deselect them
     this.selectedSVGElements.clear();
