@@ -144,6 +144,8 @@ export class RNAcanvas {
 
   #selectAllKeyBindings;
 
+  #deselectKeyBinding = new KeyBinding('Escape', () => this.deselect());
+
   readonly selectedBases: SelectedBases<Nucleobase>;
 
   private readonly consecutiveBasesSelectingTool: ConsecutiveBasesSelectingTool<Nucleobase>;
@@ -729,6 +731,7 @@ export class RNAcanvas {
       ...this.exportForm.keyBindings,
       ...this.toolbar.keyBindings,
       ...this.#selectAllKeyBindings,
+      this.#deselectKeyBinding,
       ...this.#saveKeyBindings,
       this.#toolbarToggleKeyBinding,
     ];
