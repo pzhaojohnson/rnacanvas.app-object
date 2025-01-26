@@ -193,7 +193,7 @@ export class RNAcanvas {
   #redoStack: FiniteStack<ReturnType<InstanceType<typeof RNAcanvas>['serialized']>> = new FiniteStack(50);
 
   #dropHandler;
-  #pasteHandler;
+  #pasteHandler = new PasteHandler(this);
 
   constructor() {
     this.domNode = document.createElement('div');
@@ -386,12 +386,6 @@ export class RNAcanvas {
 
     this.domNode.addEventListener('drop', event => this.#dropHandler.handle(event));
     this.domNode.addEventListener('dragover', event => event.preventDefault());
-
-    this.#pasteHandler = new PasteHandler({
-      undo: () => this.undo(),
-      pushUndoStack: () => this.pushUndoStack(),
-      restore: (previousState: unknown) => this.restore(previousState),
-    });
 
     this.domNode.addEventListener('paste', event => this.#pasteHandler.handle(event));
 
