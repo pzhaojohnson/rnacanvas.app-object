@@ -161,7 +161,10 @@ export class RNAcanvas {
 
   #saveButton;
 
-  #saveKeyBindings;
+  #saveKeyBindings = [
+    new KeyBinding('S', () => this.save(), { ctrlKey: true }),
+    new KeyBinding('S', () => this.save(), { metaKey: true }),
+  ];
 
   #exportButton;
 
@@ -192,7 +195,8 @@ export class RNAcanvas {
 
   #redoStack: FiniteStack<ReturnType<InstanceType<typeof RNAcanvas>['serialized']>> = new FiniteStack(50);
 
-  #dropHandler;
+  #dropHandler = new DropHandler(this);
+
   #pasteHandler = new PasteHandler(this);
 
   constructor() {
@@ -360,11 +364,6 @@ export class RNAcanvas {
     $(this.#saveButton.domNode).css({ position: 'absolute', top: '11px', left: '96px' });
     this.boundingBox.append(this.#saveButton.domNode);
 
-    this.#saveKeyBindings = [
-      new KeyBinding('S', () => this.save(), { ctrlKey: true }),
-      new KeyBinding('S', () => this.save(), { metaKey: true }),
-    ];
-
     this.#exportButton = new ExportButton();
     this.#exportButton.domNode.addEventListener('click', () => this.openForm(this.exportForm));
     $(this.#exportButton.domNode).css({ position: 'absolute', top: '11px', left: '164px' });
@@ -377,12 +376,6 @@ export class RNAcanvas {
 
     this.#silvecPlug = SilvecPlug();
     this.boundingBox.append(this.#silvecPlug);
-
-    this.#dropHandler = new DropHandler({
-      undo: () => this.undo(),
-      pushUndoStack: () => this.pushUndoStack(),
-      restore: (previousState: unknown) => this.restore(previousState),
-    });
 
     this.domNode.addEventListener('drop', event => this.#dropHandler.handle(event));
     this.domNode.addEventListener('dragover', event => event.preventDefault());
