@@ -14,6 +14,8 @@ import { PinchToScaleFeature } from '@rnacanvas/draw.svg.interact';
 
 import { DotBracketDrawer } from '@rnacanvas/draw';
 
+import { CTDrawer } from '@rnacanvas/draw';
+
 import { SchemaDrawer } from '@rnacanvas/draw';
 
 import { EventfulSet } from '@rnacanvas/utilities';
@@ -118,6 +120,8 @@ export class RNAcanvas {
   private readonly pinchToScaleFeature: PinchToScaleFeature;
 
   private dotBracketDrawer: DotBracketDrawer;
+
+  #ctDrawer;
 
   #schemaDrawer: SchemaDrawer;
 
@@ -320,6 +324,8 @@ export class RNAcanvas {
 
     this.dotBracketDrawer = new DotBracketDrawer(this.drawing);
 
+    this.#ctDrawer = new CTDrawer(this.drawing);
+
     this.#schemaDrawer = new SchemaDrawer(this.drawing);
 
     this.toolbar = new Toolbar({
@@ -459,6 +465,17 @@ export class RNAcanvas {
    */
   drawDotBracket(seq: string, dotBracket: string): void {
     this.dotBracketDrawer.draw(seq, dotBracket);
+  }
+
+  /**
+   * Draws the structure specified by the provided CT string in the drawing of the app.
+   *
+   * A CT string could be the text contents of a CT file, for example.
+   *
+   * Throws if unable to parse the CT string.
+   */
+  drawCT(ctString: string): void | never {
+    this.#ctDrawer.draw(ctString);
   }
 
   /**
