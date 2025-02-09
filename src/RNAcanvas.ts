@@ -43,6 +43,8 @@ import { FormsFronter } from './FormsFronter';
 
 import { LayoutForm } from '@rnacanvas/forms.layout';
 
+import { EditingForm } from '@rnacanvas/forms.edit';
+
 import { ExportForm } from '@rnacanvas/forms.export';
 
 import { AboutButton } from '@rnacanvas/buttons';
@@ -181,6 +183,8 @@ export class RNAcanvas {
 
   readonly layoutForm: LayoutForm;
 
+  #editingForm;
+
   readonly exportForm: ExportForm;
 
   #aboutForm;
@@ -314,6 +318,8 @@ export class RNAcanvas {
       beforeMovingBases: () => this.beforeDragging(),
       afterMovingBases: () => this.afterDragging(),
     });
+
+    this.#editingForm = new EditingForm(this);
 
     this.exportForm = new ExportForm({ drawing: this.drawing });
 
@@ -583,7 +589,11 @@ export class RNAcanvas {
    * Forms will be added in such a way that (with absolute positioning)
    * they will be positioned relative to the bounding box of the RNAcanvas app.
    */
-  openForm(form: Node | Form): void {
+  openForm(form: Node | Form | 'edit'): void {
+    if (form === 'edit') {
+      form = this.#editingForm;
+    }
+
     if (form instanceof Node) {
       this.formsContainer.appendChild(form);
     } else {
