@@ -320,6 +320,7 @@ export class RNAcanvas {
     });
 
     this.#editingForm = new EditingForm(this);
+    $(this.#editingForm.domNode).css({ position: 'absolute', top: '20px', left: '20px' });
 
     this.exportForm = new ExportForm({ drawing: this.drawing });
 
