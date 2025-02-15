@@ -346,7 +346,6 @@ export class RNAcanvas {
       redoStack: this.redoStack,
       forms: {
         'layout': this.layoutForm,
-        'export': this.exportForm,
       },
       openForm: (form: Form) => this.openForm(form),
     });
