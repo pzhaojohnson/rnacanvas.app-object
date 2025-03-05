@@ -704,10 +704,19 @@ export class RNAcanvas {
    * The undo stack interface.
    */
   get undoStack() {
+    let peek: () => PreviousState | never = () => this.#undoStack.peek();
+
     return {
       isEmpty: () => this.#undoStack.isEmpty(),
       addEventListener: (name: 'change', listener: () => void) => this.#undoStack.addEventListener(name, listener),
       removeEventListener: (name: 'change', listener: () => void) => this.#undoStack.removeEventListener(name, listener),
+
+      /**
+       * Throws if the undo stack is empty.
+       *
+       * The returned previous state should not be modified by outside code.
+       */
+      peek,
     };
   }
 
@@ -736,10 +745,19 @@ export class RNAcanvas {
    * The redo stack interface.
    */
   get redoStack() {
+    let peek: () => PreviousState | never = () => this.#redoStack.peek();
+
     return {
       isEmpty: () => this.#redoStack.isEmpty(),
       addEventListener: (name: 'change', listener: () => void) => this.#redoStack.addEventListener(name, listener),
       removeEventListener: (name: 'change', listener: () => void) => this.#redoStack.removeEventListener(name, listener),
+
+      /**
+       * Throws if the redo stack is empty.
+       *
+       * The returned previous state should not be modified by outside code.
+       */
+      peek,
     };
   }
 
@@ -777,4 +795,8 @@ export class RNAcanvas {
   }
 }
 
+type PreviousState = NonNullObject;
+
 type BaseNumbering = ReturnType<InstanceType<typeof RNAcanvas>['drawing']['number']>[0];
+
+type NonNullObject = { [name: string]: unknown };

@@ -246,6 +246,7 @@ describe('RNAcanvas class', () => {
   test('`get undoStack()`', () => {
     let app = new RNAcanvas();
     expect(app.undoStack.isEmpty()).toBe(true);
+    expect(() => app.undoStack.peek()).toThrow();
 
     let listeners = [1, 2, 3].map(() => jest.fn());
     listeners.forEach(li => app.undoStack.addEventListener('change', li));
@@ -254,6 +255,9 @@ describe('RNAcanvas class', () => {
 
     expect(app.undoStack.isEmpty()).toBe(false);
     listeners.forEach(li => expect(li).toHaveBeenCalledTimes(1));
+
+    let previousState = app.undoStack.peek();
+    expect(previousState).toBeTruthy();
 
     // edit the drawing
     [...'agcuagcuagc'].forEach(c => app.drawing.addBase(c));
@@ -267,6 +271,7 @@ describe('RNAcanvas class', () => {
 
     expect(app.undoStack.isEmpty()).toBe(false);
     listeners.forEach(li => expect(li).toHaveBeenCalledTimes(3));
+    expect(app.undoStack.peek()).toStrictEqual(previousState);
 
     // should not call listeners anymore
     listeners.forEach(li => app.undoStack.removeEventListener('change', li));
@@ -324,6 +329,7 @@ describe('RNAcanvas class', () => {
   test('`get redoStack()`', () => {
     let app = new RNAcanvas();
     expect(app.redoStack.isEmpty()).toBe(true);
+    expect(() => app.redoStack.peek()).toThrow();
 
     let listeners = [1, 2, 3].map(() => jest.fn());
     listeners.forEach(li => app.redoStack.addEventListener('change', li));
@@ -341,6 +347,9 @@ describe('RNAcanvas class', () => {
     expect(app.redoStack.isEmpty()).toBe(false);
     listeners.forEach(li => expect(li).toHaveBeenCalledTimes(1));
 
+    let previousState = app.redoStack.peek();
+    expect(previousState).toBeTruthy();
+
     app.redo();
 
     expect(app.redoStack.isEmpty()).toBe(true);
@@ -353,5 +362,6 @@ describe('RNAcanvas class', () => {
 
     expect(app.redoStack.isEmpty()).toBe(false);
     listeners.forEach(li => expect(li).toHaveBeenCalledTimes(2));
+    expect(app.redoStack.peek()).toStrictEqual(previousState);
   });
 });
