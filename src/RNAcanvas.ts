@@ -784,6 +784,7 @@ export class RNAcanvas {
 
   get keyBindings(): Iterable<{ owner: Element | undefined }> {
     return [
+      ...this.layoutForm.keyBindings,
       ...this.exportForm.keyBindings,
       ...this.toolbar.keyBindings,
       ...this.#selectAllKeyBindings,
