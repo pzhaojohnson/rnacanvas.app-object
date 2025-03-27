@@ -11,6 +11,7 @@ import { DrawingView } from './DrawingView';
 import { KeyBinding } from '@rnacanvas/utilities';
 
 import { ArrowKeyBindings } from './ArrowKeyBindings';
+import { AltArrowKeyBindings } from './AltArrowKeyBindings';
 
 import { PinchToScaleFeature } from '@rnacanvas/draw.svg.interact';
 
@@ -160,6 +161,7 @@ export class RNAcanvas {
   ];
 
   #arrowKeyBindings = new ArrowKeyBindings(this);
+  #altArrowKeyBindings = new AltArrowKeyBindings(this);
 
   readonly selectedBases: SelectedBases<Nucleobase>;
 
@@ -795,6 +797,7 @@ export class RNAcanvas {
       this.#deselectKeyBinding,
       ...this.#removeSelectedKeyBindings,
       ...this.#arrowKeyBindings,
+      ...this.#altArrowKeyBindings,
       ...this.#saveKeyBindings,
       this.#toolbarToggleKeyBinding,
     ];
