@@ -42,7 +42,7 @@ export class ArrowKeyBindings {
     let selectedBases = [...this.#targetApp.selectedBases];
     if (selectedBases.length == 0) { return; }
 
-    if (this.#targetApp.undoStack.peek() !== this.#previousState) {
+    if (this.#targetApp.undoStack.isEmpty() || this.#targetApp.undoStack.peek() !== this.#previousState) {
       this.#targetApp.pushUndoStack();
       this.#previousState = this.#targetApp.undoStack.peek();
     }
@@ -57,7 +57,7 @@ export class ArrowKeyBindings {
     let selectedBases = [...this.#targetApp.selectedBases];
     if (selectedBases.length == 0) { return; }
 
-    if (this.#targetApp.undoStack.peek() !== this.#previousState) {
+    if (this.#targetApp.undoStack.isEmpty() || this.#targetApp.undoStack.peek() !== this.#previousState) {
       this.#targetApp.pushUndoStack();
       this.#previousState = this.#targetApp.undoStack.peek();
     }
@@ -72,7 +72,7 @@ export class ArrowKeyBindings {
     let selectedBases = [...this.#targetApp.selectedBases];
     if (selectedBases.length == 0) { return; }
 
-    if (this.#targetApp.undoStack.peek() !== this.#previousState) {
+    if (this.#targetApp.undoStack.isEmpty() || this.#targetApp.undoStack.peek() !== this.#previousState) {
       this.#targetApp.pushUndoStack();
       this.#previousState = this.#targetApp.undoStack.peek();
     }
@@ -87,7 +87,7 @@ export class ArrowKeyBindings {
     let selectedBases = [...this.#targetApp.selectedBases];
     if (selectedBases.length == 0) { return; }
 
-    if (this.#targetApp.undoStack.peek() !== this.#previousState) {
+    if (this.#targetApp.undoStack.isEmpty() || this.#targetApp.undoStack.peek() !== this.#previousState) {
       this.#targetApp.pushUndoStack();
       this.#previousState = this.#targetApp.undoStack.peek();
     }
