@@ -107,7 +107,9 @@ export class ArrowKeyBindings {
 
     incrementX /= this.#targetApp.drawing.horizontalClientScaling;
 
-    if (this.#repeatCount / 5 >= 4) {
+    if (this.#repeatCount / 5 >= 5) {
+      incrementX *= 6;
+    } else if (this.#repeatCount / 5 >= 4) {
       incrementX *= 5;
     } else if (this.#repeatCount / 5 >= 3) {
       incrementX *= 4;
@@ -127,7 +129,9 @@ export class ArrowKeyBindings {
 
     incrementY /= this.#targetApp.drawing.verticalClientScaling;
 
-    if (this.#repeatCount / 5 >= 4) {
+    if (this.#repeatCount / 5 >= 5) {
+      incrementY *= 6;
+    } else if (this.#repeatCount / 5 >= 4) {
       incrementY *= 5;
     } else if (this.#repeatCount / 5 >= 3) {
       incrementY *= 4;
