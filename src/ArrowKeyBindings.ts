@@ -13,14 +13,21 @@ export class ArrowKeyBindings {
 
   #previousState?: NonNullObject;
 
+  /**
+   * Time of the last arrow key down event (in milliseconds).
+   */
+  #lastTime = 0;
+
+  #repeatCount = 0;
+
   constructor(targetApp: RNAcanvas) {
     this.#targetApp = targetApp;
 
     this.#keyBindings = [
-      new KeyBinding('ArrowLeft', () => this.#shiftLeft()),
-      new KeyBinding('ArrowRight', () => this.#shiftRight()),
-      new KeyBinding('ArrowUp', () => this.#shiftUp()),
-      new KeyBinding('ArrowDown', () => this.#shiftDown()),
+      new KeyBinding('ArrowLeft', () => this.#handleArrowLeft()),
+      new KeyBinding('ArrowRight', () => this.#handleArrowRight()),
+      new KeyBinding('ArrowUp', () => this.#handleArrowUp()),
+      new KeyBinding('ArrowDown', () => this.#handleArrowDown()),
     ];
 
     this.owner = targetApp.domNode;
@@ -38,7 +45,27 @@ export class ArrowKeyBindings {
     this.#keyBindings.forEach(kb => kb.owner = owner);
   }
 
-  #shiftLeft() {
+  #handleArrowLeft() {
+    this.#handleArrowKey({ key: 'ArrowLeft' });
+  }
+
+  #handleArrowRight() {
+    this.#handleArrowKey({ key: 'ArrowRight' });
+  }
+
+  #handleArrowUp() {
+    this.#handleArrowKey({ key: 'ArrowUp' });
+  }
+
+  #handleArrowDown() {
+    this.#handleArrowKey({ key: 'ArrowDown' });
+  }
+
+  #handleArrowKey(event: { key: string }) {
+    let t = Date.now();
+
+    this.#repeatCount = t - this.#lastTime <= 250 ? this.#repeatCount + 1 : 0;
+
     let selectedBases = [...this.#targetApp.selectedBases];
     if (selectedBases.length == 0) { return; }
 
@@ -47,55 +74,63 @@ export class ArrowKeyBindings {
       this.#previousState = this.#targetApp.undoStack.peek();
     }
 
-    let x = -2 / this.#targetApp.drawing.horizontalClientScaling;
-    if (!Number.isFinite(x)) { x = -2; }
+    if (event.key === 'ArrowLeft') {
+      this.#shiftLeft();
+    } else if (event.key === 'ArrowRight') {
+      this.#shiftRight();
+    } else if (event.key === 'ArrowUp') {
+      this.#shiftUp();
+    } else if (event.key === 'ArrowDown') {
+      this.#shiftDown();
+    }
+  }
 
-    shift(selectedBases, { x, y: 0 });
+  #shiftLeft() {
+    shift([...this.#targetApp.selectedBases], { x: -this.#incrementX, y: 0 });
   }
 
   #shiftRight() {
-    let selectedBases = [...this.#targetApp.selectedBases];
-    if (selectedBases.length == 0) { return; }
-
-    if (this.#targetApp.undoStack.isEmpty() || this.#targetApp.undoStack.peek() !== this.#previousState) {
-      this.#targetApp.pushUndoStack();
-      this.#previousState = this.#targetApp.undoStack.peek();
-    }
-
-    let x = 2 / this.#targetApp.drawing.horizontalClientScaling;
-    if (!Number.isFinite(x)) { x = 2; }
-
-    shift(selectedBases, { x, y: 0 });
+    shift([...this.#targetApp.selectedBases], { x: this.#incrementX, y: 0 });
   }
 
   #shiftUp() {
-    let selectedBases = [...this.#targetApp.selectedBases];
-    if (selectedBases.length == 0) { return; }
-
-    if (this.#targetApp.undoStack.isEmpty() || this.#targetApp.undoStack.peek() !== this.#previousState) {
-      this.#targetApp.pushUndoStack();
-      this.#previousState = this.#targetApp.undoStack.peek();
-    }
-
-    let y = -2 / this.#targetApp.drawing.verticalClientScaling;
-    if (!Number.isFinite(y)) { y = -2; }
-
-    shift(selectedBases, { x: 0, y });
+    shift([...this.#targetApp.selectedBases], { x: 0, y: -this.#incrementY });
   }
 
   #shiftDown() {
-    let selectedBases = [...this.#targetApp.selectedBases];
-    if (selectedBases.length == 0) { return; }
+    shift([...this.#targetApp.selectedBases], { x: 0, y: this.#incrementY });
+  }
 
-    if (this.#targetApp.undoStack.isEmpty() || this.#targetApp.undoStack.peek() !== this.#previousState) {
-      this.#targetApp.pushUndoStack();
-      this.#previousState = this.#targetApp.undoStack.peek();
+  get #incrementX() {
+    let incrementX = 2;
+
+    incrementX /= this.#targetApp.drawing.horizontalClientScaling;
+
+    if (this.#repeatCount / 3 >= 2) {
+      incrementX *= 3;
+    } else if (this.#repeatCount / 3 >= 1) {
+      incrementX *= 2;
     }
 
-    let y = 2 / this.#targetApp.drawing.verticalClientScaling;
-    if (!Number.isFinite(y)) { y = 2; }
+    incrementX = Number.isFinite(incrementX) ? incrementX : 2;
 
-    shift(selectedBases, { x: 0, y });
+    return incrementX;
+  }
+
+  get #incrementY() {
+    let incrementY = 2;
+
+    incrementY /= this.#targetApp.drawing.verticalClientScaling;
+
+    if (this.#repeatCount / 3 >= 2) {
+      incrementY *= 3;
+    } else if (this.#repeatCount / 3 >= 1) {
+      incrementY *= 2;
+    }
+
+    incrementY = Number.isFinite(incrementY) ? incrementY : 2;
+
+    return incrementY;
   }
 }
 
