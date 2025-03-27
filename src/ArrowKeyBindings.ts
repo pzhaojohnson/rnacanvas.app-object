@@ -47,8 +47,8 @@ export class ArrowKeyBindings {
       this.#previousState = this.#targetApp.undoStack.peek();
     }
 
-    let x = -1 / this.#targetApp.drawing.horizontalClientScaling;
-    if (!Number.isFinite(x)) { x = -1; }
+    let x = -2 / this.#targetApp.drawing.horizontalClientScaling;
+    if (!Number.isFinite(x)) { x = -2; }
 
     shift(selectedBases, { x, y: 0 });
   }
@@ -62,8 +62,8 @@ export class ArrowKeyBindings {
       this.#previousState = this.#targetApp.undoStack.peek();
     }
 
-    let x = 1 / this.#targetApp.drawing.horizontalClientScaling;
-    if (!Number.isFinite(x)) { x = 1; }
+    let x = 2 / this.#targetApp.drawing.horizontalClientScaling;
+    if (!Number.isFinite(x)) { x = 2; }
 
     shift(selectedBases, { x, y: 0 });
   }
@@ -77,8 +77,8 @@ export class ArrowKeyBindings {
       this.#previousState = this.#targetApp.undoStack.peek();
     }
 
-    let y = -1 / this.#targetApp.drawing.verticalClientScaling;
-    if (!Number.isFinite(y)) { y = -1; }
+    let y = -2 / this.#targetApp.drawing.verticalClientScaling;
+    if (!Number.isFinite(y)) { y = -2; }
 
     shift(selectedBases, { x: 0, y });
   }
@@ -92,8 +92,8 @@ export class ArrowKeyBindings {
       this.#previousState = this.#targetApp.undoStack.peek();
     }
 
-    let y = 1 / this.#targetApp.drawing.verticalClientScaling;
-    if (!Number.isFinite(y)) { y = 1; }
+    let y = 2 / this.#targetApp.drawing.verticalClientScaling;
+    if (!Number.isFinite(y)) { y = 2; }
 
     shift(selectedBases, { x: 0, y });
   }
