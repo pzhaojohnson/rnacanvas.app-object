@@ -14,7 +14,7 @@ export class ArrowKeyBindings {
   #previousState?: NonNullObject;
 
   /**
-   * Time of the last arrow key down event (in milliseconds).
+   * Time of the last arrow key event (in milliseconds).
    */
   #lastTime = 0;
 
@@ -65,6 +65,7 @@ export class ArrowKeyBindings {
     let t = Date.now();
 
     this.#repeatCount = t - this.#lastTime <= 250 ? this.#repeatCount + 1 : 0;
+    this.#lastTime = t;
 
     let selectedBases = [...this.#targetApp.selectedBases];
     if (selectedBases.length == 0) { return; }
