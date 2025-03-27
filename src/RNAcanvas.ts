@@ -10,6 +10,8 @@ import { DrawingView } from './DrawingView';
 
 import { KeyBinding } from '@rnacanvas/utilities';
 
+import { ArrowKeyBindings } from './ArrowKeyBindings';
+
 import { PinchToScaleFeature } from '@rnacanvas/draw.svg.interact';
 
 import { DotBracketDrawer } from '@rnacanvas/draw';
@@ -156,6 +158,8 @@ export class RNAcanvas {
     new KeyBinding('Delete', () => this.removeSelected()),
     new KeyBinding('Backspace', () => this.removeSelected()),
   ];
+
+  #arrowKeyBindings = new ArrowKeyBindings(this);
 
   readonly selectedBases: SelectedBases<Nucleobase>;
 
@@ -790,6 +794,7 @@ export class RNAcanvas {
       ...this.#selectAllKeyBindings,
       this.#deselectKeyBinding,
       ...this.#removeSelectedKeyBindings,
+      ...this.#arrowKeyBindings,
       ...this.#saveKeyBindings,
       this.#toolbarToggleKeyBinding,
     ];
