@@ -107,17 +107,7 @@ export class ArrowKeyBindings {
 
     incrementX /= this.#targetApp.drawing.horizontalClientScaling;
 
-    if (this.#repeatCount / 5 >= 5) {
-      incrementX *= 6;
-    } else if (this.#repeatCount / 5 >= 4) {
-      incrementX *= 5;
-    } else if (this.#repeatCount / 5 >= 3) {
-      incrementX *= 4;
-    } else if (this.#repeatCount / 5 >= 2) {
-      incrementX *= 3;
-    } else if (this.#repeatCount / 5 >= 1) {
-      incrementX *= 2;
-    }
+    incrementX *= this.#speedUp;
 
     incrementX = Number.isFinite(incrementX) ? incrementX : 2;
 
@@ -129,21 +119,22 @@ export class ArrowKeyBindings {
 
     incrementY /= this.#targetApp.drawing.verticalClientScaling;
 
-    if (this.#repeatCount / 5 >= 5) {
-      incrementY *= 6;
-    } else if (this.#repeatCount / 5 >= 4) {
-      incrementY *= 5;
-    } else if (this.#repeatCount / 5 >= 3) {
-      incrementY *= 4;
-    } else if (this.#repeatCount / 5 >= 2) {
-      incrementY *= 3;
-    } else if (this.#repeatCount / 5 >= 1) {
-      incrementY *= 2;
-    }
+    incrementY *= this.#speedUp;
 
     incrementY = Number.isFinite(incrementY) ? incrementY : 2;
 
     return incrementY;
+  }
+
+  /**
+   * Speed-up factor.
+   */
+  get #speedUp() {
+    let speedUp = Math.floor(this.#repeatCount / 5) + 1;
+
+    speedUp = Math.min(speedUp, 6);
+
+    return speedUp
   }
 }
 
