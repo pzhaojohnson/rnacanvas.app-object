@@ -346,6 +346,7 @@ export class RNAcanvas {
       selectedBases: this.selectedBases,
       beforeDragging: () => this.beforeDragging(),
       afterDragging: () => this.afterDragging(),
+      pushUndoStack: () => this.pushUndoStack(),
       undo: () => this.undo(),
       redo: () => this.redo(),
       undoStack: this.undoStack,
