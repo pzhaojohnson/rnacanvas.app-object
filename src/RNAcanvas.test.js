@@ -140,6 +140,32 @@ describe('RNAcanvas class', () => {
     expect([...app.selectedSVGElements].length).toBe(0); // deselected the removed elements
   });
 
+  test('`get selectedOutlines()`', () => {
+    let app = new RNAcanvas();
+
+    let bases = [...'GAUCGAUCGAUGCUCGUAGUCG'].map(c => app.drawing.addBase(c));
+
+    let outlines = bases.map(b => app.drawing.outline(b));
+
+    let listener = jest.fn();
+
+    app.selectedOutlines.addEventListener('change', listener);
+    expect(listener).not.toHaveBeenCalled();
+
+    app.addToSelected([outlines[0]]);
+
+    expect([...app.selectedOutlines].includes(outlines[0])).toBeTruthy();
+    expect(listener).toHaveBeenCalledTimes(1);
+
+    app.addToSelected([outlines[5], outlines[2]]);
+
+    expect([...app.selectedOutlines].includes(outlines[5])).toBeTruthy();
+    expect([...app.selectedOutlines].includes(outlines[2])).toBeTruthy();
+
+    // might get called for each outline selected
+    expect(listener.mock.calls.length).toBeGreaterThanOrEqual(2);
+  });
+
   test('`serialized()`', () => {
     let app = new RNAcanvas();
 

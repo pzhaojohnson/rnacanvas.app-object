@@ -599,6 +599,32 @@ export class RNAcanvas {
   }
 
   /**
+   * Represents the currently selected outlines.
+   */
+  get selectedOutlines() {
+    let getSelectedOutlines = () => {
+      let selectedSVGElements = new Set(this.selectedSVGElements);
+      return [...this.drawing.outlines].filter(o => selectedSVGElements.has(o.domNode));
+    }
+
+    return {
+      [Symbol.iterator]() {
+        return getSelectedOutlines().values();
+      },
+
+      /**
+       * Listeners are called whenever the set of currently selected outlines changes.
+       *
+       * Listeners might sometimes get called even when the set of currently selected outlines
+       * doesn't actually change.
+       */
+      addEventListener: (name: 'change', listener: () => void) => {
+        this.selectedSVGElements.addEventListener(name, listener);
+      },
+    }
+  }
+
+  /**
    * Opens the provided form simply by adding it within the DOM structure of the RNAcanvas app.
    *
    * Forms are to be closed simply by removing them from the DOM structure of the RNAcanvas app
