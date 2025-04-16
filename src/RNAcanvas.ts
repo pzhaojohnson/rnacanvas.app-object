@@ -527,13 +527,21 @@ export class RNAcanvas {
    * (without deselecting any elements).
    */
   addToSelected(eles: Iterable<SVGGraphicsElement | { readonly domNode: SVGGraphicsElement }>): void {
+    let svgGraphicsElements: SVGGraphicsElement[] = [];
+
+    let drawingElements: { readonly domNode: SVGGraphicsElement }[] = [];
+
     [...eles].forEach(ele => {
       if (ele instanceof SVGGraphicsElement) {
-        this.selectedSVGElements.addAll([ele]);
+        svgGraphicsElements.push(ele);
       } else {
-        this.selectedSVGElements.addAll([ele.domNode]);
+        drawingElements.push(ele);
       }
     });
+
+    this.selectedSVGElements.addAll(svgGraphicsElements);
+
+    this.selectedSVGElements.addAll(drawingElements.map(ele => ele.domNode));
   }
 
   /**

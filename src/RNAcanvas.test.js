@@ -162,8 +162,7 @@ describe('RNAcanvas class', () => {
     expect([...app.selectedOutlines].includes(outlines[5])).toBeTruthy();
     expect([...app.selectedOutlines].includes(outlines[2])).toBeTruthy();
 
-    // might get called for each outline selected
-    expect(listener.mock.calls.length).toBeGreaterThanOrEqual(2);
+    expect(listener.mock.calls.length).toBe(2);
   });
 
   test('`serialized()`', () => {
