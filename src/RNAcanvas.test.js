@@ -80,6 +80,23 @@ describe('RNAcanvas class', () => {
     expect(rnaCanvas.domNode.style).toBeTruthy();
   });
 
+  test('`addToSelected()`', () => {
+    let app = new RNAcanvas();
+
+    [...'GAUCGAUCGAUGCUCGUAGUCG'].forEach(c => app.drawing.addBase(c));
+    let bases = [...app.drawing.bases];
+
+    let circles = [1, 2, 3, 4, 5].map(() => document.createElementNS('http://www.w3.org/2000/svg', 'circle'));
+    circles.forEach(c => app.drawing.domNode.append(c));
+
+    app.addToSelected([bases[7], circles[2]]);
+
+    expect([...app.selectedBases].includes(bases[7])).toBeTruthy();
+
+    // checking if an element is an SVG graphics element does not work properly in JSDOM
+    expect([...app.selectedSVGElements][1]).toBeUndefined();
+  });
+
   test('`deselect()`', () => {
     let app = new RNAcanvas();
 

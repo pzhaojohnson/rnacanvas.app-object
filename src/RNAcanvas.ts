@@ -523,6 +523,20 @@ export class RNAcanvas {
   }
 
   /**
+   * Adds the specified elements to the set of selected elements
+   * (without deselecting any elements).
+   */
+  addToSelected(eles: Iterable<SVGGraphicsElement | { readonly domNode: SVGGraphicsElement }>): void {
+    [...eles].forEach(ele => {
+      if (ele instanceof SVGGraphicsElement) {
+        this.selectedSVGElements.addAll([ele]);
+      } else {
+        this.selectedSVGElements.addAll([ele.domNode]);
+      }
+    });
+  }
+
+  /**
    * Selects all SVG (graphics) elements in the drawing of the app.
    */
   selectAll(): void {
