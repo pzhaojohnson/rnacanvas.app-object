@@ -545,6 +545,27 @@ export class RNAcanvas {
   }
 
   /**
+   * Removes the specified elements from that which are currently selected.
+   */
+  removeFromSelected(eles: Iterable<SVGGraphicsElement | { readonly domNode: SVGGraphicsElement }>): void {
+    let svgGraphicsElements: SVGGraphicsElement[] = [];
+
+    let drawingElements: { readonly domNode: SVGGraphicsElement }[] = [];
+
+    [...eles].forEach(ele => {
+      if (ele instanceof SVGGraphicsElement) {
+        svgGraphicsElements.push(ele);
+      } else {
+        drawingElements.push(ele);
+      }
+    });
+
+    this.selectedSVGElements.removeAll(svgGraphicsElements);
+
+    this.selectedSVGElements.removeAll(drawingElements.map(ele => ele.domNode));
+  }
+
+  /**
    * Selects all SVG (graphics) elements in the drawing of the app.
    */
   selectAll(): void {

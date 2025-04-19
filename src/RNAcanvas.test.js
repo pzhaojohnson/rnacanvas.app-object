@@ -97,6 +97,33 @@ describe('RNAcanvas class', () => {
     expect([...app.selectedSVGElements][1]).toBeUndefined();
   });
 
+  test('`removeFromSelected()`', () => {
+    let app = new RNAcanvas();
+
+    [...'GAUCGAUCGAUGCUCGUAGUCG'].forEach(c => app.drawing.addBase(c));
+    let bases = [...app.drawing.bases];
+
+    let circles = [1, 2, 3, 4, 5].map(() => document.createElementNS('http://www.w3.org/2000/svg', 'circle'));
+    circles.forEach(c => app.drawing.domNode.append(c));
+
+    app.addToSelected([bases[7], circles[2], bases[3], circles[1]]);
+
+    expect([...app.selectedBases].includes(bases[7])).toBeTruthy();
+    expect([...app.selectedBases].includes(bases[3])).toBeTruthy();
+
+    // checking if an element is an SVG graphics element does not work properly with JSDOM
+    expect([...app.selectedSVGElements].length).toBe(3);
+    expect([...app.selectedSVGElements][1]).toBeUndefined();
+
+    app.removeFromSelected([circles[2], bases[3]]);
+
+    expect([...app.selectedBases].includes(bases[7])).toBeTruthy();
+    expect([...app.selectedBases].includes(bases[3])).toBeFalsy();
+
+    // checking if an element is an SVG graphics element does not work properly with JSDOM
+    expect([...app.selectedSVGElements].length).toBe(1);
+  });
+
   test('`deselect()`', () => {
     let app = new RNAcanvas();
 
