@@ -305,6 +305,7 @@ export class RNAcanvas {
       {
         svgElements: this.selectedSVGElements,
         bases: this.selectedBases,
+        outlines: this.selectedOutlines,
         baseNumberings: this.selectedBaseNumberings,
       },
       {
