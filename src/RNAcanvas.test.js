@@ -201,7 +201,7 @@ describe('RNAcanvas class', () => {
     [1, 5, 2, 8].forEach(i => {
       let b = [...app.drawing.bases][i];
       b.domNode.id = `id-${i}`;
-      app.selectedSVGElements.addAll([b]);
+      app.selectedSVGElements.addAll([b.domNode]);
     });
 
     expect(app.serialized().drawing).toStrictEqual(app.drawing.serialized());

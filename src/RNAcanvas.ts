@@ -143,6 +143,11 @@ export class RNAcanvas {
   private readonly overlaidDrawing: Drawing;
 
   /**
+   * Watches for when elements are removed from the drawing.
+   */
+  #elementRemovalObserver;
+
+  /**
    * Highlightings of the currently selected SVG elements in the drawing of the app.
    */
   private readonly selectedSVGElementHighlightings: LiveSVGElementHighlightings;
@@ -282,6 +287,14 @@ export class RNAcanvas {
     this.pinchToScaleFeature.interactionScope = this.domNode;
     this.pinchToScaleFeature.beforeScaling = () => this.hideOverlaidDrawing();
     this.pinchToScaleFeature.afterScaling = () => this.unhideOverlaidDrawing();
+
+    // watches for when elements are removed from the drawing
+    this.#elementRemovalObserver = new MutationObserver(() => {
+      let removedElements = [...this.selectedSVGElements].filter(ele => !this.drawing.domNode.contains(ele));
+      this.selectedSVGElements.removeAll(removedElements);
+    });
+
+    this.#elementRemovalObserver.observe(this.drawing.domNode, { childList: true, subtree: true });
 
     this.selectedSVGElementHighlightings = new LiveSVGElementHighlightings(this.selectedSVGElements, this.drawing.domNode);
     this.selectedSVGElementHighlightings.appendTo(this.overlaidDrawing.domNode);
