@@ -2,7 +2,9 @@ import { Drawing } from '@rnacanvas/draw';
 
 import type { Nucleobase } from '@rnacanvas/draw';
 
-import { InvertedStraightBondsHider } from '@rnacanvas/draw.bonds';
+import { MissingPrimaryBondsAdder } from '@rnacanvas/draw.bases.bonds';
+
+import { InvertedStraightBondsHider } from '@rnacanvas/draw.bases.bonds';
 
 import { CenteringScrollContainer } from './CenteringScrollContainer';
 
@@ -107,6 +109,8 @@ export class RNAcanvas {
    * The 2D nucleic acid structure drawing of the app object.
    */
   readonly drawing: Drawing;
+
+  #missingPrimaryBondsAdder;
 
   private readonly invertedPrimaryBondsHider: InvertedStraightBondsHider;
 
@@ -254,6 +258,8 @@ export class RNAcanvas {
     $(this.drawing.domNode).css({ backgroundColor: 'white' });
     $(this.drawing.domNode).css({ userSelect: 'none', webkitUserSelect: 'none' });
     $(this.drawing.domNode).css({ cursor: 'default' });
+
+    this.#missingPrimaryBondsAdder = new MissingPrimaryBondsAdder(this.drawing);
 
     this.invertedPrimaryBondsHider = new InvertedStraightBondsHider(
       { [Symbol.iterator]: () => [...this.drawing.primaryBonds].values() },
