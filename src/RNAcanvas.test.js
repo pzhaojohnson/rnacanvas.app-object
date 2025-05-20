@@ -4,6 +4,8 @@
 
 import { RNAcanvas } from './RNAcanvas';
 
+import { consecutivePairs } from '@rnacanvas/base-pairs';
+
 if (!SVGElement.prototype.viewBox) {
   SVGElement.prototype.viewBox = { baseVal: { width: 0, height: 0 } };
 }
@@ -190,6 +192,51 @@ describe('RNAcanvas class', () => {
     expect([...app.selectedOutlines].includes(outlines[2])).toBeTruthy();
 
     expect(listener.mock.calls.length).toBe(2);
+  });
+
+  test('`get selectedPrimaryBonds()`', () => {
+    let app = new RNAcanvas();
+
+    let bases = [...'GAUCGAUCGAUGCUCGUAGUCG'].map(c => app.drawing.addBase(c));
+
+    consecutivePairs(bases).forEach(([base1, base2]) => app.drawing.addPrimaryBond(base1, base2));
+
+    let primaryBonds = [...app.drawing.primaryBonds];
+
+    let listener = jest.fn();
+
+    app.selectedPrimaryBonds.addEventListener('change', listener);
+    expect(listener).not.toHaveBeenCalled();
+
+    app.addToSelected([primaryBonds[0], primaryBonds[6], primaryBonds[4]]);
+
+    expect([...app.selectedPrimaryBonds].includes(primaryBonds[0])).toBeTruthy();
+    expect([...app.selectedPrimaryBonds].includes(primaryBonds[6])).toBeTruthy();
+    expect([...app.selectedPrimaryBonds].includes(primaryBonds[4])).toBeTruthy();
+
+    expect(listener).toHaveBeenCalledTimes(1);
+  });
+
+  test('`get selectedSecondaryBonds()`', () => {
+    let app = new RNAcanvas();
+
+    let bases = [...'GAUCGAUCGAUGCUCGUAGUCG'].map(c => app.drawing.addBase(c));
+
+    [[1, 13], [2, 12], [3, 11], [4, 10]].forEach(([i, j]) => app.drawing.addSecondaryBond(bases[i], bases[j]));
+
+    let secondaryBonds = [...app.drawing.secondaryBonds];
+
+    let listener = jest.fn();
+
+    app.selectedSecondaryBonds.addEventListener('change', listener);
+    expect(listener).not.toHaveBeenCalled();
+
+    app.addToSelected([secondaryBonds[3], secondaryBonds[1]]);
+
+    expect([...app.selectedSecondaryBonds].includes(secondaryBonds[3])).toBeTruthy();
+    expect([...app.selectedSecondaryBonds].includes(secondaryBonds[1])).toBeTruthy();
+
+    expect(listener).toHaveBeenCalledTimes(1);
   });
 
   test('`serialized()`', () => {

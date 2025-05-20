@@ -673,6 +673,48 @@ export class RNAcanvas {
     }
   }
 
+  get selectedPrimaryBonds() {
+    let getSelectedPrimaryBonds = () => {
+      let selectedSVGElements = new Set(this.selectedSVGElements);
+
+      return [...this.drawing.primaryBonds].filter(pb => selectedSVGElements.has(pb.domNode));
+    }
+
+    return {
+      [Symbol.iterator]() {
+        return getSelectedPrimaryBonds().values();
+      },
+
+      /**
+       * Listeners are called whenever the current selection of primary bonds changes.
+       */
+      addEventListener: (name: 'change', listener: () => void) => {
+        this.selectedSVGElements.addEventListener(name, listener);
+      },
+    }
+  }
+
+  get selectedSecondaryBonds() {
+    let getSelectedSecondaryBonds = () => {
+      let selectedSVGElements = new Set(this.selectedSVGElements);
+
+      return [...this.drawing.secondaryBonds].filter(sb => selectedSVGElements.has(sb.domNode));
+    }
+
+    return {
+      [Symbol.iterator]() {
+        return getSelectedSecondaryBonds().values();
+      },
+
+      /**
+       * Listeners are called whenever the current selection of secondary bonds changes.
+       */
+      addEventListener: (name: 'change', listener: () => void) => {
+        this.selectedSVGElements.addEventListener(name, listener);
+      },
+    }
+  }
+
   /**
    * Opens the provided form simply by adding it within the DOM structure of the RNAcanvas app.
    *
