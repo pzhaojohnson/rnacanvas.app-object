@@ -1,4 +1,6 @@
 .silvec-plug {
+  mix-blend-mode: difference;
+
   opacity: 0;
 
   animation: fade-out 10s;
