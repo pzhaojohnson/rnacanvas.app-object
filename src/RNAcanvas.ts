@@ -395,22 +395,22 @@ export class RNAcanvas {
 
     let openButton = new OpenButton();
     openButton.domNode.addEventListener('click', () => this.openForm(this.#openForm));
-    $(openButton.domNode).css({ position: 'absolute', top: '11px', left: '28px' });
+    $(openButton.domNode).css({ position: 'absolute', top: '10px', left: '20px' });
     this.boundingBox.append(openButton.domNode);
 
     this.#saveButton = new SaveButton();
     this.#saveButton.domNode.addEventListener('click', () => this.save());
-    $(this.#saveButton.domNode).css({ position: 'absolute', top: '11px', left: '96px' });
+    $(this.#saveButton.domNode).css({ position: 'absolute', top: '10px', left: '88px' });
     this.boundingBox.append(this.#saveButton.domNode);
 
     this.#exportButton = new ExportButton();
     this.#exportButton.domNode.addEventListener('click', () => this.openForm(this.exportForm));
-    $(this.#exportButton.domNode).css({ position: 'absolute', top: '11px', left: '164px' });
+    $(this.#exportButton.domNode).css({ position: 'absolute', top: '11px', left: '156px' });
     this.boundingBox.append(this.#exportButton.domNode);
 
     this.#aboutButton = new AboutButton();
     this.#aboutButton.domNode.addEventListener('click', () => this.openForm(this.#aboutForm));
-    $(this.#aboutButton.domNode).css({ position: 'absolute', top: '9px', right: '28px' });
+    $(this.#aboutButton.domNode).css({ position: 'absolute', top: '9px', right: '20px' });
     this.boundingBox.append(this.#aboutButton.domNode);
 
     this.#silvecPlug = SilvecPlug();
