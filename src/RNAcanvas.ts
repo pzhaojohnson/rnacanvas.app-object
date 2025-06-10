@@ -1,5 +1,7 @@
 import { Drawing } from '@rnacanvas/draw';
 
+import { BackgroundColor } from './BackgroundColor';
+
 import type { Nucleobase } from '@rnacanvas/draw';
 
 import { MissingPrimaryBondsAdder } from '@rnacanvas/draw.bases.bonds';
@@ -109,6 +111,8 @@ export class RNAcanvas {
    * The 2D nucleic acid structure drawing of the app object.
    */
   readonly drawing: Drawing;
+
+  #drawingBackgroundColor;
 
   #missingPrimaryBondsAdder;
 
@@ -228,9 +232,6 @@ export class RNAcanvas {
     // make focusable for key bindings to work
     this.domNode.tabIndex = 0;
 
-    // give the app a gray and white checkerboard background
-    this.domNode.style.background = 'repeating-conic-gradient(#eee 0% 25%, white 0% 50%) 50% / 20px 20px';
-
     this.boundingBox = document.createElement('div');
     this.domNode.appendChild(this.boundingBox);
 
@@ -258,6 +259,15 @@ export class RNAcanvas {
     $(this.drawing.domNode).css({ backgroundColor: 'white' });
     $(this.drawing.domNode).css({ userSelect: 'none', webkitUserSelect: 'none' });
     $(this.drawing.domNode).css({ cursor: 'default' });
+
+    this.#drawingBackgroundColor = new BackgroundColor(this.drawing);
+
+    // give the app a gray and white checkerboard backdrop by default
+    this.domNode.style.background = lightBackdrop;
+
+    this.#drawingBackgroundColor.addEventListener('change', () => {
+      this.domNode.style.background = this.#drawingBackgroundColor.isDark() ? darkBackdrop : lightBackdrop;
+    });
 
     this.#missingPrimaryBondsAdder = new MissingPrimaryBondsAdder(this.drawing);
 
@@ -941,3 +951,13 @@ type PreviousState = NonNullObject;
 type BaseNumbering = ReturnType<InstanceType<typeof RNAcanvas>['drawing']['number']>[0];
 
 type NonNullObject = { [name: string]: unknown };
+
+/**
+ * A white and gray checkerboard pattern.
+ */
+const lightBackdrop = 'repeating-conic-gradient(#eee 0% 25%, white 0% 50%) 50% / 20px 20px';
+
+/**
+ * A black and dark gray checkerboard pattern.
+ */
+const darkBackdrop = 'repeating-conic-gradient(#1d1d1f 0% 25%, black 0% 50%) 50% / 20px 20px';
