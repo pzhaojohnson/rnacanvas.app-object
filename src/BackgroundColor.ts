@@ -14,8 +14,6 @@ export class BackgroundColor {
 
   #svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 
-  #img = document.createElement('img');
-
   #drawingObserver;
 
   #eventListeners: EventListeners = {
@@ -76,11 +74,16 @@ export class BackgroundColor {
     this.#svg.style.backgroundColor = computedStyle.backgroundColor;
     this.#svg.style.filter = computedStyle.filter;
 
+    let image = new Image();
+
     // treat background color as being light if this throws
     try {
-      this.#img.src = 'data:image/svg+xml;base64,' + btoa(this.#svg.outerHTML);
+      let serializer = new XMLSerializer();
+      let xml = serializer.serializeToString(this.#svg);
 
-      context.drawImage(this.#img, 0, 0, this.#canvas.width, this.#canvas.height);
+      image.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(xml);
+
+      context.drawImage(image, 0, 0, this.#canvas.width, this.#canvas.height)
     } catch {
       return false;
     }
