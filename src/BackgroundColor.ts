@@ -1,7 +1,8 @@
 import type { Drawing } from '@rnacanvas/draw';
 
 /**
- * Represents the background color of a target drawing.
+ * Represents the background color of a target drawing
+ * as perceived by the user (e.g., with filter effects applied, etc.).
  */
 export class BackgroundColor {
   #targetDrawing;
@@ -11,7 +12,9 @@ export class BackgroundColor {
    */
   #canvas = document.createElement('canvas');
 
-  #canvasContainer = document.createElement('div');
+  #svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+
+  #img = document.createElement('img');
 
   #drawingObserver;
 
@@ -22,24 +25,24 @@ export class BackgroundColor {
   constructor(targetDrawing: Drawing) {
     this.#targetDrawing = targetDrawing;
 
-    this.#canvasContainer.append(this.#canvas);
-
     // make canvas area nonzero
     this.#canvas.style.width = '10px';
     this.#canvas.style.height = '10px';
 
-    // use a white backdrop
-    this.#canvasContainer.style.backgroundColor = 'white';
+    this.#svg.setAttribute('width', '10');
+    this.#svg.setAttribute('height', '10');
+    this.#svg.setAttribute('viewBox', '0 0 10 10');
 
-    // don't interfere with the positioning of any other elements
-    this.#canvasContainer.style.position = 'fixed';
-    this.#canvasContainer.style.top = '0px';
-    this.#canvasContainer.style.left = '0px';
+    // don't interfere with the positioning of other elements
+    this.#canvas.style.position = 'fixed';
+    this.#canvas.style.left = '0px';
+    this.#canvas.style.top = '0px';
 
     // make invisible and non-interactive
-    this.#canvasContainer.style.display = 'none';
+    this.#canvas.style.display = 'none';
+    this.#canvas.style.pointerEvents = 'none';
 
-    document.body.append(this.#canvasContainer);
+    document.body.append(this.#canvas);
 
     this.#drawingObserver = new MutationObserver(() => this.#callEventListeners('change'));
 
@@ -51,17 +54,40 @@ export class BackgroundColor {
    * is closer to black than it is to white.
    */
   isDark(): boolean {
-    let computedStyle = window.getComputedStyle(this.#targetDrawing.domNode);
-
-    // apply CSS styles that would affect the background color as perceived by the user
-    this.#canvas.style.backgroundColor = computedStyle.backgroundColor;
-    this.#canvas.style.filter = computedStyle.filter;
+    // in case the canvas must be part of the document body to correctly calculate pixel color data
+    if (!document.body.contains(this.#canvas)) {
+      document.body.append(this.#canvas);
+    }
 
     let context = this.#canvas.getContext('2d');
 
+    // treat background color as being light if uanble to get context
+    if (!context) {
+      return false;
+    }
+
+    // use a white backdrop
+    context.fillStyle = 'white';
+    context.fillRect(0, 0, this.#canvas.width, this.#canvas.height);
+
+    let computedStyle = window.getComputedStyle(this.#targetDrawing.domNode);
+
+    // apply any CSS styles that would affect the background color perceived by the user
+    this.#svg.style.backgroundColor = computedStyle.backgroundColor;
+    this.#svg.style.filter = computedStyle.filter;
+
+    // treat background color as being light if this throws
+    try {
+      this.#img.src = 'data:image/svg+xml;base64,' + btoa(this.#svg.outerHTML);
+
+      context.drawImage(this.#img, 0, 0, this.#canvas.width, this.#canvas.height);
+    } catch {
+      return false;
+    }
+
     let data = context?.getImageData(0, 0, 1, 1).data;
 
-    // treat as being light if cannot get image data
+    // treat background color as being light if cannot get image data
     if (!data) {
       return false;
     }
