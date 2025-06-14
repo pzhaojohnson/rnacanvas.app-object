@@ -320,6 +320,10 @@ export class RNAcanvas {
     this.selectingRect = new SelectingRect(this.drawing.domNode, this.selectedSVGElements);
     this.selectingRect.appendTo(this.overlaidDrawing.domNode);
 
+    this.#drawingBackgroundColor.addEventListener('change', async () => {
+      this.overlaidDrawing.domNode.style.filter = await this.#drawingBackgroundColor.isDark() ? 'invert(100%)' : '';
+    });
+
     this.#selectAllKeyBindings = [
       new KeyBinding('A', () => this.selectAll(), { ctrlKey: true }),
       new KeyBinding('A', () => this.selectAll(), { metaKey: true }),
