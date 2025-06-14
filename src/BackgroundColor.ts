@@ -51,15 +51,15 @@ export class BackgroundColor {
    * Returns true if the background color of the target drawing
    * is closer to black than it is to white.
    */
-  isDark(): boolean {
-    // in case the canvas must be part of the document body to correctly calculate pixel color data
+  async isDark(): Promise<boolean> {
+    // it might be necessary for the canvas to be part of the document body for pixel color data to be correctly calculated
     if (!document.body.contains(this.#canvas)) {
       document.body.append(this.#canvas);
     }
 
     let context = this.#canvas.getContext('2d');
 
-    // treat background color as being light if uanble to get context
+    // return that background color is light by default
     if (!context) {
       return false;
     }
@@ -74,23 +74,25 @@ export class BackgroundColor {
     this.#svg.style.backgroundColor = computedStyle.backgroundColor;
     this.#svg.style.filter = computedStyle.filter;
 
-    let image = new Image();
-
-    // treat background color as being light if this throws
+    // return that background color is light if any of this throws
     try {
       let serializer = new XMLSerializer();
       let xml = serializer.serializeToString(this.#svg);
 
+      let image = new Image();
       image.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(xml);
 
-      context.drawImage(image, 0, 0, this.#canvas.width, this.#canvas.height)
+      // must wait for the image to load
+      await image.decode();
+
+      context.drawImage(image, 0, 0, this.#canvas.width, this.#canvas.height);
     } catch {
       return false;
     }
 
     let data = context?.getImageData(0, 0, 1, 1).data;
 
-    // treat background color as being light if cannot get image data
+    // return that the background color is light by default
     if (!data) {
       return false;
     }

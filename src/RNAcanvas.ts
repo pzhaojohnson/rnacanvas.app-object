@@ -265,8 +265,8 @@ export class RNAcanvas {
     // give the app a gray and white checkerboard backdrop by default
     this.domNode.style.background = lightBackdrop;
 
-    this.#drawingBackgroundColor.addEventListener('change', () => {
-      this.domNode.style.background = this.#drawingBackgroundColor.isDark() ? darkBackdrop : lightBackdrop;
+    this.#drawingBackgroundColor.addEventListener('change', async () => {
+      this.domNode.style.background = await this.#drawingBackgroundColor.isDark() ? darkBackdrop : lightBackdrop;
     });
 
     this.#missingPrimaryBondsAdder = new MissingPrimaryBondsAdder(this.drawing);
