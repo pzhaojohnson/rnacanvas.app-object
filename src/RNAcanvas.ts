@@ -437,6 +437,10 @@ export class RNAcanvas {
     this.#silvecPlug = SilvecPlug();
     this.boundingBox.append(this.#silvecPlug);
 
+    this.#drawingBackgroundColor.addEventListener('change', async () => {
+      this.#silvecPlug.style.color = await this.#drawingBackgroundColor.isDark() ? 'white' : 'black';
+    });
+
     this.domNode.addEventListener('drop', event => this.#dropHandler.handle(event));
     this.domNode.addEventListener('dragover', event => event.preventDefault());
 
