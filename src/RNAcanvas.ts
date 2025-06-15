@@ -184,6 +184,8 @@ export class RNAcanvas {
 
   #openForm;
 
+  #openButton;
+
   #saveButton;
 
   #saveKeyBindings = [
@@ -407,10 +409,10 @@ export class RNAcanvas {
     toolbarToggleContainer.append(toolbarToggle.domNode);
     this.boundingBox.append(toolbarToggleContainer);
 
-    let openButton = new OpenButton();
-    openButton.domNode.addEventListener('click', () => this.openForm(this.#openForm));
-    $(openButton.domNode).css({ position: 'absolute', top: '10px', left: '26px' });
-    this.boundingBox.append(openButton.domNode);
+    this.#openButton = new OpenButton();
+    this.#openButton.domNode.addEventListener('click', () => this.openForm(this.#openForm));
+    $(this.#openButton.domNode).css({ position: 'absolute', top: '10px', left: '26px' });
+    this.boundingBox.append(this.#openButton.domNode);
 
     this.#saveButton = new SaveButton();
     this.#saveButton.domNode.addEventListener('click', () => this.save());
@@ -426,6 +428,11 @@ export class RNAcanvas {
     this.#aboutButton.domNode.addEventListener('click', () => this.openForm(this.#aboutForm));
     $(this.#aboutButton.domNode).css({ position: 'absolute', top: '9px', right: '25px' });
     this.boundingBox.append(this.#aboutButton.domNode);
+
+    this.#drawingBackgroundColor.addEventListener('change', async () => {
+      let theme: 'light' | 'dark' = await this.#drawingBackgroundColor.isDark() ? 'dark' : 'light';
+      this.#floatingButtons.forEach(button => button.theme = theme);
+    });
 
     this.#silvecPlug = SilvecPlug();
     this.boundingBox.append(this.#silvecPlug);
@@ -932,6 +939,15 @@ export class RNAcanvas {
 
   afterDragging() {
     this.unhideOverlaidDrawing();
+  }
+
+  get #floatingButtons() {
+    return [
+      this.#openButton,
+      this.#saveButton,
+      this.#exportButton,
+      this.#aboutButton,
+    ];
   }
 
   get keyBindings(): Iterable<{ owner: Element | undefined }> {
