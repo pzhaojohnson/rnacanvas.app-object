@@ -216,6 +216,8 @@ export class RNAcanvas {
 
   private readonly toolbarContainer = document.createElement('div');
 
+  #toolbarToggle;
+
   #toolbarToggleKeyBinding;
 
   #silvecPlug;
@@ -399,14 +401,14 @@ export class RNAcanvas {
     // make unfocusable (for key bindings to work)
     this.toolbar.domNode.removeAttribute('tabindex');
 
-    let toolbarToggle = new ToolbarToggle({ toolbar: this.toolbar });
-    $(toolbarToggle.domNode).css({ position: 'absolute', bottom: '22.5px', left: '15px' });
+    this.#toolbarToggle = new ToolbarToggle({ toolbar: this.toolbar });
+    $(this.#toolbarToggle.domNode).css({ position: 'absolute', bottom: '22.5px', left: '15px' });
 
-    this.#toolbarToggleKeyBinding = new KeyBinding('T', () => toolbarToggle.press());
-    toolbarToggle.boundKey = this.#toolbarToggleKeyBinding.key;
+    this.#toolbarToggleKeyBinding = new KeyBinding('T', () => this.#toolbarToggle.press());
+    this.#toolbarToggle.boundKey = this.#toolbarToggleKeyBinding.key;
 
     let toolbarToggleContainer = document.createElement('div');
-    toolbarToggleContainer.append(toolbarToggle.domNode);
+    toolbarToggleContainer.append(this.#toolbarToggle.domNode);
     this.boundingBox.append(toolbarToggleContainer);
 
     this.#openButton = new OpenButton();
@@ -434,11 +436,11 @@ export class RNAcanvas {
       this.#floatingButtons.forEach(button => button.theme = theme);
     });
 
-    this.#silvecPlug = SilvecPlug();
-    this.boundingBox.append(this.#silvecPlug);
+    this.#silvecPlug = new SilvecPlug();
+    this.boundingBox.append(this.#silvecPlug.domNode);
 
     this.#drawingBackgroundColor.addEventListener('change', async () => {
-      this.#silvecPlug.style.color = await this.#drawingBackgroundColor.isDark() ? 'white' : 'black';
+      this.#silvecPlug.domNode.style.color = await this.#drawingBackgroundColor.isDark() ? 'white' : 'black';
     });
 
     this.domNode.addEventListener('drop', event => this.#dropHandler.handle(event));
@@ -501,6 +503,23 @@ export class RNAcanvas {
    */
   private unhideOverlaidDrawing(): void {
     this.overlaidDrawing.domNode.style.visibility = 'visible';
+  }
+
+  get peripheralUI() {
+    let elements = [
+      this.#openButton,
+      this.#saveButton,
+      this.#exportButton,
+      this.#aboutButton,
+      this.#toolbarToggle,
+      this.toolbar,
+      this.#silvecPlug,
+    ];
+
+    return {
+      hide: () => elements.forEach(ele => ele.hide()),
+      show: () => elements.forEach(ele => ele.show()),
+    };
   }
 
   /**
