@@ -220,3 +220,25 @@ Opens a new blank tab of the RNAcanvas app.
 ```javascript
 app.newTab();
 ```
+
+### `duplicateTab()`
+
+Opens a new duplicate tab of the RNAcanvas app
+(i.e., a tab with the same URL parameters).
+
+This method will omit the `peripheral_ui` URL parameter
+so that the new tab is always opened with a full peripheral UI.
+
+(This is useful when the app is currently embedded in another website
+through the use of an `iframe` element without the full peripheral UI currently being shown.)
+
+```javascript
+app.duplicateTab();
+```
+
+This method cannot currently recreate edits made by the user to the drawing
+in the new duplicate tab.
+
+This method will also simply open a new blank tab of the RNAcanvas app
+if the app is currently embedded in another website without the use of an `iframe` element
+(i.e., using the RNAcanvas app object interface).
