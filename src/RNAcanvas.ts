@@ -61,6 +61,8 @@ import { Toolbar, ToolbarToggle } from '@rnacanvas/toolbar';
 
 import { SilvecPlug } from './SilvecPlug';
 
+import { EditButton } from '@rnacanvas/buttons';
+
 import { DropHandler } from '@rnacanvas/drop-interface';
 import { PasteHandler } from '@rnacanvas/paste-interface';
 
@@ -221,6 +223,8 @@ export class RNAcanvas {
   #toolbarToggleKeyBinding;
 
   #silvecPlug;
+
+  #editButton = new EditButton();
 
   #undoStack: FiniteStack<ReturnType<InstanceType<typeof RNAcanvas>['serialized']>> = new FiniteStack(50);
 
@@ -439,6 +443,15 @@ export class RNAcanvas {
     this.#silvecPlug = new SilvecPlug();
     this.boundingBox.append(this.#silvecPlug.domNode);
 
+    this.#editButton.domNode.addEventListener('click', () => this.duplicateTab());
+
+    this.#editButton.domNode.style.position = 'absolute';
+    this.#editButton.domNode.style.top = '10px';
+    this.#editButton.domNode.style.right = '24px';
+
+    // hide by default
+    this.#editButton.hide();
+
     this.#drawingBackgroundColor.addEventListener('change', async () => {
       this.#silvecPlug.domNode.style.color = await this.#drawingBackgroundColor.isDark() ? 'white' : 'black';
     });
@@ -506,7 +519,7 @@ export class RNAcanvas {
   }
 
   get peripheralUI() {
-    let elements = [
+    let fullElements = [
       this.#openButton,
       this.#saveButton,
       this.#exportButton,
@@ -516,10 +529,22 @@ export class RNAcanvas {
       this.#silvecPlug,
     ];
 
-    return {
-      hide: () => elements.forEach(ele => ele.hide()),
-      show: () => elements.forEach(ele => ele.show()),
-    };
+    let minimalElements = [
+      this.#editButton,
+    ];
+
+    let allElements = [...fullElements, ...minimalElements];
+
+    let hide = () => allElements.forEach(ele => ele.hide());
+
+    let showFull = () => fullElements.forEach(ele => ele.show());
+
+    let showMinimal = () => minimalElements.forEach(ele => ele.show());
+
+    // an alias for `showFull()`
+    let show = showFull;
+
+    return { hide, showFull, showMinimal, show };
   }
 
   /**
