@@ -1017,6 +1017,8 @@ export class RNAcanvas {
     let url = new URL(window.location.href);
 
     if (!['https://code.rnacanvas.app', 'https://code.rnacanvas.app/'].includes(url.origin)) {
+      console.error('Unable to retrieve URL parameters.');
+      console.error('Opening a new blank tab of the RNAcanvas app...');
       this.newTab();
       return;
     }
