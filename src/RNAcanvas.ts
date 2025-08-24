@@ -449,6 +449,8 @@ export class RNAcanvas {
     this.#editButton.domNode.style.top = '10px';
     this.#editButton.domNode.style.right = '24px';
 
+    this.boundingBox.append(this.#editButton.domNode);
+
     // hide by default
     this.#editButton.hide();
 
@@ -537,9 +539,15 @@ export class RNAcanvas {
 
     let hide = () => allElements.forEach(ele => ele.hide());
 
-    let showFull = () => fullElements.forEach(ele => ele.show());
+    let showFull = () => {
+      hide();
+      fullElements.forEach(ele => ele.show());
+    };
 
-    let showMinimal = () => minimalElements.forEach(ele => ele.show());
+    let showMinimal = () => {
+      hide();
+      minimalElements.forEach(ele => ele.show());
+    }
 
     // an alias for `showFull()`
     let show = showFull;
