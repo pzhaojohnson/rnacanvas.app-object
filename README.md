@@ -212,3 +212,11 @@ Forms are closed by simply removing them
 (i.e., by calling the `remove` method on their corresponding DOM nodes).
 
 Forms can be made draggable by applying the `DragTranslater` class of the `@rnacanvas/forms` package to them.
+
+### `newTab()`
+
+Opens a new tab of the RNAcanvas app.
+
+```javascript
+app.newTab();
+```
