@@ -987,6 +987,14 @@ export class RNAcanvas {
       this.#toolbarToggleKeyBinding,
     ];
   }
+
+  /**
+   * Opens a new tab of the RNAcanvas app.
+   */
+  newTab(): void {
+    // hard-code the RNAcanvas URL (in case the RNAcanvas app object is currently embedded in another website)
+    window.open('https://code.rnacanvas.app', '_blank');
+  }
 }
 
 type PreviousState = NonNullObject;

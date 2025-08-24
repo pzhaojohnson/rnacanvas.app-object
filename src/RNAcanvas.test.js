@@ -480,4 +480,17 @@ describe('RNAcanvas class', () => {
     listeners.forEach(li => expect(li).toHaveBeenCalledTimes(2));
     expect(app.redoStack.peek()).toStrictEqual(previousState);
   });
+
+  test('`newTab()`', () => {
+    let app = new RNAcanvas();
+
+    window.open = jest.fn();
+
+    app.newTab();
+
+    expect(window.open).toHaveBeenCalledTimes(1);
+    expect(window.open.mock.calls[0][0]).toBe('https://code.rnacanvas.app');
+    expect(window.open.mock.calls[0][1]).toBe('_blank');
+    expect(window.open.mock.calls[0].length).toBe(2);
+  });
 });
