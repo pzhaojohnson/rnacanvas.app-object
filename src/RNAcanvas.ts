@@ -995,6 +995,36 @@ export class RNAcanvas {
     // hard-code the RNAcanvas URL (in case the RNAcanvas app object is currently embedded in another website)
     window.open('https://code.rnacanvas.app', '_blank');
   }
+
+  /**
+   * Opens a duplicate tab of the RNAcanvas app.
+   *
+   * Does so by opening a new tab of the RNAcanvas app with the same URL parameters
+   * - except the `peripheral_ui` URL parameter will be omitted from the new tab
+   * so that the new tab is always opened with a full peripheral UI.
+   *
+   * (This is a useful property when the RNAcanvas app currently exists within an `iframe` element
+   * embedded in another website without the full peripheral UI being shown.)
+   *
+   * This method cannot currently recreate edits that the user has made to the drawing
+   * in the new duplicate tab.
+   *
+   * This method will simply open a new blank tab of the RNAcanvas app
+   * if it is currently embedded in another website through the use of the RNAcanvas app object interface
+   * (i.e., without the use of an `iframe` element).
+   */
+  duplicateTab(): void {
+    let url = new URL(window.location.href);
+
+    if (!['https://code.rnacanvas.app', 'https://code.rnacanvas.app/'].includes(url.origin)) {
+      this.newTab();
+      return;
+    }
+
+    url.searchParams.delete('peripheral_ui');
+
+    window.open(url.toString(), '_blank');
+  }
 }
 
 type PreviousState = NonNullObject;
