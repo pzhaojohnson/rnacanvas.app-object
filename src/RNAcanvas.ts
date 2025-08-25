@@ -1037,29 +1037,26 @@ export class RNAcanvas {
    * - except the `peripheral_ui` URL parameter will be omitted from the new tab
    * so that the new tab is always opened with a full peripheral UI.
    *
-   * (This is a useful property when the RNAcanvas app currently exists within an `iframe` element
+   * (This is a useful property of this method when the RNAcanvas app currently exists within an `iframe` element
    * embedded in another website without the full peripheral UI being shown.)
    *
-   * This method cannot currently recreate edits that the user has made to the drawing
-   * in the new duplicate tab.
+   * Known issue #1: This method will simply open a new blank tab of the RNAcanvas app
+   * if the RNAcanvas URL interface was not used when creating the current tab.
    *
-   * This method will simply open a new blank tab of the RNAcanvas app
-   * if it is currently embedded in another website through the use of the RNAcanvas app object interface
-   * (i.e., without the use of an `iframe` element).
+   * Known issue #2: This method cannot currently recreate edits that the user has made to the drawing
+   * in the new duplicate tab.
    */
   duplicateTab(): void {
     let url = new URL(window.location.href);
 
-    if (!['https://code.rnacanvas.app', 'https://code.rnacanvas.app/'].includes(url.origin)) {
-      console.error('Unable to retrieve URL parameters.');
-      console.error('Opening a new blank tab of the RNAcanvas app...');
-      this.newTab();
-      return;
-    }
-
     url.searchParams.delete('peripheral_ui');
 
-    window.open(url.toString(), '_blank');
+    // hard-code URL origin
+    // (in case the RNAcanvas app is currently embedded in another website)
+    window.open(
+      'https://code.rnacanvas.app' + '?' + url.searchParams.toString(),
+      '_blank',
+    );
   }
 }
 
