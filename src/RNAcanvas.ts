@@ -1003,6 +1003,7 @@ export class RNAcanvas {
       this.#saveButton,
       this.#exportButton,
       this.#aboutButton,
+      this.#editButton,
     ];
   }
 
