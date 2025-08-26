@@ -236,8 +236,6 @@ and open the `.rnacanvas` file in a new tab of the RNAcanvas app.
 <b>Known issue #2:</b> This method only works if the RNAcanvas URL interface
 was used in the first place to draw the drawing currently being shown.
 
-Otherwise, this method will simply open a new blank tab of the RNAcanvas app.
-
 ```javascript
 app.duplicateTab();
 ```
@@ -245,5 +243,5 @@ app.duplicateTab();
 This method will omit the `peripheral_ui` URL parameter from the new tab
 so that it is always opened with a full peripheral UI.
 
-(This is a useful property of this method when the app is currently embedded in another website
-without the full peripheral UI currently being shown.)
+(This is a useful property of this method when the RNAcanvas app is currently embedded in another website
+without the full peripheral UI being shown.)
