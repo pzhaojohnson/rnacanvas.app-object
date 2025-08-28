@@ -213,6 +213,26 @@ Forms are closed by simply removing them
 
 Forms can be made draggable by applying the `DragTranslater` class of the `@rnacanvas/forms` package to them.
 
+### `closeForm()`
+
+Closes the topmost form.
+
+Does nothing if no forms are open.
+
+```javascript
+app.closeForm();
+```
+
+### `closeAllForms()`
+
+Closes all currently open forms.
+
+Does nothing if no forms are open.
+
+```javascript
+app.closeAllForms();
+```
+
 ### `newTab()`
 
 Opens a new blank tab of the RNAcanvas app.
