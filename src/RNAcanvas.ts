@@ -821,6 +821,29 @@ export class RNAcanvas {
   }
 
   /**
+   * Closes the topmost form.
+   *
+   * Does nothing if no forms are open.
+   */
+  closeForm(): void {
+    this.formsContainer.lastChild?.remove();
+  }
+
+  /**
+   * Closes all forms.
+   *
+   * Does nothing if no forms are open.
+   */
+  closeAllForms(): void {
+    let allForms = [...this.formsContainer.childNodes];
+
+    // closing the forms top-to-bottom should have better performance in principle
+    allForms.reverse();
+
+    allForms.forEach(form => form.remove());
+  }
+
+  /**
    * The CSS style declaration for the actual DOM node of the app object.
    */
   get style() {

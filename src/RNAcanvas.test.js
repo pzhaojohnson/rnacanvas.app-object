@@ -75,6 +75,65 @@ describe('RNAcanvas class', () => {
     expect(container.contains(rnaCanvas.domNode)).toBeFalsy();
   });
 
+  test('`closeForm()`', () => {
+    let app = new RNAcanvas();
+
+    // no forms are open
+    expect(() => app.closeForm()).not.toThrow();
+
+    let form1 = document.createElement('div');
+    let form2 = document.createElement('div');
+    let form3 = document.createElement('div');
+
+    form1.textContent = 'form1-6357165389';
+    form2.textContent = 'form2-1894778369';
+    form3.textContent = 'form3-83719789';
+
+    app.openForm(form1);
+    app.openForm(form2);
+    app.openForm(form3);
+
+    expect(app.domNode.textContent.includes('form3-83719789')).toBeTruthy();
+
+    app.closeForm();
+
+    // closed form 3
+    expect(app.domNode.textContent.includes('form3-83719789')).toBeFalsy();
+
+    // did not close forms 1 or 2
+    expect(app.domNode.textContent.includes('form1-6357165389')).toBeTruthy();
+    expect(app.domNode.textContent.includes('form2-1894778369')).toBeTruthy();
+  });
+
+  test('closeAllForms()', () => {
+    let app = new RNAcanvas();
+
+    // no forms are open
+    expect(() => app.closeAllForms()).not.toThrow();
+
+    let form1 = document.createElement('div');
+    let form2 = document.createElement('div');
+    let form3 = document.createElement('div');
+
+    form1.textContent = 'form1-6357165389';
+    form2.textContent = 'form2-1894778369';
+    form3.textContent = 'form3-83719789';
+
+    app.openForm(form1);
+    app.openForm(form2);
+    app.openForm(form3);
+
+    expect(app.domNode.textContent.includes('form1-6357165389')).toBeTruthy();
+    expect(app.domNode.textContent.includes('form2-1894778369')).toBeTruthy();
+    expect(app.domNode.textContent.includes('form3-83719789')).toBeTruthy();
+
+    app.closeAllForms();
+
+    expect(app.domNode.textContent.includes('form1-6357165389')).toBeFalsy();
+    expect(app.domNode.textContent.includes('form2-1894778369')).toBeFalsy();
+    expect(app.domNode.textContent.includes('form3-83719789')).toBeFalsy();
+  });
+
   test('style getter', () => {
     let rnaCanvas = new RNAcanvas();
 
