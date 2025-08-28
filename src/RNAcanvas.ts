@@ -228,6 +228,8 @@ export class RNAcanvas {
 
   #newTabKeyBinding = new KeyBinding('=', () => this.newTab());
 
+  #duplicateTabKeyBinding = new KeyBinding('≠', () => this.duplicateTab(), { altKey: true });
+
   #undoStack: FiniteStack<ReturnType<InstanceType<typeof RNAcanvas>['serialized']>> = new FiniteStack(50);
 
   #redoStack: FiniteStack<ReturnType<InstanceType<typeof RNAcanvas>['serialized']>> = new FiniteStack(50);
@@ -1021,6 +1023,7 @@ export class RNAcanvas {
       ...this.#altArrowKeyBindings,
       ...this.#saveKeyBindings,
       this.#newTabKeyBinding,
+      this.#duplicateTabKeyBinding,
       this.#toolbarToggleKeyBinding,
     ];
   }
