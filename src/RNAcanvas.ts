@@ -868,11 +868,13 @@ export class RNAcanvas {
    * Offers for download an RNAcanvas file of the current state of the app.
    */
   save(): void {
-    let f = new DownloadableFile(JSON.stringify(this.serialized()));
+    let name = `${document.title ? document.title : 'RNAcanvas Code'}.rnacanvas`;
 
-    let name = document.title ? document.title : 'RNAcanvas Code';
+    let content = JSON.stringify(this.serialized());
 
-    f.downloadAs(name + '.rnacanvas', { type: 'text/plain' });
+    let type = 'text/plain';
+
+    (new DownloadableFile(name, content, { type })).download();
   }
 
   /**
