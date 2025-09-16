@@ -868,13 +868,22 @@ export class RNAcanvas {
    * Offers for download an RNAcanvas file of the current state of the app.
    */
   save(): void {
-    let name = `${document.title ? document.title : 'RNAcanvas Code'}.rnacanvas`;
+    let name = `${this.#saveName}.rnacanvas`;
 
     let content = JSON.stringify(this.serialized());
 
     let type = 'text/plain';
 
     (new DownloadableFile(name, content, { type })).download();
+  }
+
+  /**
+   * The name to save files with (e.g., saved .rnacanvas files, exported SVG files).
+   */
+  get #saveName(): string {
+    let saveName = this.drawing.name?.trim();
+
+    return saveName ? saveName : 'RNAcanvas Code';
   }
 
   /**
@@ -1024,6 +1033,19 @@ export class RNAcanvas {
 
   afterDragging() {
     this.unhideOverlaidDrawing();
+  }
+
+  /**
+   * Downloads the drawing in its current state as an SVG image.
+   */
+  exportSVG() {
+    let name = `${this.#saveName}.svg`;
+
+    let content = this.drawing.outerXML;
+
+    let type = 'text/plain';
+
+    (new DownloadableFile(name, content, { type })).download();
   }
 
   get #floatingButtons() {
