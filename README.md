@@ -233,6 +233,14 @@ Does nothing if no forms are open.
 app.closeAllForms();
 ```
 
+### `exportSVG()`
+
+Exports the drawing of the app in its current state as an SVG image for the user to download.
+
+```javascript
+app.exportSVG();
+```
+
 ### `newTab()`
 
 Opens a new blank tab of the RNAcanvas app.
