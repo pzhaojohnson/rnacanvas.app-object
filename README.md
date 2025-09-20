@@ -235,10 +235,32 @@ app.closeAllForms();
 
 ### `exportSVG()`
 
-Exports the drawing of the app in its current state as an SVG image for the user to download.
+Downloads the drawing for the user in its current state
+(including its current level of zoom)
+as an SVG image.
 
 ```javascript
 app.exportSVG();
+```
+
+### `exportPNG()`
+
+Downloads the drawing for the user in its current state
+(including its current level of zoom)
+as a PNG image.
+
+```javascript
+app.exportPNG();
+```
+
+### `exportJPEG()`
+
+Downloads the drawing for the user in its current state
+(including its current level of zoom)
+as a JPEG image.
+
+```javascript
+app.exportJPEG();
 ```
 
 ### `newTab()`
