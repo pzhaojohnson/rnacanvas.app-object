@@ -1,5 +1,7 @@
 import { Drawing } from '@rnacanvas/draw';
 
+import { drawOnCanvas } from '@rnacanvas/draw.svg';
+
 import { BackgroundColor } from './BackgroundColor';
 
 import type { Nucleobase } from '@rnacanvas/draw';
@@ -1046,6 +1048,42 @@ export class RNAcanvas {
     let type = 'text/plain';
 
     (new DownloadableFile(name, content, { type })).download();
+  }
+
+  /**
+   * Downloads the drawing for the user as a PNG image.
+   */
+  async exportPNG() {
+    let canvas = await drawOnCanvas(this.drawing.domNode);
+
+    let name = `${this.#saveName}.png`;
+
+    canvas.toBlob(
+      blob => {
+        if (blob) { (new DownloadableFile(name, blob)).download(); }
+        else { throw new Error('Unable to convert canvas to blob.'); }
+      },
+      'image/png',
+      1,
+    );
+  }
+
+  /**
+   * Downloads the drawing for the user as a JPEG image.
+   */
+  async exportJPEG() {
+    let canvas = await drawOnCanvas(this.drawing.domNode);
+
+    let name = `${this.#saveName}.jpeg`;
+
+    canvas.toBlob(
+      blob => {
+        if (blob) { (new DownloadableFile(name, blob)).download(); }
+        else { throw new Error('Unable to convert canvas to blob.'); }
+      },
+      'image/jpeg',
+      1,
+    );
   }
 
   get #floatingButtons() {
