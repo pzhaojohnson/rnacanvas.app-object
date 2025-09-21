@@ -65,6 +65,8 @@ import { SilvecPlug } from './SilvecPlug';
 
 import { EditButton } from '@rnacanvas/buttons';
 
+import { DownloadButton } from './DownloadButton';
+
 import { DropHandler } from '@rnacanvas/drop-interface';
 import { PasteHandler } from '@rnacanvas/paste-interface';
 
@@ -227,6 +229,8 @@ export class RNAcanvas {
   #silvecPlug;
 
   #editButton = new EditButton();
+
+  #downloadButton = new DownloadButton(this);
 
   #newTabKeyBinding = new KeyBinding('=', () => this.newTab());
 
@@ -443,7 +447,7 @@ export class RNAcanvas {
 
     this.#drawingBackgroundColor.addEventListener('change', async () => {
       let theme: 'light' | 'dark' = await this.#drawingBackgroundColor.isDark() ? 'dark' : 'light';
-      this.#floatingButtons.forEach(button => button.theme = theme);
+      this.#floatingTextButtons.forEach(button => button.theme = theme);
     });
 
     this.#silvecPlug = new SilvecPlug();
@@ -459,6 +463,12 @@ export class RNAcanvas {
 
     // hide by default
     this.#editButton.hide();
+
+    this.#downloadButton.domNode.style.position = 'absolute';
+    this.#downloadButton.domNode.style.bottom = '13px';
+    this.#downloadButton.domNode.style.right = '16px';
+
+    this.boundingBox.append(this.#downloadButton.domNode);
 
     this.#drawingBackgroundColor.addEventListener('change', async () => {
       this.#silvecPlug.domNode.style.color = await this.#drawingBackgroundColor.isDark() ? 'white' : 'black';
@@ -535,13 +545,15 @@ export class RNAcanvas {
       this.#toolbarToggle,
       this.toolbar,
       this.#silvecPlug,
+      this.#downloadButton,
     ];
 
     let minimalElements = [
       this.#editButton,
+      this.#downloadButton,
     ];
 
-    let allElements = [...fullElements, ...minimalElements];
+    let allElements = new Set([...fullElements, ...minimalElements]);
 
     let hide = () => allElements.forEach(ele => ele.hide());
 
@@ -1086,7 +1098,7 @@ export class RNAcanvas {
     );
   }
 
-  get #floatingButtons() {
+  get #floatingTextButtons() {
     return [
       this.#openButton,
       this.#saveButton,
