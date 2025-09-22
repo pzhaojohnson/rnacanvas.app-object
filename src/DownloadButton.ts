@@ -33,6 +33,14 @@ export class DownloadButton {
     this.#buttonsContainer = new ButtonsContainer(targetApp);
 
     this.domNode.append(this.#buttonsContainer.domNode);
+
+    targetApp.domNode.addEventListener('click', event => {
+      if (event.target instanceof Node && this.domNode.contains(event.target)) {
+        this.#buttonsContainer.isHidden() ? this.#buttonsContainer.show() : {};
+      } else {
+        this.#buttonsContainer.hide();
+      }
+    });
   }
 
   hide() {
@@ -58,6 +66,9 @@ class ButtonsContainer {
 
     this.domNode.classList.add(styles['buttons-container']);
 
+    // hide by default
+    this.domNode.style.display = 'none';
+
     this.#rasterImageButton = new RasterImageButton();
     this.#svgImageButton = new SVGImageButton(targetApp);
     this.#rnaCanvasFileButton = new RNAcanvasFileButton(targetApp);
@@ -67,21 +78,33 @@ class ButtonsContainer {
     this.#rasterImageButton.domNode.style.borderRadius = '4px 4px 0px 0px';
     this.#rnaCanvasFileButton.domNode.style.borderRadius = '0px 0px 4px 4px';
   }
+
+  hide() {
+    this.domNode.style.display = 'none';
+  }
+
+  isHidden(): boolean {
+    return this.domNode.style.display == 'none';
+  }
+
+  show() {
+    this.domNode.style.display = 'flex';
+  }
 }
 
 class RasterImageButton {
   /**
    * Wrapped button.
    */
-  #button = new Button();
+  #button = new Button('PNG');
 
   constructor() {
     if (detectMacOS()) {
-      this.#button.textContent = 'PNG: ⇧ ⌘ 4';
+      this.#button.textContent = '⇧ ⌘ 4';
     } else if (detectWindows()) {
-      this.#button.textContent = 'PNG: Windows key + Shift + S';
+      this.#button.textContent = 'Windows key + Shift + S';
     } else {
-      this.#button.textContent = 'PNG: Shift + PrtSc';
+      this.#button.textContent = 'Shift + PrtSc';
     }
 
     this.#button.domNode.style.pointerEvents = 'none';
@@ -99,7 +122,7 @@ class SVGImageButton {
   /**
    * Wrapped button.
    */
-  #button = new Button('SVG');
+  #button = new Button('SVG', 'E');
 
   constructor(targetApp: RNAcanvas) {
     this.#targetApp = targetApp;
@@ -127,6 +150,12 @@ class RNAcanvasFileButton {
 
     this.#button.domNode.addEventListener('click', () => this.#targetApp.save());
 
+    if (detectMacOS()) {
+      this.#button.keyBinding = '⌘ S';
+    } else {
+      this.#button.keyBinding = 'Ctrl + S';
+    }
+
     this.#button.domNode.style.cursor = 'pointer';
   }
 
@@ -136,19 +165,48 @@ class RNAcanvasFileButton {
 }
 
 class Button {
-  readonly domNode = document.createElement('p');
+  readonly domNode = document.createElement('div');
 
-  constructor(textContent?: string) {
+  #text = document.createElement('p');
+
+  #spacer = document.createElement('div');
+
+  #keyBinding = document.createElement('p');
+
+  constructor(textContent?: string, keyBinding?: string) {
     this.domNode.classList.add(styles['button']);
 
-    this.domNode.textContent = textContent ?? '';
+    this.#text.classList.add(styles['button-text']);
+    this.#text.textContent = textContent ?? '';
+    this.#text.style.marginRight = '8px';
+    this.domNode.append(this.#text);
+
+    this.#spacer.style.flexGrow = '1';
+    this.domNode.append(this.#spacer);
+
+    this.#keyBinding.classList.add(styles['button-text']);
+    this.#keyBinding.textContent = keyBinding ? `[ ${keyBinding} ]` : '';
+    this.#keyBinding.style.color = '#d9d9e7';
+    this.domNode.append(this.#keyBinding);
   }
 
   get textContent() {
-    return this.domNode.textContent;
+    return this.#text.textContent;
   }
 
   set textContent(textContent) {
-    this.domNode.textContent = textContent;
+    this.#text.textContent = textContent;
+  }
+
+  get keyBinding() {
+    return this.#keyBinding.textContent;
+  }
+
+  set keyBinding(keyBinding) {
+    if (keyBinding) {
+      this.#keyBinding.textContent = `[ ${keyBinding} ]`;
+    } else {
+      this.#keyBinding.textContent = '';
+    }
   }
 }

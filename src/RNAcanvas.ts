@@ -102,7 +102,7 @@ export class RNAcanvas {
    *
    * Contains the entirety of the RNAcanvas app.
    */
-  readonly domNode: HTMLElement;
+  readonly domNode: HTMLElement = document.createElement('div');
 
   /**
    * Meant to fill up the space of the DOM node of the app object
@@ -245,8 +245,6 @@ export class RNAcanvas {
   #pasteHandler = new PasteHandler(this);
 
   constructor() {
-    this.domNode = document.createElement('div');
-
     // make focusable for key bindings to work
     this.domNode.tabIndex = 0;
 

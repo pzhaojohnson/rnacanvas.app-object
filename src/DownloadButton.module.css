@@ -6,22 +6,23 @@
   display: flex;
 
   border: 1px solid #b8b8c7;
+
+  cursor: pointer;
 }
 
 .download-button:hover {
-  background-color: #212123;
+  background-color: #1a1a1c;
 }
 
 .download-button:active {
-  background-color: #2d2d30;
+  background-color: #36363c;
 }
 
 .buttons-container {
   position: absolute;
-  bottom: 47px;
+  bottom: 44px;
   right: 0px;
 
-  display: none;
   flex-direction: column;
   gap: 1px;
 
@@ -31,22 +32,15 @@
   border-radius: 4px;
 }
 
-.download-button:focus .buttons-container {
-  display: flex;
-}
-
 .button {
-  font-family: "Open Sans", sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 
   background-color: black;
 
   padding: 12px 14px;
   margin: 0px;
-
-  white-space: nowrap;
 }
 
 .button:hover {
@@ -55,4 +49,19 @@
 
 .button:active {
   background-color: #2d2d30;
+}
+
+.button-text {
+  font-family: "Open Sans", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: white;
+
+  user-select: none;
+  -webkit-user-select: none;
+
+  padding: 0px;
+  margin: 0px;
+
+  white-space: nowrap;
 }
