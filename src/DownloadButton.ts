@@ -100,15 +100,17 @@ class RasterImageButton {
 
   constructor() {
     if (detectMacOS()) {
-      this.#button.textContent = '⇧ ⌘ 4';
+      this.#button.keyBinding = '⇧ ⌘ 4';
     } else if (detectWindows()) {
-      this.#button.textContent = 'Windows key + Shift + S';
+      this.#button.keyBinding = 'Windows key + Shift + S';
     } else {
-      this.#button.textContent = 'Shift + PrtSc';
+      this.#button.keyBinding = 'Shift + PrtSc';
     }
 
-    this.#button.domNode.style.pointerEvents = 'none';
     this.#button.domNode.style.cursor = 'default';
+
+    // prevent background color from changing on hover and click
+    this.#button.domNode.style.backgroundColor = 'black';
   }
 
   get domNode() {
@@ -178,7 +180,7 @@ class Button {
 
     this.#text.classList.add(styles['button-text']);
     this.#text.textContent = textContent ?? '';
-    this.#text.style.marginRight = '8px';
+    this.#text.style.marginRight = '15px';
     this.domNode.append(this.#text);
 
     this.#spacer.style.flexGrow = '1';
@@ -186,7 +188,6 @@ class Button {
 
     this.#keyBinding.classList.add(styles['button-text']);
     this.#keyBinding.textContent = keyBinding ? `[ ${keyBinding} ]` : '';
-    this.#keyBinding.style.color = '#d9d9e7';
     this.domNode.append(this.#keyBinding);
   }
 
