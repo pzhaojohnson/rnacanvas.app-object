@@ -9,7 +9,7 @@ export class DownloadButton {
 
   readonly domNode = document.createElement('div');
 
-  #icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  #icon = new Icon();
 
   #buttonsContainer;
 
@@ -18,17 +18,7 @@ export class DownloadButton {
 
     this.domNode.classList.add(styles['download-button']);
 
-    this.#icon.setAttribute('width', '20');
-    this.#icon.setAttribute('height', '22');
-    this.#icon.setAttribute('viewBox', '0 -2 20 22');
-
-    this.#icon.innerHTML = `
-      <path d="M 5 10 L 10 15 L 15 10" fill="white" stroke-width="0" stroke-linecap="round" ></path>
-      <line x1="10" y1="0" x2="10" y2="14" stroke="white" stroke-width="1" ></line>
-      <line x1="3" y1="18" x2="17" y2="18" stroke="white" stroke-width="1" ></line>
-    `;
-
-    this.domNode.append(this.#icon);
+    this.domNode.append(this.#icon.domNode);
 
     this.#buttonsContainer = new ButtonsContainer(targetApp);
 
@@ -49,6 +39,28 @@ export class DownloadButton {
 
   show() {
     this.domNode.style.display = 'flex';
+  }
+}
+
+class Icon {
+  readonly domNode = document.createElement('div');
+
+  #svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+
+  constructor() {
+    this.domNode.classList.add(styles['icon']);
+
+    this.#svg.setAttribute('width', '20');
+    this.#svg.setAttribute('height', '22');
+    this.#svg.setAttribute('viewBox', '0 -2 20 22');
+
+    this.#svg.innerHTML = `
+      <path d="M 5 10 L 10 15 L 15 10" fill="white" stroke-width="0" stroke-linecap="round" ></path>
+      <line x1="10" y1="0" x2="10" y2="14" stroke="white" stroke-width="1" ></line>
+      <line x1="3" y1="18" x2="17" y2="18" stroke="white" stroke-width="1" ></line>
+    `;
+
+    this.domNode.append(this.#svg);
   }
 }
 

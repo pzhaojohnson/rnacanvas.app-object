@@ -1,4 +1,6 @@
-.download-button {
+.download-button {}
+
+.icon {
   background-color: black;
   padding: 5px 6px;
   border-radius: 5px;
@@ -10,11 +12,11 @@
   cursor: pointer;
 }
 
-.download-button:hover {
+.icon:hover {
   background-color: #1a1a1c;
 }
 
-.download-button:active {
+.icon:active {
   background-color: #36363c;
 }
 
