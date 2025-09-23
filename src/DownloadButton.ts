@@ -25,10 +25,12 @@ export class DownloadButton {
     this.domNode.append(this.#buttonsContainer.domNode);
 
     targetApp.domNode.addEventListener('click', event => {
-      if (event.target instanceof Node && this.domNode.contains(event.target)) {
-        this.#buttonsContainer.isHidden() ? this.#buttonsContainer.show() : {};
-      } else {
+      if (!(event.target instanceof Node)) {
+        // nothing to do
+      } else if (!this.domNode.contains(event.target)) {
         this.#buttonsContainer.hide();
+      } else if (this.#icon.domNode.contains(event.target)) {
+        this.#buttonsContainer.isHidden() ? this.#buttonsContainer.show() : this.#buttonsContainer.hide();
       }
     });
   }
