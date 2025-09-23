@@ -110,16 +110,21 @@ class RasterImageButton {
   /**
    * Wrapped button.
    */
-  #button = new Button('PNG');
+  #button = new Button();
 
   constructor() {
     if (detectMacOS()) {
+      this.#button.textContent = 'Screen Capture';
       this.#button.keyBinding = '⇧ ⌘ 4';
     } else if (detectWindows()) {
+      this.#button.textContent = 'Snipping Tool';
       this.#button.keyBinding = 'Windows key + Shift + S';
     } else {
+      this.#button.textContent = 'Screenshot';
       this.#button.keyBinding = 'Shift + PrtSc';
     }
+
+    this.#button.textColor = '#cfcfde';
 
     this.#button.domNode.style.cursor = 'default';
 
@@ -211,6 +216,17 @@ class Button {
 
   set textContent(textContent) {
     this.#text.textContent = textContent;
+  }
+
+  /**
+   * CSS color value.
+   */
+  get textColor() {
+    return this.#text.style.color;
+  }
+
+  set textColor(textColor) {
+    this.#text.style.color = textColor;
   }
 
   get keyBinding() {
