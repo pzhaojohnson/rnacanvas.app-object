@@ -463,8 +463,8 @@ export class RNAcanvas {
     this.#editButton.hide();
 
     this.#downloadButton.domNode.style.position = 'absolute';
-    this.#downloadButton.domNode.style.bottom = '17px';
-    this.#downloadButton.domNode.style.right = '20px';
+    this.#downloadButton.domNode.style.bottom = '18px';
+    this.#downloadButton.domNode.style.right = '24px';
 
     this.boundingBox.append(this.#downloadButton.domNode);
 

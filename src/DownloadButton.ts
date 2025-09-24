@@ -203,7 +203,7 @@ class ImageFormatButton {
     this.text = text ?? '';
 
     this.#text.classList.add(styles['image-format-button-text']);
-    this.#text.style.marginRight = '15px';
+    this.#text.style.marginRight = '17px';
     this.domNode.append(this.#text);
 
     this.#spacer.style.flexGrow = '1';

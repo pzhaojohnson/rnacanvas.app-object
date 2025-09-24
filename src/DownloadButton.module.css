@@ -13,7 +13,7 @@
 }
 
 .icon:hover {
-  background-color: #1a1a1c;
+  background-color: #202022;
 }
 
 .icon:active {
@@ -22,7 +22,7 @@
 
 .image-format-buttons {
   position: absolute;
-  bottom: 44px;
+  bottom: 45px;
   right: 0px;
 
   flex-direction: column;
@@ -41,18 +41,18 @@
 
   background-color: black;
 
-  padding: 12px 14px;
+  padding: 12px 15px;
   margin: 0px;
 
   cursor: pointer;
 }
 
 .image-format-button:hover {
-  background-color: #212123;
+  background-color: #242426;
 }
 
 .image-format-button:active {
-  background-color: #2d2d30;
+  background-color: #2f2f33;
 }
 
 .image-format-button-text {
