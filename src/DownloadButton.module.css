@@ -20,7 +20,7 @@
   background-color: #36363c;
 }
 
-.buttons-container {
+.image-format-buttons {
   position: absolute;
   bottom: 44px;
   right: 0px;
@@ -34,7 +34,7 @@
   border-radius: 4px;
 }
 
-.button {
+.image-format-button {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -47,15 +47,15 @@
   cursor: pointer;
 }
 
-.button:hover {
+.image-format-button:hover {
   background-color: #212123;
 }
 
-.button:active {
+.image-format-button:active {
   background-color: #2d2d30;
 }
 
-.button-text {
+.image-format-button-text {
   font-family: "Open Sans", sans-serif;
   font-size: 11px;
   font-weight: 600;

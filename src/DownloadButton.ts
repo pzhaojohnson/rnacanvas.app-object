@@ -11,7 +11,7 @@ export class DownloadButton {
 
   #icon = new Icon();
 
-  #buttonsContainer;
+  #imageFormatButtons;
 
   constructor(targetApp: RNAcanvas) {
     this.#targetApp = targetApp;
@@ -20,17 +20,17 @@ export class DownloadButton {
 
     this.domNode.append(this.#icon.domNode);
 
-    this.#buttonsContainer = new ButtonsContainer(targetApp);
+    this.#imageFormatButtons = new ImageFormatButtons(targetApp);
 
-    this.domNode.append(this.#buttonsContainer.domNode);
+    this.domNode.append(this.#imageFormatButtons.domNode);
 
     targetApp.domNode.addEventListener('click', event => {
       if (!(event.target instanceof Node)) {
         // nothing to do
       } else if (!this.domNode.contains(event.target)) {
-        this.#buttonsContainer.hide();
+        this.#imageFormatButtons.hide();
       } else if (this.#icon.domNode.contains(event.target)) {
-        this.#buttonsContainer.isHidden() ? this.#buttonsContainer.show() : this.#buttonsContainer.hide();
+        this.#imageFormatButtons.isHidden() ? this.#imageFormatButtons.show() : this.#imageFormatButtons.hide();
       }
     });
   }
@@ -66,7 +66,7 @@ class Icon {
   }
 }
 
-class ButtonsContainer {
+class ImageFormatButtons {
   #targetApp;
 
   readonly domNode = document.createElement('div');
@@ -78,7 +78,7 @@ class ButtonsContainer {
   constructor(targetApp: RNAcanvas) {
     this.#targetApp = targetApp;
 
-    this.domNode.classList.add(styles['buttons-container']);
+    this.domNode.classList.add(styles['image-format-buttons']);
 
     // hide by default
     this.domNode.style.display = 'none';
@@ -110,17 +110,18 @@ class RasterImageButton {
   /**
    * Wrapped button.
    */
-  #button = new Button();
+  #button = new ImageFormatButton();
 
   constructor() {
     if (detectMacOS()) {
-      this.#button.textContent = 'Screen Capture';
+      this.#button.text = 'Screen Capture';
       this.#button.keyBinding = '⇧ ⌘ 4';
     } else if (detectWindows()) {
-      this.#button.textContent = 'Snipping Tool';
+      this.#button.text = 'Snipping Tool';
       this.#button.keyBinding = 'Windows key + Shift + S';
     } else {
-      this.#button.textContent = 'Screenshot';
+      // assume Linux
+      this.#button.text = 'Screenshot';
       this.#button.keyBinding = 'Shift + PrtSc';
     }
 
@@ -143,12 +144,14 @@ class SVGImageButton {
   /**
    * Wrapped button.
    */
-  #button = new Button('SVG', 'E');
+  #button = new ImageFormatButton('SVG');
 
   constructor(targetApp: RNAcanvas) {
     this.#targetApp = targetApp;
 
     this.#button.domNode.addEventListener('click', () => this.#targetApp.exportSVG());
+
+    this.#button.keyBinding = 'E';
 
     this.#button.domNode.style.cursor = 'pointer';
   }
@@ -164,7 +167,7 @@ class RNAcanvasFileButton {
   /**
    * Wrapped button.
    */
-  #button = new Button('.rnacanvas');
+  #button = new ImageFormatButton('.rnacanvas');
 
   constructor(targetApp: RNAcanvas) {
     this.#targetApp = targetApp;
@@ -185,7 +188,7 @@ class RNAcanvasFileButton {
   }
 }
 
-class Button {
+class ImageFormatButton {
   readonly domNode = document.createElement('div');
 
   #text = document.createElement('p');
@@ -194,28 +197,28 @@ class Button {
 
   #keyBinding = document.createElement('p');
 
-  constructor(textContent?: string, keyBinding?: string) {
-    this.domNode.classList.add(styles['button']);
+  constructor(text?: string) {
+    this.domNode.classList.add(styles['image-format-button']);
 
-    this.#text.classList.add(styles['button-text']);
-    this.#text.textContent = textContent ?? '';
+    this.text = text ?? '';
+
+    this.#text.classList.add(styles['image-format-button-text']);
     this.#text.style.marginRight = '15px';
     this.domNode.append(this.#text);
 
     this.#spacer.style.flexGrow = '1';
     this.domNode.append(this.#spacer);
 
-    this.#keyBinding.classList.add(styles['button-text']);
-    this.#keyBinding.textContent = keyBinding ? `[ ${keyBinding} ]` : '';
+    this.#keyBinding.classList.add(styles['image-format-button-text']);
     this.domNode.append(this.#keyBinding);
   }
 
-  get textContent() {
+  get text() {
     return this.#text.textContent;
   }
 
-  set textContent(textContent) {
-    this.#text.textContent = textContent;
+  set text(text) {
+    this.#text.textContent = text;
   }
 
   /**
@@ -230,7 +233,8 @@ class Button {
   }
 
   get keyBinding() {
-    return this.#keyBinding.textContent;
+    // don't forget to omit leading and trailing brackets
+    return this.#keyBinding.textContent.slice(2, -2);
   }
 
   set keyBinding(keyBinding) {
