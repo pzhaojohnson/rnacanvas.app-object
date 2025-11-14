@@ -28,7 +28,7 @@
   flex-direction: column;
 
   border: 1px solid #cbcbda;
-  background-color: #cbcbda;
+  background-color: rgba(0, 0, 0, 0.88);
 
   border-radius: 4px;
 }

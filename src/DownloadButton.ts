@@ -262,5 +262,6 @@ class Spacer {
 
     this.#whiteLine.style.backgroundColor = '#c1c1d3';
     this.#whiteLine.style.height = '1px';
+    this.domNode.append(this.#whiteLine);
   }
 }
