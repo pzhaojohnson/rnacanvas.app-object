@@ -84,13 +84,19 @@ class ImageFormatButtons {
     this.domNode.style.display = 'none';
 
     this.#rasterImageButton = new RasterImageButton();
-    this.#svgImageButton = new SVGImageButton(targetApp);
-    this.#rnaCanvasFileButton = new RNAcanvasFileButton(targetApp);
-
-    this.domNode.append(this.#rasterImageButton.domNode, this.#svgImageButton.domNode, this.#rnaCanvasFileButton.domNode);
-
     this.#rasterImageButton.domNode.style.borderRadius = '4px 4px 0px 0px';
+    this.domNode.append(this.#rasterImageButton.domNode);
+
+    this.domNode.append((new Spacer()).domNode);
+
+    this.#svgImageButton = new SVGImageButton(targetApp);
+    this.domNode.append(this.#svgImageButton.domNode);
+
+    this.domNode.append((new Spacer()).domNode);
+
+    this.#rnaCanvasFileButton = new RNAcanvasFileButton(targetApp);
     this.#rnaCanvasFileButton.domNode.style.borderRadius = '0px 0px 4px 4px';
+    this.domNode.append(this.#rnaCanvasFileButton.domNode);
   }
 
   hide() {
@@ -130,7 +136,7 @@ class RasterImageButton {
     this.#button.domNode.style.cursor = 'default';
 
     // prevent background color from changing on hover and click
-    this.#button.domNode.style.backgroundColor = 'black';
+    this.#button.domNode.style.backgroundColor = 'transparent';
   }
 
   get domNode() {
@@ -243,5 +249,18 @@ class ImageFormatButton {
     } else {
       this.#keyBinding.textContent = '';
     }
+  }
+}
+
+class Spacer {
+  readonly domNode = document.createElement('div');
+
+  #whiteLine = document.createElement('div');
+
+  constructor() {
+    this.domNode.classList.add(styles['spacer']);
+
+    this.#whiteLine.style.backgroundColor = '#c1c1d3';
+    this.#whiteLine.style.height = '1px';
   }
 }
