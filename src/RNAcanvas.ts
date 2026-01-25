@@ -355,7 +355,7 @@ export class RNAcanvas {
         svgElements: this.selectedSVGElements,
         bases: this.selectedBases,
         outlines: this.selectedOutlines,
-        baseNumberings: this.selectedBaseNumberings,
+        baseNumberings: this.selectedNumberings,
       },
       {
         beforeDragging: () => this.beforeDragging(),
@@ -728,15 +728,15 @@ export class RNAcanvas {
     }
   }
 
-  get selectedBaseNumberings(): Iterable<BaseNumbering> {
-    let getSelectedBaseNumberings = () => {
+  get selectedNumberings(): Iterable<Numbering> {
+    let getSelectedNumberings = () => {
       let selectedSVGElements = new Set(this.selectedSVGElements);
 
-      return [...this.drawing.baseNumberings].filter(bn => selectedSVGElements.has(bn.domNode));
+      return [...this.drawing.numberings].filter(n => selectedSVGElements.has(n.domNode));
     };
 
     return {
-      [Symbol.iterator]() { return getSelectedBaseNumberings().values(); },
+      [Symbol.iterator]() { return getSelectedNumberings().values(); },
     };
   }
 
@@ -1163,7 +1163,7 @@ export class RNAcanvas {
 
 type PreviousState = NonNullObject;
 
-type BaseNumbering = ReturnType<InstanceType<typeof RNAcanvas>['drawing']['number']>[0];
+type Numbering = ReturnType<InstanceType<typeof RNAcanvas>['drawing']['number']>[0];
 
 type NonNullObject = { [name: string]: unknown };
 
