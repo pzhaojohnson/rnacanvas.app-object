@@ -728,7 +728,7 @@ export class RNAcanvas {
     }
   }
 
-  get selectedNumberings(): Iterable<Numbering> {
+  get selectedNumberings() {
     let getSelectedNumberings = () => {
       let selectedSVGElements = new Set(this.selectedSVGElements);
 
@@ -737,6 +737,10 @@ export class RNAcanvas {
 
     return {
       [Symbol.iterator]() { return getSelectedNumberings().values(); },
+
+      addEventListener: (name: 'change', listener: () => void) => {
+        this.selectedSVGElements.addEventListener(name, listener);
+      },
     };
   }
 
