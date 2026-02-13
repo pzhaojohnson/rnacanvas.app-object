@@ -10,6 +10,14 @@ if (!SVGElement.prototype.viewBox) {
   SVGElement.prototype.viewBox = { baseVal: { width: 0, height: 0 } };
 }
 
+if (!SVGElement.prototype.x) {
+  SVGElement.prototype.x = { baseVal: [{ value: 0 }] };
+}
+
+if (!SVGElement.prototype.y) {
+  SVGElement.prototype.y = { baseVal: [{ value: 0 }] };
+}
+
 if (!SVGElement.prototype.width) {
   SVGElement.prototype.width = { baseVal: { value: 0 } };
 }
@@ -226,6 +234,44 @@ describe('RNAcanvas class', () => {
     expect(app.drawing.domNode.childNodes.length).toBe(6);
     expect(app.canUndo()).toBeTruthy(); // pushed undo stack
     expect([...app.selectedSVGElements].length).toBe(0); // deselected the removed elements
+  });
+
+  test('`get selectedNumberingLines()`', () => {
+    var app = new RNAcanvas();
+
+    app.drawDotBracket('AGCUUGUGCAUGCUGC', '..(((....)))..');
+
+    var bases = [...app.drawing.bases];
+
+    [1, 3, 4, 6, 7, 8].forEach(i => app.drawing.number(bases[i], i + 1));
+
+    var numberingLines = [...app.drawing.numberingLines];
+
+    app.addToSelected([2, 3, 5].map(i => numberingLines[i]));
+
+    var selectedNumberingLines = app.selectedNumberingLines;
+
+    expect([...selectedNumberingLines][0]).toBe(numberingLines[2]);
+    expect([...selectedNumberingLines][1]).toBe(numberingLines[3]);
+    expect([...selectedNumberingLines][2]).toBe(numberingLines[5]);
+
+    expect([...selectedNumberingLines].length).toBe(3);
+
+    var listener = jest.fn();
+
+    selectedNumberingLines.addEventListener('change', listener);
+
+    expect(listener).not.toHaveBeenCalled();
+
+    app.addToSelected([numberingLines[0]]);
+    expect(listener).toHaveBeenCalledTimes(1);
+
+    app.removeFromSelected([numberingLines[5]]);
+    expect(listener).toHaveBeenCalledTimes(2);
+
+    // already removed
+    app.removeFromSelected([numberingLines[4]]);
+    expect(listener).toHaveBeenCalledTimes(2);
   });
 
   test('`get selectedOutlines()`', () => {

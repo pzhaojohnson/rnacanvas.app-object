@@ -744,6 +744,24 @@ export class RNAcanvas {
     };
   }
 
+  get selectedNumberingLines() {
+    let getSelectedNumberingLines = () => {
+      let selectedSVGElements = new Set(this.selectedSVGElements);
+
+      return [...this.drawing.numberingLines].filter(line => selectedSVGElements.has(line.domNode));
+    };
+
+    return {
+      [Symbol.iterator]() {
+        return getSelectedNumberingLines().values();
+      },
+
+      addEventListener: (name: 'change', listener: () => void) => {
+        this.selectedSVGElements.addEventListener(name, listener);
+      },
+    };
+  }
+
   /**
    * Represents the currently selected outlines.
    */
