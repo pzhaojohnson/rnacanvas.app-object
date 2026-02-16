@@ -52,7 +52,7 @@ import { FormsFronter } from './FormsFronter';
 
 import { LayoutForm } from '@rnacanvas/forms.layout';
 
-import { EditingForm } from '@rnacanvas/forms.edit';
+import { EditForm } from '@rnacanvas/forms.edit';
 
 import { ExportForm } from '@rnacanvas/forms.export';
 
@@ -210,7 +210,7 @@ export class RNAcanvas {
 
   readonly layoutForm: LayoutForm;
 
-  #editingForm;
+  #editForm;
 
   readonly exportForm: ExportForm;
 
@@ -375,8 +375,8 @@ export class RNAcanvas {
       afterMovingBases: () => this.afterDragging(),
     });
 
-    this.#editingForm = new EditingForm(this);
-    $(this.#editingForm.domNode).css({ position: 'absolute', top: '53px', left: '46px' });
+    this.#editForm = new EditForm(this);
+    $(this.#editForm.domNode).css({ position: 'absolute', top: '53px', left: '46px' });
 
     this.exportForm = new ExportForm({ drawing: this.drawing });
 
@@ -844,7 +844,7 @@ export class RNAcanvas {
    */
   openForm(form: Node | Form | 'edit'): void {
     if (form === 'edit') {
-      form = this.#editingForm;
+      form = this.#editForm;
     }
 
     if (form instanceof Node) {
