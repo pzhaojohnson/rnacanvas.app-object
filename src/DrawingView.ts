@@ -52,6 +52,20 @@ export class DrawingView {
     this.verticalScrollbar.thumb.centerY = this.targetDrawing.verticalScaling * (centerPoint.y - this.targetDrawing.minY);
   }
 
+  fitTo(box: BoxLike): void {
+    this.targetDrawing.setScaling(
+      Math.min(
+        this.horizontalScrollbar.thumb.length / box.width,
+        this.verticalScrollbar.thumb.length / box.height,
+      )
+    );
+
+    this.centerPoint = {
+      x: box.x + (box.width / 2),
+      y: box.y + (box.height / 2),
+    };
+  }
+
   /**
    * Fits the user's view of the target drawing to its content.
    */
@@ -93,3 +107,10 @@ export class DrawingView {
     }
   }
 }
+
+type BoxLike = {
+  readonly x: number;
+  readonly y: number;
+  readonly width: number;
+  readonly height: number;
+};
