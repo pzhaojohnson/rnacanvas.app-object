@@ -4,8 +4,6 @@ import { drawOnCanvas } from '@rnacanvas/draw.svg';
 
 import { BackgroundColor } from './BackgroundColor';
 
-import type { DrawingElement } from './DrawingElement';
-
 import type { Nucleobase } from '@rnacanvas/draw';
 
 import { MissingPrimaryBondsAdder } from '@rnacanvas/draw.bases.bonds';
@@ -32,8 +30,6 @@ import { SchemaDrawer } from '@rnacanvas/draw';
 import { EventfulSet } from '@rnacanvas/utilities';
 
 import { LiveSVGElementHighlightings } from '@rnacanvas/draw.svg.highlight';
-
-import type { SearchHighlighting } from './SearchHighlighting';
 
 import { ClickSelectTool } from '@rnacanvas/draw.svg.interact';
 
@@ -159,8 +155,6 @@ export class RNAcanvas {
    * Can be used for highlightings of SVG elements (such as the currently selected SVG elements).
    */
   private readonly overlaidDrawing: Drawing;
-
-  readonly #searchHighlightingsContainer = document.createElementNS('http://www.w3.org/2000/svg', 'g');
 
   /**
    * Watches for when elements are removed from the drawing.
@@ -316,8 +310,6 @@ export class RNAcanvas {
     overlaidDrawingResizer.observe(this.drawing.domNode, { attributes: true });
 
     this.stackedDrawingsContainer.append(this.drawing.domNode, this.overlaidDrawing.domNode);
-
-    this.overlaidDrawing.domNode.append(this.#searchHighlightingsContainer);
 
     this.drawingView = new DrawingView(this.drawing, this.horizontalDrawingScrollbar, this.verticalDrawingScrollbar);
 
@@ -524,34 +516,6 @@ export class RNAcanvas {
    */
   get drawingScrollbars() {
     return this.drawingScrollContainer.scrollbars;
-  }
-
-  addSearchHighlighting(eles: Iterable<DrawingElement>): SearchHighlighting {
-    let svgElements = {
-      [Symbol.iterator]() {
-        return [...eles].map(ele => ele.domNode).values();
-      },
-
-      addEventListener() {
-        // this collection won't change
-      },
-    };
-
-    let searchHighlighting = new LiveSVGElementHighlightings(svgElements, this.drawing.domNode);
-
-    searchHighlighting.appendTo(this.#searchHighlightingsContainer);
-
-    let iterator = document.createNodeIterator(this.#searchHighlightingsContainer, NodeFilter.SHOW_ALL);
-
-    // make search highlightings a different color from selected element highlightings
-    let node;
-    while (node = iterator.nextNode()) {
-      if (node instanceof SVGElement) {
-        node.setAttribute('stroke', 'red');
-      }
-    }
-
-    return searchHighlighting;
   }
 
   /**
