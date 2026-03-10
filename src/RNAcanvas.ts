@@ -466,6 +466,9 @@ export class RNAcanvas {
     this.#downloadButton.domNode.style.bottom = '18px';
     this.#downloadButton.domNode.style.right = '24px';
 
+    // hide by default
+    this.#downloadButton.hide();
+
     this.boundingBox.append(this.#downloadButton.domNode);
 
     this.#drawingBackgroundColor.addEventListener('change', async () => {
