@@ -543,7 +543,6 @@ export class RNAcanvas {
       this.#toolbarToggle,
       this.toolbar,
       this.#silvecPlug,
-      this.#downloadButton,
     ];
 
     let minimalElements = [
