@@ -83,6 +83,14 @@ describe('RNAcanvas class', () => {
     expect(container.contains(rnaCanvas.domNode)).toBeFalsy();
   });
 
+  test('`get view()`', () => {
+    var app = new RNAcanvas();
+
+    expect(app.view).toBe(app.drawingView);
+
+    expect(app.drawingView).toBeTruthy();
+  });
+
   test('`closeForm()`', () => {
     let app = new RNAcanvas();
 

@@ -522,6 +522,13 @@ export class RNAcanvas {
   }
 
   /**
+   * The user's view of the drawing.
+   */
+  get view() {
+    return this.drawingView;
+  }
+
+  /**
    * Hides the overlaid drawing by setting its `visibility` CSS property to `hidden`.
    *
    * Can be used to hide element highlightings (e.g., when dragging elements).
