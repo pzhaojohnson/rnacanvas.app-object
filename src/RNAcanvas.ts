@@ -658,6 +658,15 @@ export class RNAcanvas {
   }
 
   /**
+   * Deselects any currently selected elements and then adds the specified elements to those selected.
+   */
+  select(eles: Iterable<SVGGraphicsElement | { readonly domNode: SVGGraphicsElement}>): void {
+    this.deselect();
+
+    this.addToSelected(eles);
+  }
+
+  /**
    * Adds the specified elements to the set of selected elements
    * (without deselecting any elements).
    */
