@@ -63,8 +63,6 @@ import { AboutForm } from '@rnacanvas/forms.about';
 
 import { Toolbar, ToolbarToggle } from '@rnacanvas/toolbar';
 
-import { SilvecPlug } from './SilvecPlug';
-
 import { EditButton } from '@rnacanvas/buttons';
 
 import { DownloadButton } from './DownloadButton';
@@ -229,8 +227,6 @@ export class RNAcanvas {
   #toolbarToggle;
 
   #toolbarToggleKeyBinding;
-
-  #silvecPlug;
 
   #editButton = new EditButton();
 
@@ -455,9 +451,6 @@ export class RNAcanvas {
       this.#floatingTextButtons.forEach(button => button.theme = theme);
     });
 
-    this.#silvecPlug = new SilvecPlug();
-    this.boundingBox.append(this.#silvecPlug.domNode);
-
     this.#editButton.domNode.addEventListener('click', () => this.duplicateTab());
 
     this.#editButton.domNode.style.position = 'absolute';
@@ -477,10 +470,6 @@ export class RNAcanvas {
     this.#downloadButton.hide();
 
     this.boundingBox.append(this.#downloadButton.domNode);
-
-    this.#drawingBackgroundColor.addEventListener('change', async () => {
-      this.#silvecPlug.domNode.style.color = await this.#drawingBackgroundColor.isDark() ? 'white' : 'black';
-    });
 
     this.domNode.addEventListener('drop', event => this.#dropHandler.handle(event));
     this.domNode.addEventListener('dragover', event => event.preventDefault());
@@ -577,7 +566,6 @@ export class RNAcanvas {
       this.#aboutButton,
       this.#toolbarToggle,
       this.toolbar,
-      this.#silvecPlug,
     ];
 
     let minimalElements = [
