@@ -56,6 +56,14 @@ globalThis.SVGCircleElement = SVGElement;
 expect(globalThis.SVGLineElement).toBeFalsy();
 globalThis.SVGLineElement = SVGElement;
 
+beforeAll(() => {
+  global.MutationObserver = class {
+    constructor() {}
+    observe() {}
+    disconnect() {}
+  }
+});
+
 describe('RNAcanvas class', () => {
   test('appendTo method', () => {
     let rnaCanvas = new RNAcanvas();

@@ -60,6 +60,8 @@ import { EditForm } from '@rnacanvas/forms.edit';
 
 import { ExportForm } from '@rnacanvas/forms.export';
 
+import { FindForm } from '@rnacanvas/forms.find';
+
 import { AboutButton } from '@rnacanvas/buttons';
 import { AboutForm } from '@rnacanvas/forms.about';
 
@@ -217,6 +219,8 @@ export class RNAcanvas {
   #editForm;
 
   readonly exportForm: ExportForm;
+
+  readonly #findForm;
 
   #aboutForm;
 
@@ -387,6 +391,12 @@ export class RNAcanvas {
 
     // make unfocusable (for key bindings to work)
     this.exportForm.domNode.removeAttribute('tabindex');
+
+    this.#findForm = new FindForm(this);
+
+    this.#findForm.domNode.style.position = 'absolute';
+    this.#findForm.domNode.style.top = '53px';
+    this.#findForm.domNode.style.right = '46px';
 
     this.#aboutForm = new AboutForm();
 
@@ -877,9 +887,11 @@ export class RNAcanvas {
    * Forms will be added in such a way that (with absolute positioning)
    * they will be positioned relative to the bounding box of the RNAcanvas app.
    */
-  openForm(form: Node | Form | 'edit'): void {
+  openForm(form: Node | Form | 'edit' | 'find'): void {
     if (form === 'edit') {
-      form = this.#editForm;
+      form = this.#editForm.domNode;
+    } else if (form === 'find') {
+      form = this.#findForm.domNode;
     }
 
     if (form instanceof Node) {
