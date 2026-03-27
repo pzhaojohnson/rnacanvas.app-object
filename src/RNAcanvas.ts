@@ -1,5 +1,7 @@
 import { Drawing } from '@rnacanvas/draw';
 
+import type { DrawingElement } from './DrawingElement';
+
 import { drawOnCanvas } from '@rnacanvas/draw.svg';
 
 import { BackgroundColor } from './BackgroundColor';
@@ -524,14 +526,16 @@ export class RNAcanvas {
     return this.drawingView;
   }
 
-  addSearchHighlighting(eles: Iterable<SVGGraphicsElement>): SearchHighlighting {
+  addSearchHighlighting(eles: Iterable<DrawingElement | SVGGraphicsElement>): SearchHighlighting {
+    let svgGraphicsElements = [...eles].map(ele => ele instanceof SVGGraphicsElement ? ele : ele.domNode);
+
     let elesCollection = {
       [Symbol.iterator]() {
-        return [...eles].values();
+        return svgGraphicsElements.values();
       },
 
       addEventListener(name: 'change', listener: () => void): void {
-        // nothing to do
+        // nothing to do (for a static collection)
       },
     };
 
