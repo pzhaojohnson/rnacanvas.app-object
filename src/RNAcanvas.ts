@@ -31,6 +31,8 @@ import { EventfulSet } from '@rnacanvas/utilities';
 
 import { LiveSVGElementHighlightings } from '@rnacanvas/draw.svg.highlight';
 
+import { SearchHighlighting } from '@rnacanvas/draw.svg.highlight';
+
 import { ClickSelectTool } from '@rnacanvas/draw.svg.interact';
 
 import { SelectingRect } from '@rnacanvas/draw.svg.interact';
@@ -165,6 +167,8 @@ export class RNAcanvas {
    * Highlightings of the currently selected SVG elements in the drawing of the app.
    */
   private readonly selectedSVGElementHighlightings: LiveSVGElementHighlightings;
+
+  readonly #searchHighlightingsContainer = document.createElementNS('http://www.w3.org/2000/svg', 'g');
 
   private readonly clickSelectTool: ClickSelectTool;
 
@@ -330,6 +334,9 @@ export class RNAcanvas {
 
     this.selectedSVGElementHighlightings = new LiveSVGElementHighlightings(this.selectedSVGElements, this.drawing.domNode);
     this.selectedSVGElementHighlightings.appendTo(this.overlaidDrawing.domNode);
+
+    // place above selected SVG element highlightings
+    this.overlaidDrawing.domNode.append(this.#searchHighlightingsContainer);
 
     this.clickSelectTool = new ClickSelectTool(this.drawing.domNode, this.selectedSVGElements);
 
@@ -526,6 +533,24 @@ export class RNAcanvas {
    */
   get view() {
     return this.drawingView;
+  }
+
+  addSearchHighlighting(eles: Iterable<SVGGraphicsElement>): SearchHighlighting {
+    let elesCollection = {
+      [Symbol.iterator]() {
+        return [...eles].values();
+      },
+
+      addEventListener(name: 'change', listener: () => void): void {
+        // nothing to do
+      },
+    };
+
+    let searchHighlighting = new SearchHighlighting(elesCollection, this.drawing.domNode);
+
+    this.#searchHighlightingsContainer.append(searchHighlighting.domNode);
+
+    return searchHighlighting;
   }
 
   /**
