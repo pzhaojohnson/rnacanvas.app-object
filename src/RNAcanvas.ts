@@ -888,16 +888,27 @@ export class RNAcanvas {
    * they will be positioned relative to the bounding box of the RNAcanvas app.
    */
   openForm(form: Node | Form | 'edit' | 'find'): void {
-    if (form === 'edit') {
-      form = this.#editForm.domNode;
-    } else if (form === 'find') {
-      form = this.#findForm.domNode;
-    }
-
     if (form instanceof Node) {
       this.formsContainer.appendChild(form);
+      return;
+    }
+
+    let formElement;
+
+    if (form === 'edit') {
+      formElement = this.#editForm;
+    } else if (form === 'find') {
+      formElement = this.#findForm;
     } else {
-      form.appendTo(this.formsContainer);
+      formElement = form;
+    }
+
+    'refresh' in formElement ? formElement.refresh() : {};
+
+    if ('domNode' in formElement) {
+      this.formsContainer.append(formElement.domNode);
+    } else {
+      formElement.appendTo(this.formsContainer);
     }
   }
 
