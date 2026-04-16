@@ -975,7 +975,7 @@ export class RNAcanvas {
   get #saveName(): string {
     let saveName = this.drawing.name?.trim();
 
-    return saveName ? saveName : 'RNAcanvas Code';
+    return saveName ? saveName : 'Drawing';
   }
 
   /**
