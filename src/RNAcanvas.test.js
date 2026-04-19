@@ -503,13 +503,14 @@ describe('RNAcanvas class', () => {
 
   test('`get undoStack()`', () => {
     let app = new RNAcanvas();
+
     expect(app.undoStack.isEmpty()).toBe(true);
     expect(() => app.undoStack.peek()).toThrow();
 
     let listeners = [1, 2, 3].map(() => jest.fn());
     listeners.forEach(li => app.undoStack.addEventListener('change', li));
 
-    app.pushUndoStack();
+    app.undoStack.push();
 
     expect(app.undoStack.isEmpty()).toBe(false);
     listeners.forEach(li => expect(li).toHaveBeenCalledTimes(1));

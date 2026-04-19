@@ -1062,6 +1062,11 @@ export class RNAcanvas {
        * The returned previous state should not be modified by outside code.
        */
       peek,
+
+      /**
+       * Push the undo stack with the current app state.
+       */
+      push: () => this.pushUndoStack(),
     };
   }
 
