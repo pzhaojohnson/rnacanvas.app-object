@@ -440,6 +440,8 @@ describe('RNAcanvas class', () => {
     previousState.drawing.svg = previousState.drawing.outerXML;
     delete previousState.drawing.outerXML;
 
+    expect(isLegacy(previousState)).toBeTruthy();
+
     app.restore(previousState);
 
     // explicitly sets background color to white for legacy drawings
@@ -449,10 +451,31 @@ describe('RNAcanvas class', () => {
     previousState.drawing.outerXML = previousState.drawing.svg;
     delete previousState.drawing.svg;
 
+    expect(isLegacy(previousState)).toBeFalsy();
+
     app.restore(previousState);
 
     // does not set background color to white for non-legacy drawings
     expect(app.drawing.domNode.style.backgroundColor).toBe('');
+
+    [
+      ['userSelect', ''],
+      ['webkitUserSelect', ''],
+      ['cursor', ''],
+    ].forEach(([name, value]) => app.drawing.domNode.style[name] = value);
+
+    var previousState = app.serialized();
+
+    expect(isLegacy(previousState)).toBeFalsy();
+
+    app.restore(previousState);
+
+    // restores interaction styles
+    [
+      ['userSelect', 'none'],
+      ['webkitUserSelect', 'none'],
+      ['cursor', 'default'],
+    ].forEach(([name, value]) => expect(app.drawing.domNode.style[name]).toBe(value));
   });
 
   test('`pushUndoStack()`', () => {

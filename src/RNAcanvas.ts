@@ -126,6 +126,16 @@ export class RNAcanvas {
 
   #drawingBackgroundColor;
 
+  /**
+   * CSS styles that help facilitate user interaction with the drawing.
+   */
+  readonly #interactionStyles = {
+    userSelect: 'none',
+    webkitUserSelect: 'none',
+
+    cursor: 'default',
+  };
+
   #missingPrimaryBondsAdder;
 
   private readonly invertedPrimaryBondsHider: InvertedStraightBondsHider;
@@ -281,8 +291,8 @@ export class RNAcanvas {
     this.drawing = new Drawing();
 
     $(this.drawing.domNode).css({ backgroundColor: 'white' });
-    $(this.drawing.domNode).css({ userSelect: 'none', webkitUserSelect: 'none' });
-    $(this.drawing.domNode).css({ cursor: 'default' });
+
+    $(this.drawing.domNode).css(this.#interactionStyles);
 
     this.#drawingBackgroundColor = new BackgroundColor(this.drawing);
 
@@ -1003,6 +1013,9 @@ export class RNAcanvas {
     if (isLegacy(previousState)) {
       this.drawing.domNode.style.backgroundColor = 'white';
     }
+
+    // necessary when restoring legacy app states (can also do all the time to be safe)
+    $(this.drawing.domNode).css(this.#interactionStyles);
 
     let selectedSVGElementIDs: string[] = isStringsArray(previousState.selectedSVGElementIDs) ? previousState.selectedSVGElementIDs : [];
     let selectedSVGElements = selectedSVGElementIDs.map(id => this.drawing.domNode.querySelector('#' + id));
