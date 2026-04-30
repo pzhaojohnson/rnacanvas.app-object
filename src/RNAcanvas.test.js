@@ -4,6 +4,8 @@
 
 import { RNAcanvas } from './RNAcanvas';
 
+import { isLegacy } from './isLegacy';
+
 import { consecutivePairs } from '@rnacanvas/base-pairs';
 
 if (!SVGElement.prototype.viewBox) {
@@ -410,7 +412,7 @@ describe('RNAcanvas class', () => {
     // add some contents to the drawing
     for (let i = 0; i < 10; i++) { app.drawing.addBase(`${i}`); }
 
-    let previousState = app.serialized();
+    var previousState = app.serialized();
 
     // change the drawing
     [...app.drawing.bases][3].remove();
@@ -429,6 +431,28 @@ describe('RNAcanvas class', () => {
     // app state was not changed
     expect(app.serialized()).toStrictEqual(previousState);
     expect(app.serialized()).not.toStrictEqual(invalidState);
+
+    app.drawing.domNode.style.backgroundColor = '';
+
+    var previousState= app.serialized();
+
+    // make legacy
+    previousState.drawing.svg = previousState.drawing.outerXML;
+    delete previousState.drawing.outerXML;
+
+    app.restore(previousState);
+
+    // explicitly sets background color to white for legacy drawings
+    expect(app.drawing.domNode.style.backgroundColor).toBe('white');
+
+    // make non-legacy
+    previousState.drawing.outerXML = previousState.drawing.svg;
+    delete previousState.drawing.svg;
+
+    app.restore(previousState);
+
+    // does not set background color to white for non-legacy drawings
+    expect(app.drawing.domNode.style.backgroundColor).toBe('');
   });
 
   test('`pushUndoStack()`', () => {

@@ -1,3 +1,5 @@
+import { isLegacy } from './isLegacy';
+
 import { Drawing } from '@rnacanvas/draw';
 
 import type { DrawingElement } from './DrawingElement';
@@ -996,6 +998,11 @@ export class RNAcanvas {
 
     // can throw (in an atomic way)
     this.drawing.restore(previousState.drawing);
+
+    // legacy drawings always had white background colors (though not explicitly set in-line)
+    if (isLegacy(previousState)) {
+      this.drawing.domNode.style.backgroundColor = 'white';
+    }
 
     let selectedSVGElementIDs: string[] = isStringsArray(previousState.selectedSVGElementIDs) ? previousState.selectedSVGElementIDs : [];
     let selectedSVGElements = selectedSVGElementIDs.map(id => this.drawing.domNode.querySelector('#' + id));
