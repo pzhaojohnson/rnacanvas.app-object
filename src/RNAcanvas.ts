@@ -25,7 +25,15 @@ import { AltArrowKeyBindings } from './AltArrowKeyBindings';
 
 import { PinchToScaleFeature } from '@rnacanvas/draw.svg.interact';
 
+import { isJSON } from '@rnacanvas/utilities';
+
+import { parseStructure } from '@rnacanvas/parse';
+
 import { DotBracketDrawer } from '@rnacanvas/draw';
+
+import { parseFASTA, isFASTA } from '@rnacanvas/parse';
+
+import { isCT } from '@rnacanvas/ct';
 
 import { CTDrawer } from '@rnacanvas/draw';
 
@@ -617,6 +625,29 @@ export class RNAcanvas {
     let show = showFull;
 
     return { hide, showFull, showMinimal, show };
+  }
+
+  /**
+   * Draws whatever is specified by the text
+   * (e.g., a structure in dot-bracket notation,
+   * a structure in CT format,
+   * a saved RNAcanvas app state).
+   *
+   * May throw for invalid text inputs.
+   */
+  draw(text: string): void | never {
+    if (isJSON(text)) {
+      let previousState = JSON.parse(text);
+      return this.restore(previousState);
+    }
+
+    if (isCT(text)) {
+      return this.drawCT(text);
+    }
+
+    let parsed = isFASTA(text) ? parseFASTA(text) : parseStructure(text);
+
+    return this.drawDotBracket(parsed.sequence, parsed.dotBracket);
   }
 
   /**
