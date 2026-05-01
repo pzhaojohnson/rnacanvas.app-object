@@ -638,7 +638,9 @@ export class RNAcanvas {
   draw(text: string): void | never {
     if (isJSON(text)) {
       let previousState = JSON.parse(text);
-      return this.restore(previousState);
+
+      // just draw the drawing (e.g., don't reselect previously selected elements or restore the drawing view)
+      return this.restore({ drawing: previousState.drawing });
     }
 
     if (isCT(text)) {
