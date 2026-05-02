@@ -212,7 +212,7 @@ export class RNAcanvas {
 
   private readonly consecutiveBasesSelectingTool: ConsecutiveBasesSelectingTool<Nucleobase>;
 
-  private readonly draggingTool: DraggingTool;
+  readonly #draggingTool;
 
   #openForm;
 
@@ -378,19 +378,7 @@ export class RNAcanvas {
 
     this.consecutiveBasesSelectingTool = new ConsecutiveBasesSelectingTool(this.drawing, this.selectedBases);
 
-    this.draggingTool = new DraggingTool(
-      this.drawing,
-      {
-        svgElements: this.selectedSVGElements,
-        bases: this.selectedBases,
-        outlines: this.selectedOutlines,
-        baseNumberings: this.selectedNumberings,
-      },
-      {
-        beforeDragging: () => this.beforeDragging(),
-        afterDragging: () => this.afterDragging(),
-      },
-    );
+    this.#draggingTool = new DraggingTool(this);
 
     this.#openForm = new OpenForm();
 
@@ -918,6 +906,12 @@ export class RNAcanvas {
         this.selectedSVGElements.addEventListener(name, listener);
       },
     }
+  }
+
+  get selectedElementHighlightings() {
+    return {
+      domNode: this.selectedSVGElementHighlightings.domNode,
+    };
   }
 
   /**
