@@ -623,12 +623,14 @@ export class RNAcanvas {
    *
    * May throw for invalid text inputs.
    */
-  draw(text: string): void | never {
+  draw(text: string) {
     if (isJSON(text)) {
       let previousState = JSON.parse(text);
 
       // just draw the drawing (e.g., don't reselect previously selected elements or restore the drawing view)
-      return this.restore({ drawing: previousState.drawing });
+      this.restore({ drawing: previousState.drawing });
+
+      return undefined;
     }
 
     if (isCT(text)) {
@@ -658,8 +660,8 @@ export class RNAcanvas {
    * @param seq The sequence of the structure to draw.
    * @param dotBracket Dot-bracket notation expressing the base-pairs in the structure to draw.
    */
-  drawDotBracket(seq: string, dotBracket: string): void {
-    this.dotBracketDrawer.draw(seq, dotBracket);
+  drawDotBracket(seq: string, dotBracket: string) {
+    return this.dotBracketDrawer.draw(seq, dotBracket);
   }
 
   /**
@@ -669,8 +671,8 @@ export class RNAcanvas {
    *
    * Throws if unable to parse the CT string.
    */
-  drawCT(ctString: string): void | never {
-    this.#ctDrawer.draw(ctString);
+  drawCT(ctString: string) {
+    return this.#ctDrawer.draw(ctString);
   }
 
   /**
