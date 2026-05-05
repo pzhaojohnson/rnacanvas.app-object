@@ -1,6 +1,6 @@
 {
   "name": "@rnacanvas/app-object",
-  "version": "16.10.0",
+  "version": "16.11.0",
   "description": "The RNAcanvas app object",
   "repository": {
     "type": "git",
@@ -44,6 +44,7 @@
     "@rnacanvas/forms.export": "^4.0.0",
     "@rnacanvas/forms.find": "^3.0.0",
     "@rnacanvas/forms.layout": "^2.0.0",
+    "@rnacanvas/forms.new": "^1.1.0",
     "@rnacanvas/forms.open": "^1.1.0",
     "@rnacanvas/parse": "^2.1.0",
     "@rnacanvas/paste-interface": "^9.0.0",

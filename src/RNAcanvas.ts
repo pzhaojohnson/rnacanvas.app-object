@@ -64,6 +64,8 @@ import { ExportButton } from '@rnacanvas/buttons';
 
 import { FormsFronter } from './FormsFronter';
 
+import { NewForm } from '@rnacanvas/forms.new';
+
 import { LayoutForm } from '@rnacanvas/forms.layout';
 
 import { EditForm } from '@rnacanvas/forms.edit';
@@ -234,6 +236,10 @@ export class RNAcanvas {
 
   #formsFronter: FormsFronter;
 
+  readonly forms = {
+    'new': new NewForm(),
+  };
+
   readonly layoutForm: LayoutForm;
 
   #editForm;
@@ -386,6 +392,10 @@ export class RNAcanvas {
     this.boundingBox.appendChild(this.formsContainer);
 
     this.#formsFronter = new FormsFronter(this.formsContainer);
+
+    this.forms['new'].domNode.style.position = 'absolute';
+    this.forms['new'].domNode.style.top = '50px';
+    this.forms['new'].domNode.style.left = '50px';
 
     this.layoutForm = new LayoutForm(this.drawing, this.selectedBases, {
       beforeMovingBases: () => this.beforeDragging(),
