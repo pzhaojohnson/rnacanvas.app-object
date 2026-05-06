@@ -394,8 +394,8 @@ export class RNAcanvas {
     this.#formsFronter = new FormsFronter(this.formsContainer);
 
     this.forms['new'].domNode.style.position = 'absolute';
-    this.forms['new'].domNode.style.top = '50px';
-    this.forms['new'].domNode.style.left = '50px';
+    this.forms['new'].domNode.style.top = '77px';
+    this.forms['new'].domNode.style.left = '67px';
 
     this.layoutForm = new LayoutForm(this.drawing, this.selectedBases, {
       beforeMovingBases: () => this.beforeDragging(),
