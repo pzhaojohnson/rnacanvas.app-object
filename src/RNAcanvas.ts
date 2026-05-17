@@ -55,6 +55,8 @@ import { ConsecutiveBasesSelectingTool } from '@rnacanvas/draw.interact';
 
 import { DraggingTool } from '@rnacanvas/draw.interact';
 
+import { StartPage } from '@rnacanvas/start-page';
+
 import { OpenButton } from '@rnacanvas/buttons';
 import { OpenForm } from '@rnacanvas/forms.open';
 
@@ -84,8 +86,6 @@ import { Toolbar, ToolbarToggle } from '@rnacanvas/toolbar';
 import { EditButton } from '@rnacanvas/buttons';
 
 import { DownloadButton } from './DownloadButton';
-
-import { StartPage } from '@rnacanvas/start-page';
 
 import { DropHandler } from '@rnacanvas/drop-interface';
 import { PasteHandler } from '@rnacanvas/paste-interface';
@@ -217,6 +217,10 @@ export class RNAcanvas {
 
   readonly #draggingTool;
 
+  readonly #startPage = new StartPage(this);
+
+  readonly #startPageContainer = document.createElement('div');
+
   #openForm;
 
   #openButton;
@@ -262,10 +266,6 @@ export class RNAcanvas {
   #editButton = new EditButton();
 
   #downloadButton = new DownloadButton(this);
-
-  readonly #startPage = new StartPage(this);
-
-  readonly #startPageContainer = document.createElement('div');
 
   #newTabKeyBinding = new KeyBinding('=', () => this.newTab());
 
@@ -389,6 +389,17 @@ export class RNAcanvas {
 
     this.#draggingTool = new DraggingTool(this);
 
+    this.#startPage.domNode.style.position = 'absolute';
+
+    // the Start page should occupy the entire app area when opened
+    (['top', 'right', 'bottom', 'left'] as const).forEach(side => this.#startPage.domNode.style[side] = '0px');
+
+    // assign an ID to aid testing
+    this.#startPageContainer.id = `start-page-container-${uuidv4()}`;
+
+    // place below forms (since the user should be able to open forms while the Start page is open)
+    this.boundingBox.append(this.#startPageContainer);
+
     this.#openForm = new OpenForm();
 
     this.formsContainer = document.createElement('div');
@@ -489,17 +500,6 @@ export class RNAcanvas {
     this.#downloadButton.hide();
 
     this.boundingBox.append(this.#downloadButton.domNode);
-
-    this.#startPage.domNode.style.position = 'absolute';
-
-    // the Start page should occupy the entire app area when opened
-    (['top', 'right', 'bottom', 'left'] as const).forEach(side => this.#startPage.domNode.style[side] = '0px');
-
-    // assign an ID to aid testing
-    this.#startPageContainer.id = `start-page-container-${uuidv4()}`;
-
-    // place on top of everything else (so that the Start page hides everything else when opened)
-    this.boundingBox.append(this.#startPageContainer);
 
     this.domNode.addEventListener('drop', event => this.#dropHandler.handle(event));
     this.domNode.addEventListener('dragover', event => event.preventDefault());
@@ -926,6 +926,16 @@ export class RNAcanvas {
     };
   }
 
+  /**
+   * The Start page interface.
+   */
+  get startPage() {
+    return {
+      open: () => this.#startPageContainer.append(this.#startPage.domNode),
+      close: () => this.#startPage.domNode.remove(),
+    };
+  }
+
   get forms() {
     return {
       'new': this.#newForm,
@@ -982,16 +992,6 @@ export class RNAcanvas {
     allForms.reverse();
 
     allForms.forEach(form => form.remove());
-  }
-
-  /**
-   * The Start page interface.
-   */
-  get startPage() {
-    return {
-      open: () => this.#startPageContainer.append(this.#startPage.domNode),
-      close: () => this.#startPage.domNode.remove(),
-    };
   }
 
   /**
