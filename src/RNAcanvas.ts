@@ -85,6 +85,8 @@ import { EditButton } from '@rnacanvas/buttons';
 
 import { DownloadButton } from './DownloadButton';
 
+import { StartPage } from '@rnacanvas/start-page';
+
 import { DropHandler } from '@rnacanvas/drop-interface';
 import { PasteHandler } from '@rnacanvas/paste-interface';
 
@@ -101,6 +103,8 @@ import { isNonNullObject } from '@rnacanvas/value-check';
 import { isStringsArray } from '@rnacanvas/value-check';
 
 import { isSVGGraphicsElementsArray } from '@rnacanvas/draw.svg';
+
+import { v4 as uuidv4 } from 'uuid';
 
 function isSVGGraphicsElement(value: unknown): value is SVGGraphicsElement {
   return value instanceof SVGGraphicsElement;
@@ -258,6 +262,10 @@ export class RNAcanvas {
   #editButton = new EditButton();
 
   #downloadButton = new DownloadButton(this);
+
+  readonly #startPage = new StartPage(this);
+
+  readonly #startPageContainer = document.createElement('div');
 
   #newTabKeyBinding = new KeyBinding('=', () => this.newTab());
 
@@ -481,6 +489,17 @@ export class RNAcanvas {
     this.#downloadButton.hide();
 
     this.boundingBox.append(this.#downloadButton.domNode);
+
+    this.#startPage.domNode.style.position = 'absolute';
+
+    // the Start page should occupy the entire app area when opened
+    (['top', 'right', 'bottom', 'left'] as const).forEach(side => this.#startPage.domNode.style[side] = '0px');
+
+    // assign an ID to aid testing
+    this.#startPageContainer.id = `start-page-container-${uuidv4()}`;
+
+    // place on top of everything else (so that the Start page hides everything else when opened)
+    this.boundingBox.append(this.#startPageContainer);
 
     this.domNode.addEventListener('drop', event => this.#dropHandler.handle(event));
     this.domNode.addEventListener('dragover', event => event.preventDefault());
@@ -963,6 +982,16 @@ export class RNAcanvas {
     allForms.reverse();
 
     allForms.forEach(form => form.remove());
+  }
+
+  /**
+   * The Start page interface.
+   */
+  get startPage() {
+    return {
+      open: () => this.#startPageContainer.append(this.#startPage.domNode),
+      close: () => this.#startPage.domNode.remove(),
+    };
   }
 
   /**

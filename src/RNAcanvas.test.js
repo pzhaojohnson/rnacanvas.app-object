@@ -383,6 +383,22 @@ describe('RNAcanvas class', () => {
     expect(listener).toHaveBeenCalledTimes(1);
   });
 
+  test('`get startPage()`', () => {
+    var app = new RNAcanvas();
+
+    var startPageContainer = app.domNode.querySelector('[id^=start-page-container-]');
+    expect(startPageContainer).toBeTruthy();
+
+    app.startPage.close();
+    expect(startPageContainer.childNodes.length).toBe(0);
+
+    app.startPage.open();
+    expect(startPageContainer.childNodes.length).toBe(1);
+
+    app.startPage.close();
+    expect(startPageContainer.childNodes.length).toBe(0);
+  });
+
   test('`serialized()`', () => {
     let app = new RNAcanvas();
 
