@@ -392,11 +392,17 @@ describe('RNAcanvas class', () => {
     app.startPage.close();
     expect(startPageContainer.childNodes.length).toBe(0);
 
+    expect(app.startPage.isOpen()).toBe(false);
+
     app.startPage.open();
     expect(startPageContainer.childNodes.length).toBe(1);
 
+    expect(app.startPage.isOpen()).toBe(true);
+
     app.startPage.close();
     expect(startPageContainer.childNodes.length).toBe(0);
+
+    expect(app.startPage.isOpen()).toBe(false);
   });
 
   test('`serialized()`', () => {

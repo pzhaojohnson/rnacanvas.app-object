@@ -948,6 +948,8 @@ export class RNAcanvas {
     return {
       open: () => this.#startPageContainer.append(this.#startPage.domNode),
       close: () => this.#startPage.domNode.remove(),
+
+      isOpen: () => this.#startPageContainer.contains(this.#startPage.domNode),
     };
   }
 
