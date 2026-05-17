@@ -233,6 +233,18 @@ Does nothing if no forms are open.
 app.closeAllForms();
 ```
 
+### `get startPage()`
+
+The Start page interface.
+
+```javascript
+// open the Start page
+app.startPage.open();
+
+// close the Start page
+app.startPage.close();
+```
+
 ### `exportSVG()`
 
 Downloads the drawing for the user in its current state
