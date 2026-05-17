@@ -241,8 +241,12 @@ The Start page interface.
 // open the Start page
 app.startPage.open();
 
+app.startPage.isOpen(); // true
+
 // close the Start page
 app.startPage.close();
+
+app.startPage.isOpen(); // false
 ```
 
 ### `exportSVG()`
