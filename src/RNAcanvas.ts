@@ -221,7 +221,7 @@ export class RNAcanvas {
 
   readonly #startPageContainer = document.createElement('div');
 
-  #openForm;
+  readonly #openForm = new OpenForm();
 
   #openButton;
 
@@ -400,7 +400,9 @@ export class RNAcanvas {
     // place below forms (since the user should be able to open forms while the Start page is open)
     this.boundingBox.append(this.#startPageContainer);
 
-    this.#openForm = new OpenForm();
+    this.#openForm.domNode.style.position = 'absolute';
+    this.#openForm.domNode.style.top = '68px';
+    this.#openForm.domNode.style.left = '86px';
 
     this.formsContainer = document.createElement('div');
     this.boundingBox.appendChild(this.formsContainer);
@@ -457,9 +459,22 @@ export class RNAcanvas {
     this.boundingBox.append(toolbarToggleContainer);
 
     this.#openButton = new OpenButton();
-    this.#openButton.domNode.addEventListener('click', () => this.openForm(this.#openForm));
     $(this.#openButton.domNode).css({ position: 'absolute', top: '10px', left: '26px' });
     this.boundingBox.append(this.#openButton.domNode);
+
+    this.#openButton.domNode.addEventListener('click', () => {
+      this.#openForm.domNode.style.position = 'absolute';
+
+      // open on the left side of the app
+      // (may open on the right side of the app when opened from the Start page)
+      this.#openForm.domNode.style.left = '86px';
+      this.#openForm.domNode.style.right = '';
+
+      this.#openForm.domNode.style.top = '68px';
+      this.#openForm.domNode.style.bottom = '';
+
+      this.openForm(this.#openForm);
+    });
 
     this.#saveButton = new SaveButton();
     this.#saveButton.domNode.addEventListener('click', () => this.save());
