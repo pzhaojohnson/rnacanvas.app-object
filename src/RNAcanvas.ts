@@ -62,6 +62,8 @@ import { SaveButton } from '@rnacanvas/buttons';
 
 import { ExportButton } from '@rnacanvas/buttons';
 
+import type { Form } from './Form';
+
 import { FormsFronter } from './FormsFronter';
 
 import { NewForm } from '@rnacanvas/forms.new';
@@ -92,18 +94,13 @@ import $ from 'jquery';
 
 import { FiniteStack } from '@rnacanvas/utilities';
 
+import { isString } from '@rnacanvas/value-check';
+
 import { isNonNullObject } from '@rnacanvas/value-check';
 
 import { isStringsArray } from '@rnacanvas/value-check';
 
 import { isSVGGraphicsElementsArray } from '@rnacanvas/draw.svg';
-
-interface Form {
-  /**
-   * Appends the form to the provided container node.
-   */
-  appendTo(container: Node): void;
-}
 
 function isSVGGraphicsElement(value: unknown): value is SVGGraphicsElement {
   return value instanceof SVGGraphicsElement;
@@ -236,9 +233,7 @@ export class RNAcanvas {
 
   #formsFronter: FormsFronter;
 
-  readonly forms = {
-    'new': new NewForm(),
-  };
+  readonly #newForm = new NewForm();
 
   readonly layoutForm: LayoutForm;
 
@@ -393,9 +388,9 @@ export class RNAcanvas {
 
     this.#formsFronter = new FormsFronter(this.formsContainer);
 
-    this.forms['new'].domNode.style.position = 'absolute';
-    this.forms['new'].domNode.style.top = '77px';
-    this.forms['new'].domNode.style.left = '67px';
+    this.#newForm.domNode.style.position = 'absolute';
+    this.#newForm.domNode.style.top = '77px';
+    this.#newForm.domNode.style.left = '67px';
 
     this.layoutForm = new LayoutForm(this.drawing, this.selectedBases, {
       beforeMovingBases: () => this.beforeDragging(),
@@ -424,21 +419,7 @@ export class RNAcanvas {
 
     this.#schemaDrawer = new SchemaDrawer(this.drawing);
 
-    this.toolbar = new Toolbar({
-      drawing: this.drawing,
-      selectedBases: this.selectedBases,
-      beforeDragging: () => this.beforeDragging(),
-      afterDragging: () => this.afterDragging(),
-      pushUndoStack: () => this.pushUndoStack(),
-      undo: () => this.undo(),
-      redo: () => this.redo(),
-      undoStack: this.undoStack,
-      redoStack: this.redoStack,
-      forms: {
-        'layout': this.layoutForm,
-      },
-      openForm: (form: Form) => this.openForm(form),
-    });
+    this.toolbar = new Toolbar(this);
 
     this.toolbar.appendTo(this.toolbarContainer);
     this.boundingBox.append(this.toolbarContainer);
@@ -926,41 +907,39 @@ export class RNAcanvas {
     };
   }
 
-  /**
-   * Opens the provided form simply by adding it within the DOM structure of the RNAcanvas app.
-   *
-   * Forms are to be closed simply by removing them from the DOM structure of the RNAcanvas app
-   * (e.g., by calling the `remove` method of the DOM node corresponding to the form).
-   *
-   * Forms input to this method should have absolute positioning
-   * (i.e., have a `position` CSS property of `absolute`).
-   *
-   * Forms will be added in such a way that (with absolute positioning)
-   * they will be positioned relative to the bounding box of the RNAcanvas app.
-   */
-  openForm(form: Node | Form | 'edit' | 'find'): void {
+  get forms() {
+    return {
+      'new': this.#newForm,
+      'open': this.#openForm,
+      'layout': this.layoutForm,
+      'edit': this.#editForm,
+      'find': this.#findForm,
+      'export': this.exportForm,
+      'about': this.#aboutForm,
+    };
+  }
+
+  openForm(form: Form | Node | string): void | never {
     if (form instanceof Node) {
       this.formsContainer.appendChild(form);
       return;
     }
 
-    let formElement;
+    if (isString(form)) {
+      let formName = form.toLowerCase();
 
-    if (form === 'edit') {
-      formElement = this.#editForm;
-    } else if (form === 'find') {
-      formElement = this.#findForm;
-    } else {
-      formElement = form;
+      if (isFormName(formName)) {
+        form = this.forms[formName];
+      } else {
+        throw new Error(`Unrecognized form name: "${form}".`);
+      }
     }
 
-    'refresh' in formElement ? formElement.refresh() : {};
+    form.reposition ? form.reposition() : {};
 
-    if ('domNode' in formElement) {
-      this.formsContainer.append(formElement.domNode);
-    } else {
-      formElement.appendTo(this.formsContainer);
-    }
+    form.refresh ? form.refresh() : {};
+
+    this.formsContainer.append(form.domNode);
   }
 
   /**
@@ -1320,3 +1299,14 @@ const lightBackdrop = 'repeating-conic-gradient(#eee 0% 25%, white 0% 50%) 50% /
  * A black and dark gray checkerboard pattern.
  */
 const darkBackdrop = 'repeating-conic-gradient(#1d1d1f 0% 25%, black 0% 50%) 50% / 20px 20px';
+
+type FormName = keyof InstanceType<typeof RNAcanvas>['forms'];
+
+function isFormName(value: unknown): value is FormName {
+  let app = new RNAcanvas();
+
+  return (
+    isString(value)
+    && value in app.forms
+  );
+}
