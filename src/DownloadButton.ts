@@ -2,7 +2,7 @@ import type { RNAcanvas } from './RNAcanvas';
 
 import * as styles from './DownloadButton.module.css';
 
-import { detectMacOS, detectWindows } from '@rnacanvas/utilities';
+import { detectMac, detectWindows } from '@rnacanvas/utilities';
 
 export class DownloadButton {
   #targetApp;
@@ -119,7 +119,7 @@ class RasterImageButton {
   #button = new ImageFormatButton();
 
   constructor() {
-    if (detectMacOS()) {
+    if (detectMac()) {
       this.#button.text = 'Screen Capture';
       this.#button.keyBinding = '⇧ ⌘ 4';
     } else if (detectWindows()) {
@@ -180,7 +180,7 @@ class RNAcanvasFileButton {
 
     this.#button.domNode.addEventListener('click', () => this.#targetApp.save());
 
-    if (detectMacOS()) {
+    if (detectMac()) {
       this.#button.keyBinding = '⌘ S';
     } else {
       this.#button.keyBinding = 'Ctrl + S';
