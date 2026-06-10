@@ -90,8 +90,6 @@ import { DownloadButton } from './DownloadButton';
 import { DropHandler } from '@rnacanvas/drop-interface';
 import { PasteHandler } from '@rnacanvas/paste-interface';
 
-import { CopyHandler } from '@rnacanvas/copy-interface';
-
 import { DownloadableFile } from '@rnacanvas/utilities';
 
 import $ from 'jquery';
@@ -280,15 +278,6 @@ export class RNAcanvas {
   #dropHandler = new DropHandler(this);
 
   #pasteHandler = new PasteHandler(this);
-
-  readonly #copyHandler = new CopyHandler(this);
-
-  /**
-   * Set to true when in the process of copying something from the drawing.
-   */
-  #copying = false;
-
-  readonly #copyKeyBindings;
 
   constructor() {
     // make focusable for key bindings to work
@@ -531,17 +520,6 @@ export class RNAcanvas {
     this.domNode.addEventListener('dragover', event => event.preventDefault());
 
     this.domNode.addEventListener('paste', event => this.#pasteHandler.handle(event));
-
-    this.#copyKeyBindings = (['ctrlKey', 'metaKey'] as const).map(modifyingKey => (
-      new KeyBinding('C', () => this.#copying = true, { [modifyingKey]: true })
-    ));
-
-    window.addEventListener('keyup', event => {
-      event.key.toUpperCase() == 'C' ? this.#copying = false : {};
-    });
-
-    // can't simply listen for copy events (copy events on text inputs will bubble up, for instance)
-    this.domNode.addEventListener('copy', event => this.#copying ? this.#copyHandler.handle(event) : {});
 
     // assign ownership for all key bindings at once
     [...this.keyBindings].forEach(kb => kb.owner = this.domNode);
@@ -1307,7 +1285,6 @@ export class RNAcanvas {
       ...this.#removeSelectedKeyBindings,
       ...this.#arrowKeyBindings,
       ...this.#altArrowKeyBindings,
-      ...this.#copyKeyBindings,
       ...this.#saveKeyBindings,
       this.#newTabKeyBinding,
       this.#duplicateTabKeyBinding,
