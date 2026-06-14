@@ -283,8 +283,6 @@ export class RNAcanvas {
 
   readonly #copyHandler = new CopyHandler(this);
 
-  readonly #copyKeyBindings;
-
   constructor() {
     // make focusable for key bindings to work
     this.domNode.tabIndex = 0;
@@ -528,11 +526,6 @@ export class RNAcanvas {
     this.domNode.addEventListener('paste', event => this.#pasteHandler.handle(event));
 
     this.domNode.addEventListener('copy', event => this.#copyHandler.handle(event));
-
-    // must listen for Ctrl+C and Cmd+C key presses as well (for Safari browser)
-    this.#copyKeyBindings = (['ctrlKey', 'metaKey'] as const).map(modifyingKey => (
-      new KeyBinding('C', () => this.#copyHandler.handle(), { [modifyingKey]: true })
-    ));
 
     // assign ownership for all key bindings at once
     [...this.keyBindings].forEach(kb => kb.owner = this.domNode);
@@ -1299,7 +1292,6 @@ export class RNAcanvas {
       ...this.#arrowKeyBindings,
       ...this.#altArrowKeyBindings,
       ...this.#saveKeyBindings,
-      ...this.#copyKeyBindings,
       this.#newTabKeyBinding,
       this.#duplicateTabKeyBinding,
       this.#toolbarToggleKeyBinding,
