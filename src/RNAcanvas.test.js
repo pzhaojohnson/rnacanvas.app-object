@@ -383,6 +383,43 @@ describe('RNAcanvas class', () => {
     expect(listener).toHaveBeenCalledTimes(1);
   });
 
+  test('`selectedTertiaryBonds()`', () => {
+    var app = new RNAcanvas();
+
+    var bases = [...'AGUCAGCUGAUCGC'].map(letter => app.drawing.addBase(letter));
+
+    var tbs = [[1, 8], [3, 0], [2, 5], [1, 7], [2, 9]].map(([i, j]) => app.drawing.addTertiaryBond(bases[i], bases[j]));
+
+    // add some extra elements as well
+    app.addToSelected([bases[0], bases[7], bases[10]]);
+
+    app.addToSelected([tbs[1], tbs[2]]);
+
+    expect([...app.selectedTertiaryBonds].length).toBe(2);
+
+    [1, 2].forEach(i => expect([...app.selectedTertiaryBonds].includes(tbs[i])).toBeTruthy());
+
+    [0, 3, 4].forEach(i => expect([...app.selectedTertiaryBonds].includes(tbs[i])).toBeFalsy());
+
+    var listeners = [1, 2, 3].map(() => jest.fn());
+
+    listeners.forEach(li => app.selectedTertiaryBonds.addEventListener('change', li));
+
+    listeners.forEach(li => expect(li).not.toHaveBeenCalled());
+
+    app.addToSelected([tbs[0]]);
+
+    listeners.forEach(li => expect(li).toHaveBeenCalledTimes(1));
+
+    listeners.forEach(li => app.selectedTertiaryBonds.removeEventListener('change', li));
+
+    expect([...app.selectedTertiaryBonds].includes(tbs[3])).toBeFalsy();
+    app.addToSelected([tbs[3]]);
+
+    // not called again
+    listeners.forEach(li => expect(li).toHaveBeenCalledTimes(1));
+  });
+
   test('`get startPage()`', () => {
     var app = new RNAcanvas();
 

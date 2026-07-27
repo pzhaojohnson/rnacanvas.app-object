@@ -941,6 +941,27 @@ export class RNAcanvas {
     }
   }
 
+  get selectedTertiaryBonds() {
+    let getSelectedTertiaryBonds = () => {
+      let selectedSVGElements = this.selectedSVGElements;
+
+      return [...this.drawing.tertiaryBonds].filter(tb => selectedSVGElements.include(tb.domNode));
+    };
+
+    let addEventListener = (name: 'change', listener: () => void) => this.selectedSVGElements.addEventListener(name, listener);
+
+    let removeEventListener = (name: 'change', listener: () => void) => this.selectedSVGElements.removeEventListener(name, listener);
+
+    return {
+      [Symbol.iterator]() {
+        return getSelectedTertiaryBonds().values();
+      },
+
+      addEventListener,
+      removeEventListener,
+    };
+  }
+
   get selectedElementHighlightings() {
     return {
       domNode: this.selectedSVGElementHighlightings.domNode,
