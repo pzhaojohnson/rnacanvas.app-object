@@ -166,6 +166,48 @@ The `selectAll` method can also be used to select all elements in the drawing of
 app.selectAll();
 ```
 
+### `selectedTertiaryBonds()`
+
+Represents the currently selected tertiary bonds.
+
+```javascript
+// add some bases to the drawing to start with
+var bases = [...'AUGCAUGC'].map(letter => app.drawing.addBase(letter));
+
+// add some tertiary bonds
+var tbs = [[0, 6], [1, 7]].map(([i, j]) => (
+  app.drawing.addTertiaryBond(bases[i], bases[j])
+));
+
+app.select(tbs);
+
+[...app.selectedTertiaryBonds].length; // 2
+
+[...app.selectedTertiaryBonds].include(tbs[0]); // true
+[...app.selectedTertiaryBonds].include(tbs[1]); // true
+```
+
+Changes to the currently selected tertiary bonds can also be listened for.
+
+```javascript
+var count = 0;
+
+var listener = () => count += 1;
+
+app.selectedTertiaryBonds.addEventListener('change', listener);
+
+app.removeFromSelected([tbs[0]]);
+
+count; // 1
+
+app.selectedTertiaryBonds.removeEventListener('change', listener);
+
+app.addToSelected([tbs[0]]);
+
+// not incremented
+count; // 1
+```
+
 ### Opening forms
 
 Forms can be opened using the `openForm` method.
