@@ -1,6 +1,6 @@
 {
   "name": "@rnacanvas/app-object",
-  "version": "17.21.4",
+  "version": "18.0.0",
   "description": "The RNAcanvas app object",
   "repository": {
     "type": "git",
@@ -29,14 +29,14 @@
     "webpack-cli": "^7.0.0"
   },
   "dependencies": {
-    "@rnacanvas/base-pairs": "^2.1.0",
+    "@rnacanvas/base-pairs": "^4.0.0",
     "@rnacanvas/buttons": "^3.0.0",
     "@rnacanvas/copy-interface": "^2.0.0",
     "@rnacanvas/ct": "^2.1.1",
-    "@rnacanvas/draw": "^14.0.0",
-    "@rnacanvas/draw.bases.bonds": "^14.1.0",
+    "@rnacanvas/draw": "^15.0.0",
+    "@rnacanvas/draw.bases.bonds": "^15.0.0",
     "@rnacanvas/draw.interact": "^11.0.0",
-    "@rnacanvas/draw.svg": "^3.7.1",
+    "@rnacanvas/draw.svg": "^4.0.0",
     "@rnacanvas/draw.svg.highlight": "^3.4.0",
     "@rnacanvas/draw.svg.interact": "^3.2.0",
     "@rnacanvas/drop-interface": "^10.0.0",
