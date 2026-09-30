@@ -40,7 +40,7 @@ if (!SVGElement.prototype.getPointAtLength) {
   SVGElement.prototype.getPointAtLength = () => ({ x: 0, y: 0 });
 }
 
-['x1', 'y1', 'x2', 'y2'].forEach(coordinateName => {
+['x1', 'y1', 'x2', 'y2', 'cx', 'cy'].forEach(coordinateName => {
   if (!SVGElement.prototype[coordinateName]) {
     Object.defineProperty(SVGElement.prototype, coordinateName, {
       value: { baseVal: { value: 0 } },
@@ -418,6 +418,72 @@ describe('RNAcanvas class', () => {
 
     // not called again
     listeners.forEach(li => expect(li).toHaveBeenCalledTimes(1));
+  });
+
+  test('`selectedStrungElements`', () => {
+    var app = new RNAcanvas();
+
+    var bases = [...'AGUCAGCUGAUCGC'].map(letter => app.drawing.addBase(letter));
+
+    var secondaryBonds = [[1, 12], [2, 11], [3, 10]].map(([i, j]) => app.drawing.addSecondaryBond(bases[i], bases[j]));
+
+    var strungElements = [
+      ['circle', secondaryBonds[0]],
+      ['rectangle', secondaryBonds[1]],
+      ['triangle', secondaryBonds[2]],
+      ['circle', secondaryBonds[1]],
+      ['rectangle', secondaryBonds[0]],
+    ].map(([type, owner]) => app.drawing.addStrungElement(type, owner));
+
+    // add some extra elements as well
+    app.addToSelected([bases[0], bases[7], secondaryBonds[2]]);
+
+    app.addToSelected([strungElements[1], strungElements[4]]);
+
+    // iterability
+    expect([...app.selectedStrungElements].length).toBe(2);
+
+    [1, 4].forEach(i => expect([...app.selectedStrungElements].includes(strungElements[i])).toBeTruthy());
+
+    [0, 2, 3].forEach(i => expect([...app.selectedStrungElements].includes(strungElements[i])).toBeFalsy());
+
+    // `toArray()` method
+    expect(app.selectedStrungElements.toArray().length).toBe(2);
+
+    [1, 4].forEach(i => expect(app.selectedStrungElements.toArray().includes(strungElements[i])).toBeTruthy());
+
+    [0, 2, 3].forEach(i => expect(app.selectedStrungElements.toArray().includes(strungElements[i])).toBeFalsy());
+
+    // `addEventListener()` method
+    var listeners = [1, 2, 3].map(() => jest.fn());
+
+    listeners.forEach(li => app.selectedStrungElements.addEventListener('change', li));
+
+    listeners.forEach(li => expect(li).not.toHaveBeenCalled());
+
+    app.addToSelected([strungElements[0]]);
+
+    listeners.forEach(li => expect(li).toHaveBeenCalledTimes(1));
+
+    expect(app.selectedStrungElements.toArray().includes(strungElements[0])).toBeTruthy();
+
+    app.removeFromSelected([strungElements[1]]);
+
+    listeners.forEach(li => expect(li).toHaveBeenCalledTimes(2));
+
+    expect(app.selectedStrungElements.toArray().includes(strungElements[1])).toBeFalsy();
+
+    // `removeEventListener()` method
+    [0, 2].forEach(i => app.selectedStrungElements.removeEventListener('change', listeners[i]));
+
+    expect(app.selectedStrungElements.toArray().includes(strungElements[3])).toBeFalsy();
+    app.addToSelected([strungElements[3]]);
+
+    // removed listeners not called again
+    [0, 2].forEach(i => expect(listeners[i]).toHaveBeenCalledTimes(2));
+
+    // listener that wasn't removed still called
+    expect(listeners[1]).toHaveBeenCalledTimes(3);
   });
 
   test('`get startPage()`', () => {

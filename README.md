@@ -183,8 +183,8 @@ app.select(tbs);
 
 [...app.selectedTertiaryBonds].length; // 2
 
-[...app.selectedTertiaryBonds].include(tbs[0]); // true
-[...app.selectedTertiaryBonds].include(tbs[1]); // true
+[...app.selectedTertiaryBonds].includes(tbs[0]); // true
+[...app.selectedTertiaryBonds].includes(tbs[1]); // true
 ```
 
 Changes to the currently selected tertiary bonds can also be listened for.
@@ -203,6 +203,62 @@ count; // 1
 app.selectedTertiaryBonds.removeEventListener('change', listener);
 
 app.addToSelected([tbs[0]]);
+
+// not incremented
+count; // 1
+```
+
+### `selectedStrungElements()`
+
+Represents the currently selected strung elements.
+
+```javascript
+// add some bases to the drawing to start with
+var bases = [...'AUGCAUGC'].map(letter => app.drawing.addBase(letter));
+
+// add some secondary bonds
+var sbs = [[0, 7], [1, 6]].map(([i, j]) => (
+  app.drawing.addSecondaryBond(bases[i], bases[j])
+));
+
+// add some strung elements to the secondary bonds
+var strungElements = [
+  app.drawing.addStrungElement('circle', sbs[0]),
+  app.drawing.addStrungElement('triangle', sbs[1]),
+];
+
+app.select(strungElements);
+
+[...app.selectedStrungElements].length; // 2
+
+[...app.selectedStrungElements].includes(strungElements[0]); // true
+[...app.selectedStrungElements].includes(strungElements[1]); // true
+```
+
+The currently selected strung elements can also be retrieved as an array.
+
+(Using the `toArray()` method is more performant than using the spread `...` operator.)
+
+```javascript
+app.selectedStrungElements.toArray().length; // 2
+```
+
+Changes to the currently selected strung elements can also be listened for.
+
+```javascript
+var count = 0;
+
+var listener = () => count += 1;
+
+app.selectedStrungElements.addEventListener('change', listener);
+
+app.removeFromSelected([strungElements[0]]);
+
+count; // 1
+
+app.selectedStrungElements.removeEventListener('change', listener);
+
+app.addToSelected([strungElements[0]]);
 
 // not incremented
 count; // 1

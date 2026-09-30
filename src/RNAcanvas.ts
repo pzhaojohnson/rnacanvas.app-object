@@ -962,6 +962,23 @@ export class RNAcanvas {
     };
   }
 
+  get selectedStrungElements() {
+    let toArray = () => this.drawing.strungElements.toArray().filter(ele => this.selectedSVGElements.include(ele.domNode));
+
+    let addEventListener = (name: 'change', listener: () => void) => this.selectedSVGElements.addEventListener(name, listener);
+
+    let removeEventListener = (name: 'change', listener: () => void) => this.selectedSVGElements.removeEventListener(name, listener);
+
+    return {
+      [Symbol.iterator]() { return toArray().values(); },
+
+      toArray,
+
+      addEventListener,
+      removeEventListener,
+    };
+  }
+
   get selectedElementHighlightings() {
     return {
       domNode: this.selectedSVGElementHighlightings.domNode,
