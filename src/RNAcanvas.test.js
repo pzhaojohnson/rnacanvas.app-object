@@ -52,6 +52,9 @@ if (!SVGElement.prototype.getPointAtLength) {
 expect(globalThis.SVGTextElement).toBeFalsy();
 globalThis.SVGTextElement = SVGElement;
 
+expect(globalThis.SVGTSpanElement).toBeFalsy();
+globalThis.SVGTSpanElement = SVGElement;
+
 expect(globalThis.SVGCircleElement).toBeFalsy();
 globalThis.SVGCircleElement = SVGElement;
 
