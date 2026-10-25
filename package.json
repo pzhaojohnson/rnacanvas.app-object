@@ -1,6 +1,6 @@
 {
   "name": "@rnacanvas/app-object",
-  "version": "18.8.0",
+  "version": "19.0.0",
   "description": "The RNAcanvas app object",
   "repository": {
     "type": "git",
@@ -12,7 +12,7 @@
     "build": "webpack"
   },
   "author": "pzhaojohnson",
-  "license": "GPL-3.0-only",
+  "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.23.7",
     "@babel/preset-env": "^7.23.7",
@@ -33,7 +33,7 @@
     "@rnacanvas/buttons": "^3.0.0",
     "@rnacanvas/copy-interface": "^2.0.0",
     "@rnacanvas/ct": "^2.1.1",
-    "@rnacanvas/draw": "^15.0.0",
+    "@rnacanvas/draw": "^16.0.0",
     "@rnacanvas/draw.bases.bonds": "^15.0.0",
     "@rnacanvas/draw.interact": "^13.0.0",
     "@rnacanvas/draw.svg": "^4.0.0",
