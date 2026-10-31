@@ -1,6 +1,6 @@
 {
   "name": "@rnacanvas/app-object",
-  "version": "19.0.0",
+  "version": "19.0.1",
   "description": "The RNAcanvas app object",
   "repository": {
     "type": "git",
@@ -14,9 +14,9 @@
   "author": "pzhaojohnson",
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.23.7",
-    "@babel/preset-env": "^7.23.7",
-    "@babel/preset-typescript": "^7.23.3",
+    "@babel/core": "^8.0.10",
+    "@babel/preset-env": "^8.0.7",
+    "@babel/preset-typescript": "^8.0.7",
     "@types/jquery": "^4.0.0",
     "babel-jest": "^30.0.2",
     "css-loader": "^7.1.2",
@@ -55,6 +55,6 @@
     "@rnacanvas/utilities": "^8.0.0",
     "@rnacanvas/value-check": "^2.6.1",
     "jquery": "^4.0.0",
-    "uuid": "^13.0.2"
+    "uuid": "^14.0.3"
   }
 }
