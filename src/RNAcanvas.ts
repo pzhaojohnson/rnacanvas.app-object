@@ -456,7 +456,7 @@ export class RNAcanvas {
     $(this.#toolbarToggle.domNode).css({ position: 'absolute', bottom: '22.5px', left: '15px' });
 
     this.#toolbarToggleKeyBinding = new KeyBinding('KeyT', () => this.#toolbarToggle.press());
-    this.#toolbarToggle.boundKey = this.#toolbarToggleKeyBinding.key;
+    this.#toolbarToggle.boundKey = 'T';
 
     let toolbarToggleContainer = document.createElement('div');
     toolbarToggleContainer.append(this.#toolbarToggle.domNode);
