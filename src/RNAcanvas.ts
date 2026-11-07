@@ -271,7 +271,7 @@ export class RNAcanvas {
 
   #newTabKeyBinding = new KeyBinding('=', () => this.newTab());
 
-  #duplicateTabKeyBinding = new KeyBinding('+', () => this.duplicateTab(), { shiftKey: true });
+  #duplicateTabKeyBinding = new KeyBinding('=', () => this.duplicateTab(), { shiftKey: true });
 
   #undoStack: FiniteStack<ReturnType<InstanceType<typeof RNAcanvas>['serialized']>> = new FiniteStack(50);
 
