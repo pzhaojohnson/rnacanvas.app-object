@@ -230,8 +230,8 @@ export class RNAcanvas {
   #saveButton;
 
   #saveKeyBindings = [
-    new KeyBinding('S', () => this.save(), { ctrlKey: true }),
-    new KeyBinding('S', () => this.save(), { metaKey: true }),
+    new KeyBinding('KeyS', () => this.save(), { ctrlKey: true }),
+    new KeyBinding('KeyS', () => this.save(), { metaKey: true }),
   ];
 
   #exportButton;
@@ -269,9 +269,9 @@ export class RNAcanvas {
 
   #downloadButton = new DownloadButton(this);
 
-  #newTabKeyBinding = new KeyBinding('=', () => this.newTab());
+  #newTabKeyBinding = new KeyBinding('Equal', () => this.newTab());
 
-  #duplicateTabKeyBinding = new KeyBinding('=', () => this.duplicateTab(), { shiftKey: true });
+  #duplicateTabKeyBinding = new KeyBinding('Equal', () => this.duplicateTab(), { shiftKey: true });
 
   #undoStack: FiniteStack<ReturnType<InstanceType<typeof RNAcanvas>['serialized']>> = new FiniteStack(50);
 
@@ -383,8 +383,8 @@ export class RNAcanvas {
     });
 
     this.#selectAllKeyBindings = [
-      new KeyBinding('A', () => this.selectAll(), { ctrlKey: true }),
-      new KeyBinding('A', () => this.selectAll(), { metaKey: true }),
+      new KeyBinding('KeyA', () => this.selectAll(), { ctrlKey: true }),
+      new KeyBinding('KeyA', () => this.selectAll(), { metaKey: true }),
     ];
 
     this.selectedBases = new SelectedBases(this.drawing, this.selectedSVGElements);
@@ -455,7 +455,7 @@ export class RNAcanvas {
     this.#toolbarToggle = new ToolbarToggle({ toolbar: this.toolbar });
     $(this.#toolbarToggle.domNode).css({ position: 'absolute', bottom: '22.5px', left: '15px' });
 
-    this.#toolbarToggleKeyBinding = new KeyBinding('T', () => this.#toolbarToggle.press());
+    this.#toolbarToggleKeyBinding = new KeyBinding('KeyT', () => this.#toolbarToggle.press());
     this.#toolbarToggle.boundKey = this.#toolbarToggleKeyBinding.key;
 
     let toolbarToggleContainer = document.createElement('div');
