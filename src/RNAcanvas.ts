@@ -719,6 +719,12 @@ export class RNAcanvas {
     this.#schemaDrawer.draw(schema);
   }
 
+  get selection() {
+    return {
+      isEmpty: () => this.selectedSVGElements.size == 0,
+    };
+  }
+
   /**
    * The currently selected SVG element.
    *

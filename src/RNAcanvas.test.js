@@ -170,6 +170,24 @@ describe('RNAcanvas class', () => {
     expect(rnaCanvas.domNode.style).toBeTruthy();
   });
 
+  test('`selection`', () => {
+    var app = new RNAcanvas();
+
+    var bases = [...'GAUCGAUCGAUGCUCGUAGUCG'].map(c => app.drawing.addBase(c));
+
+    expect(app.selection.isEmpty()).toBe(true);
+
+    app.select([bases[2], bases[7]]);
+    expect(app.selection.isEmpty()).toBe(false);
+
+    // reflects the current state of the selection
+    app.select([]);
+    expect(app.selection.isEmpty()).toBe(true);
+
+    app.addToSelected([bases[4]]);
+    expect(app.selection.isEmpty()).toBe(false);
+  });
+
   test('`select()`', () => {
     var app = new RNAcanvas();
 
