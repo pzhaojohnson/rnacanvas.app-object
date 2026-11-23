@@ -116,6 +116,8 @@ function isSVGGraphicsElement(value: unknown): value is SVGGraphicsElement {
  * An RNAcanvas app object that can be included as a component of a web page / app.
  */
 export class RNAcanvas {
+  declare ['constructor']: typeof RNAcanvas;
+
   /**
    * The actual DOM node of the RNAcanvas app object.
    *

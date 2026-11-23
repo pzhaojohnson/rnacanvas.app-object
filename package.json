@@ -1,6 +1,6 @@
 {
   "name": "@rnacanvas/app-object",
-  "version": "19.1.1",
+  "version": "20.0.0",
   "description": "The RNAcanvas app object",
   "repository": {
     "type": "git",
@@ -31,10 +31,10 @@
   "dependencies": {
     "@rnacanvas/base-pairs": "^4.0.0",
     "@rnacanvas/buttons": "^3.0.0",
-    "@rnacanvas/copy-interface": "^2.0.0",
+    "@rnacanvas/copy-interface": "^3.0.0",
     "@rnacanvas/ct": "^2.1.1",
-    "@rnacanvas/draw": "^16.0.0",
-    "@rnacanvas/draw.bases.bonds": "^15.0.0",
+    "@rnacanvas/draw": "^17.1.0",
+    "@rnacanvas/draw.bases.bonds": "^16.1.0",
     "@rnacanvas/draw.interact": "^13.0.0",
     "@rnacanvas/draw.svg": "^4.0.0",
     "@rnacanvas/draw.svg.highlight": "^3.4.0",
@@ -48,7 +48,7 @@
     "@rnacanvas/forms.new": "^1.1.0",
     "@rnacanvas/forms.open": "^2.1.0",
     "@rnacanvas/parse": "^2.1.0",
-    "@rnacanvas/paste-interface": "^10.0.0",
+    "@rnacanvas/paste-interface": "^11.0.0",
     "@rnacanvas/scrollbars": "^1.1.0",
     "@rnacanvas/start-page": "^1.0.0",
     "@rnacanvas/toolbar": "^23.0.0",
