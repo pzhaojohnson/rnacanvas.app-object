@@ -90,7 +90,7 @@ import { DownloadButton } from './DownloadButton';
 import { DropHandler } from '@rnacanvas/drop-interface';
 import { PasteHandler } from '@rnacanvas/paste-interface';
 
-import { CopyHandler } from '@rnacanvas/copy-interface';
+import { CopyHandler, CutHandler } from '@rnacanvas/copy-interface';
 
 import { DownloadableFile } from '@rnacanvas/utilities';
 
@@ -284,6 +284,7 @@ export class RNAcanvas {
   #pasteHandler = new PasteHandler(this);
 
   readonly #copyHandler = new CopyHandler(this);
+  readonly #cutHandler = new CutHandler(this);
 
   constructor() {
     // make focusable for key bindings to work
@@ -528,6 +529,7 @@ export class RNAcanvas {
     this.domNode.addEventListener('paste', event => this.#pasteHandler.handle(event));
 
     this.domNode.addEventListener('copy', event => this.#copyHandler.handle(event));
+    this.domNode.addEventListener('cut', event => this.#cutHandler.handle(event));
 
     // assign ownership for all key bindings at once
     [...this.keyBindings].forEach(kb => kb.owner = this.domNode);
