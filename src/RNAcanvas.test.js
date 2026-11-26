@@ -550,6 +550,24 @@ describe('RNAcanvas class', () => {
     expect(app.serialized().drawingView).toStrictEqual(app.drawingView.serialized());
     expect(app.drawingView.serialized()).toBeTruthy();
     expect(app.drawingView.serialized()).not.toEqual({});
+
+    // selected SVG elements without an ID (or with an empty ID) are assigned one
+    let [ele1, ele2, ele3, ele4] = [1, 2, 3, 4].map(() => document.createElementNS('http://www.w3.org/2000/svg', 'circle'));
+    app.drawing.domNode.append(ele1, ele2, ele3, ele4);
+
+    expect(ele1.id).toBeFalsy();
+    ele2.id = 'existing-id';
+    ele3.id = '';
+    app.selectedSVGElements.addAll([ele1, ele2, ele3]);
+
+    let ids = app.serialized().selectedSVGElementIDs.slice(-3);
+
+    expect(ele1.id).toMatch(/^id-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/);
+    expect(ele2.id).toBe('existing-id');
+    expect(ele3.id).toMatch(/^id-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/);
+    expect(ele4.id).toBe('');
+
+    expect(ids).toStrictEqual([ele1.id, 'existing-id', ele3.id]);
   });
 
   test('`restore()`', () => {

@@ -1071,15 +1071,23 @@ export class RNAcanvas {
   }
 
   /**
-   * Returns the serialized form of an app instance
-   * (e.g., which can be saved in a file).
+   * Returns the serialized form of an app instance,
+   * which is a JSON-serializable object containing the app's savable state.
    *
    * Throws if unable to properly serialize the app instance.
    */
   serialized() {
+    let selectedSVGElements = [...this.selectedSVGElements];
+
+    // elements need to have an ID to be "found" again
+    // (SVG element IDs must also begin with a letter)
+    selectedSVGElements.forEach(ele => ele.id = ele.id ? ele.id : 'id-' + uuidv4());
+
     return {
       drawing: this.drawing.serialized(),
-      selectedSVGElementIDs: [...this.selectedSVGElements].map(ele => ele.id),
+
+      selectedSVGElementIDs: selectedSVGElements.map(ele => ele.id),
+
       drawingView: this.drawingView.serialized(),
     };
   }
@@ -1133,16 +1141,28 @@ export class RNAcanvas {
     // necessary when restoring legacy app states (can also do all the time to be safe)
     $(this.drawing.domNode).css(this.#interactionStyles);
 
-    let selectedSVGElementIDs: string[] = isStringsArray(previousState.selectedSVGElementIDs) ? previousState.selectedSVGElementIDs : [];
-    let selectedSVGElements = selectedSVGElementIDs.map(id => this.drawing.domNode.querySelector('#' + id));
+    // the `querySelector()` method can throw for invalid selectors
+    try {
+      let selectedSVGElementIDs: string[] = isStringsArray(previousState.selectedSVGElementIDs) ? previousState.selectedSVGElementIDs : [];
 
-    this.selectedSVGElements.clear();
+      let selectedSVGElements = selectedSVGElementIDs.map(id => this.drawing.domNode.querySelector('#' + id));
 
-    // only restore if all previously selected SVG elements were successfully retrieved
-    isSVGGraphicsElementsArray(selectedSVGElements) ? this.selectedSVGElements.addAll(selectedSVGElements) : {};
+      this.selectedSVGElements.clear();
+
+      // only restore if all previously selected SVG elements were successfully retrieved
+      isSVGGraphicsElementsArray(selectedSVGElements) ? this.selectedSVGElements.addAll(selectedSVGElements) : {};
+    } catch (error) {
+      console.warn(error);
+      console.warn('Unable to reselect the previously selected elements.');
+    }
 
     if (previousState.drawingView) {
-      try { this.drawingView.restore(previousState.drawingView); } catch (error) { console.warn(error); }
+      try {
+        this.drawingView.restore(previousState.drawingView);
+      } catch (error) {
+        console.warn(error);
+        console.warn("Unable to restore the user's view of the drawing.");
+      }
     }
   }
 
