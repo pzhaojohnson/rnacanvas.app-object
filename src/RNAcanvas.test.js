@@ -296,7 +296,34 @@ describe('RNAcanvas class', () => {
     expect([...app.selectedSVGElements].length).toBe(0); // deselected the removed elements
   });
 
-  test('`get selectedNumberingLines()`', () => {
+  test('`selectedNumberings`', () => {
+    var app = new RNAcanvas();
+
+    app.drawDotBracket('AGCUUGUGCAUGCUGC', '..(((....)))..');
+
+    var bases = [...app.drawing.bases];
+
+    [1, 3, 4, 6, 7, 8].forEach(i => app.drawing.number(bases[i], i + 1));
+
+    var numberings = [...app.drawing.numberings];
+
+    expect(app.selectedNumberings.toArray()).toStrictEqual([]);
+
+    app.addToSelected([2, 3, 5].map(i => numberings[i]));
+
+    // `toArray()` method
+    expect(app.selectedNumberings.toArray().length).toBe(3);
+    expect(app.selectedNumberings.toArray()).toStrictEqual([...app.selectedNumberings]);
+    [2, 3, 5].forEach(i => expect(app.selectedNumberings.toArray().includes(numberings[i])).toBeTruthy());
+    [0, 1, 4].forEach(i => expect(app.selectedNumberings.toArray().includes(numberings[i])).toBeFalsy());
+
+    app.removeFromSelected([numberings[3]]);
+
+    expect(app.selectedNumberings.toArray().length).toBe(2);
+    expect(app.selectedNumberings.toArray().includes(numberings[3])).toBeFalsy();
+  });
+
+  test('`selectedNumberingLines`', () => {
     var app = new RNAcanvas();
 
     app.drawDotBracket('AGCUUGUGCAUGCUGC', '..(((....)))..');
@@ -317,6 +344,9 @@ describe('RNAcanvas class', () => {
 
     expect([...selectedNumberingLines].length).toBe(3);
 
+    // `toArray()` method
+    expect(selectedNumberingLines.toArray()).toStrictEqual([2, 3, 5].map(i => numberingLines[i]));
+
     var listener = jest.fn();
 
     selectedNumberingLines.addEventListener('change', listener);
@@ -334,7 +364,7 @@ describe('RNAcanvas class', () => {
     expect(listener).toHaveBeenCalledTimes(2);
   });
 
-  test('`get selectedOutlines()`', () => {
+  test('`selectedOutlines`', () => {
     let app = new RNAcanvas();
 
     let bases = [...'GAUCGAUCGAUGCUCGUAGUCG'].map(c => app.drawing.addBase(c));
@@ -356,10 +386,15 @@ describe('RNAcanvas class', () => {
     expect([...app.selectedOutlines].includes(outlines[5])).toBeTruthy();
     expect([...app.selectedOutlines].includes(outlines[2])).toBeTruthy();
 
+    // `toArray()` method
+    expect(app.selectedOutlines.toArray().length).toBe(3);
+    [0, 5, 2].forEach(i => expect(app.selectedOutlines.toArray().includes(outlines[i])).toBeTruthy());
+    [1, 3, 4].forEach(i => expect(app.selectedOutlines.toArray().includes(outlines[i])).toBeFalsy());
+
     expect(listener.mock.calls.length).toBe(2);
   });
 
-  test('`get selectedPrimaryBonds()`', () => {
+  test('`selectedPrimaryBonds`', () => {
     let app = new RNAcanvas();
 
     let bases = [...'GAUCGAUCGAUGCUCGUAGUCG'].map(c => app.drawing.addBase(c));
@@ -379,10 +414,15 @@ describe('RNAcanvas class', () => {
     expect([...app.selectedPrimaryBonds].includes(primaryBonds[6])).toBeTruthy();
     expect([...app.selectedPrimaryBonds].includes(primaryBonds[4])).toBeTruthy();
 
+    // `toArray()` method
+    expect(app.selectedPrimaryBonds.toArray().length).toBe(3);
+    [0, 6, 4].forEach(i => expect(app.selectedPrimaryBonds.toArray().includes(primaryBonds[i])).toBeTruthy());
+    [1, 2, 3, 5].forEach(i => expect(app.selectedPrimaryBonds.toArray().includes(primaryBonds[i])).toBeFalsy());
+
     expect(listener).toHaveBeenCalledTimes(1);
   });
 
-  test('`get selectedSecondaryBonds()`', () => {
+  test('`selectedSecondaryBonds`', () => {
     let app = new RNAcanvas();
 
     let bases = [...'GAUCGAUCGAUGCUCGUAGUCG'].map(c => app.drawing.addBase(c));
@@ -401,10 +441,15 @@ describe('RNAcanvas class', () => {
     expect([...app.selectedSecondaryBonds].includes(secondaryBonds[3])).toBeTruthy();
     expect([...app.selectedSecondaryBonds].includes(secondaryBonds[1])).toBeTruthy();
 
+    // `toArray()` method
+    expect(app.selectedSecondaryBonds.toArray().length).toBe(2);
+    [3, 1].forEach(i => expect(app.selectedSecondaryBonds.toArray().includes(secondaryBonds[i])).toBeTruthy());
+    [0, 2].forEach(i => expect(app.selectedSecondaryBonds.toArray().includes(secondaryBonds[i])).toBeFalsy());
+
     expect(listener).toHaveBeenCalledTimes(1);
   });
 
-  test('`selectedTertiaryBonds()`', () => {
+  test('`selectedTertiaryBonds`', () => {
     var app = new RNAcanvas();
 
     var bases = [...'AGUCAGCUGAUCGC'].map(letter => app.drawing.addBase(letter));
@@ -421,6 +466,11 @@ describe('RNAcanvas class', () => {
     [1, 2].forEach(i => expect([...app.selectedTertiaryBonds].includes(tbs[i])).toBeTruthy());
 
     [0, 3, 4].forEach(i => expect([...app.selectedTertiaryBonds].includes(tbs[i])).toBeFalsy());
+
+    // `toArray()` method
+    expect(app.selectedTertiaryBonds.toArray().length).toBe(2);
+    [1, 2].forEach(i => expect(app.selectedTertiaryBonds.toArray().includes(tbs[i])).toBeTruthy());
+    [0, 3, 4].forEach(i => expect(app.selectedTertiaryBonds.toArray().includes(tbs[i])).toBeFalsy());
 
     var listeners = [1, 2, 3].map(() => jest.fn());
 

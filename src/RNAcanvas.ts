@@ -859,6 +859,8 @@ export class RNAcanvas {
     return {
       [Symbol.iterator]() { return getSelectedNumberings().values(); },
 
+      toArray: () => getSelectedNumberings(),
+
       addEventListener: (name: 'change', listener: () => void) => {
         this.selectedSVGElements.addEventListener(name, listener);
       },
@@ -876,6 +878,8 @@ export class RNAcanvas {
       [Symbol.iterator]() {
         return getSelectedNumberingLines().values();
       },
+
+      toArray: () => getSelectedNumberingLines(),
 
       addEventListener: (name: 'change', listener: () => void) => {
         this.selectedSVGElements.addEventListener(name, listener);
@@ -896,6 +900,8 @@ export class RNAcanvas {
       [Symbol.iterator]() {
         return getSelectedOutlines().values();
       },
+
+      toArray: () => getSelectedOutlines(),
 
       /**
        * Listeners are called whenever the set of currently selected outlines changes.
@@ -921,6 +927,8 @@ export class RNAcanvas {
         return getSelectedPrimaryBonds().values();
       },
 
+      toArray: () => getSelectedPrimaryBonds(),
+
       /**
        * Listeners are called whenever the current selection of primary bonds changes.
        */
@@ -941,6 +949,8 @@ export class RNAcanvas {
       [Symbol.iterator]() {
         return getSelectedSecondaryBonds().values();
       },
+
+      toArray: () => getSelectedSecondaryBonds(),
 
       /**
        * Listeners are called whenever the current selection of secondary bonds changes.
@@ -966,6 +976,8 @@ export class RNAcanvas {
       [Symbol.iterator]() {
         return getSelectedTertiaryBonds().values();
       },
+
+      toArray: () => getSelectedTertiaryBonds(),
 
       addEventListener,
       removeEventListener,
